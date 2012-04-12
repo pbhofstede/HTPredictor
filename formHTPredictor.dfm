@@ -1,6 +1,6 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 419
-  Top = 173
+  Left = 558
+  Top = 224
   Width = 1018
   Height = 673
   Caption = 'HT Predictor'
@@ -12,6 +12,7 @@ object frmHTPredictor: TfrmHTPredictor
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object cxpgctrlHTPredictor: TcxPageControl
@@ -19,162 +20,116 @@ object frmHTPredictor: TfrmHTPredictor
     Top = 0
     Width = 1002
     Height = 635
-    ActivePage = cxtbshtPlayers
+    ActivePage = cxtbTegenstander
     Align = alClient
     TabOrder = 0
     ClientRectBottom = 635
     ClientRectRight = 1002
     ClientRectTop = 24
-    object cxtbshtPlayers: TcxTabSheet
-      Caption = 'Spelers'
+    object cxtbTegenstander: TcxTabSheet
+      Caption = 'Tegenstander'
       ImageIndex = 0
-      object dxBarDockControl1: TdxBarDockControl
+      object Panel1: TPanel
+        Left = 0
+        Top = 313
+        Width = 1002
+        Height = 298
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'Scherm voor opstelling'
+        TabOrder = 0
+        object Splitter1: TSplitter
+          Left = 0
+          Top = 0
+          Width = 1002
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
+        end
+      end
+      object pnlSpelersGrid1: TPanel
         Left = 0
         Top = 0
         Width = 1002
-        Height = 24
-        Align = dalTop
-        BarManager = dxBarManager1
-        SunkenBorder = True
-        UseOwnSunkenBorder = True
-      end
-      object cxGridSpelers: TcxGrid
-        Left = 0
-        Top = 24
-        Width = 1002
-        Height = 587
-        Align = alClient
+        Height = 313
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'Scherm voor spelersgrid'
         TabOrder = 1
-        object cxGridSpelersView: TcxGridDBTableView
-          NavigatorButtons.ConfirmDelete = False
-          DataController.DataSource = dsSpelers
-          DataController.Summary.DefaultGroupSummaryItems = <>
-          DataController.Summary.FooterSummaryItems = <>
-          DataController.Summary.SummaryGroups = <>
-          OptionsData.CancelOnExit = False
-          OptionsData.Deleting = False
-          OptionsData.DeletingConfirmation = False
-          OptionsData.Inserting = False
-          OptionsView.ColumnAutoWidth = True
-          object cxGridSpelersViewLAND: TcxGridDBColumn
-            Caption = 'Land'
-            DataBinding.FieldName = 'LAND'
-          end
-          object cxGridSpelersViewRecId: TcxGridDBColumn
-            DataBinding.FieldName = 'RecId'
-            PropertiesClassName = 'TcxTextEditProperties'
-            Visible = False
-          end
-          object cxGridSpelersViewNAAM: TcxGridDBColumn
-            Caption = 'Naam'
-            DataBinding.FieldName = 'NAAM'
-            PropertiesClassName = 'TcxTextEditProperties'
-            Width = 253
-          end
-          object cxGridSpelersViewSPECIALITEIT: TcxGridDBColumn
-            Caption = 'Specialiteit'
-            DataBinding.FieldName = 'SPECIALITEIT'
-            PropertiesClassName = 'TcxTextEditProperties'
-            Width = 120
-          end
-          object cxGridSpelersViewVORM: TcxGridDBColumn
-            Caption = 'Vorm'
-            DataBinding.FieldName = 'VORM'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MinValue = 8
-            Properties.ValueType = vtFloat
-            Width = 63
-          end
-          object cxGridSpelersViewCONDITIE: TcxGridDBColumn
-            Caption = 'Conditie'
-            DataBinding.FieldName = 'CONDITIE'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 8
-            Properties.ValueType = vtFloat
-            Width = 64
-          end
-          object cxGridSpelersViewKEEPEN: TcxGridDBColumn
-            Caption = 'GK'
-            DataBinding.FieldName = 'KEEPEN'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 63
-          end
-          object cxGridSpelersViewVERDEDIGEN: TcxGridDBColumn
-            Caption = 'DEF'
-            DataBinding.FieldName = 'VERDEDIGEN'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 62
-          end
-          object cxGridSpelersViewPOSITIESPEL: TcxGridDBColumn
-            Caption = 'POS'
-            DataBinding.FieldName = 'POSITIESPEL'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 62
-          end
-          object cxGridSpelersViewVLEUGELSPEL: TcxGridDBColumn
-            Caption = 'WNG'
-            DataBinding.FieldName = 'VLEUGELSPEL'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 63
-          end
-          object cxGridSpelersViewPASSEN: TcxGridDBColumn
-            Caption = 'PAS'
-            DataBinding.FieldName = 'PASSEN'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 63
-          end
-          object cxGridSpelersViewSCOREN: TcxGridDBColumn
-            Caption = 'SC'
-            DataBinding.FieldName = 'SCOREN'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.ValueType = vtFloat
-            Width = 61
-          end
-          object cxGridSpelersViewSPELHERVATTEN: TcxGridDBColumn
-            Caption = 'SP'
-            DataBinding.FieldName = 'SPELHERVATTEN'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 63
-          end
-          object cxGridSpelersViewERVARING: TcxGridDBColumn
-            Caption = 'XP'
-            DataBinding.FieldName = 'ERVARING'
-            PropertiesClassName = 'TcxSpinEditProperties'
-            Properties.Increment = 0.1
-            Properties.MaxValue = 30
-            Properties.ValueType = vtFloat
-            Width = 63
-          end
+      end
+    end
+    object cxtbEigenTeam: TcxTabSheet
+      Caption = 'Eigen team'
+      ImageIndex = 1
+      object pnlSpelersGrid2: TPanel
+        Left = 0
+        Top = 0
+        Width = 1002
+        Height = 313
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'Scherm voor spelersgrid'
+        TabOrder = 0
+      end
+      object Panel4: TPanel
+        Left = 0
+        Top = 313
+        Width = 1002
+        Height = 298
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'Scherm voor opstelling'
+        TabOrder = 1
+        object Splitter2: TSplitter
+          Left = 0
+          Top = 0
+          Width = 1002
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
         end
-        object cxGridSpelersLevel1: TcxGridLevel
-          GridView = cxGridSpelersView
+        object cxPageControl1: TcxPageControl
+          Left = 0
+          Top = 3
+          Width = 1002
+          Height = 295
+          ActivePage = cxTabSheet1
+          Align = alClient
+          TabOrder = 0
+          ClientRectBottom = 295
+          ClientRectRight = 1002
+          ClientRectTop = 24
+          object cxTabSheet1: TcxTabSheet
+            Caption = 'Opstelling 1'
+            ImageIndex = 0
+          end
+          object cxTabSheet2: TcxTabSheet
+            Caption = 'Opstelling 2'
+            ImageIndex = 1
+          end
         end
       end
     end
-    object cxTabSheet2: TcxTabSheet
-      Caption = 'cxTabSheet2'
-      ImageIndex = 1
+    object tbResultaat: TcxTabSheet
+      Caption = 'Resultaat'
+      ImageIndex = 2
+      object cxGrid1: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 1002
+        Height = 611
+        Align = alClient
+        TabOrder = 0
+        object cxGrid1DBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+        end
+        object cxGrid1Level1: TcxGridLevel
+          GridView = cxGrid1DBTableView1
+        end
+      end
     end
   end
   object dxBarManager1: TdxBarManager
@@ -199,43 +154,6 @@ object frmHTPredictor: TfrmHTPredictor
       0
       0
       0)
-    object dxBarManager1Bar1: TdxBar
-      AllowClose = False
-      AllowCustomizing = False
-      AllowQuickCustomizing = False
-      AllowReset = False
-      BorderStyle = bbsNone
-      Caption = 'Spelers'
-      CaptionButtons = <>
-      DockControl = dxBarDockControl1
-      DockedDockControl = dxBarDockControl1
-      DockedLeft = 0
-      DockedTop = 0
-      FloatLeft = 380
-      FloatTop = 249
-      FloatClientWidth = 0
-      FloatClientHeight = 0
-      ItemLinks = <
-        item
-          UserDefine = [udPaintStyle]
-          UserPaintStyle = psCaptionGlyph
-          Visible = True
-          ItemName = 'btnLaadSpelers'
-        end>
-      OneOnRow = True
-      Row = 0
-      UseOwnFont = False
-      Visible = True
-      WholeRow = False
-    end
-    object btnLaadSpelers: TdxBarButton
-      Caption = 'Spelers laden'
-      Category = 0
-      Hint = 'Spelers laden'
-      Visible = ivAlways
-      ImageIndex = 25
-      OnClick = btnLaadSpelersClick
-    end
   end
   object imgListHTPredictor: TImageList
     Left = 64
@@ -8035,68 +7953,5 @@ object frmHTPredictor: TfrmHTPredictor
       C00F800100000001FF9F800100000003FFBF800100000E03FFFF80010000FF07
       FFFFE00F0000FFCFFFFFFFFF0000FFFF00000000000000000000000000000000
       000000000000}
-  end
-  object mdSpelers: TdxMemData
-    Indexes = <>
-    SortOptions = []
-    Left = 264
-    Top = 256
-    object mdSpelersNAAM: TStringField
-      FieldName = 'NAAM'
-      Required = True
-      Size = 100
-    end
-    object mdSpelersSPECIALITEIT: TStringField
-      FieldName = 'SPECIALITEIT'
-      Required = True
-    end
-    object mdSpelersVORM: TFloatField
-      FieldName = 'VORM'
-      Required = True
-    end
-    object mdSpelersCONDITIE: TFloatField
-      FieldName = 'CONDITIE'
-      Required = True
-    end
-    object mdSpelersKEEPEN: TFloatField
-      FieldName = 'KEEPEN'
-      Required = True
-    end
-    object mdSpelersVERDEDIGEN: TFloatField
-      FieldName = 'VERDEDIGEN'
-      Required = True
-    end
-    object mdSpelersPOSITIESPEL: TFloatField
-      FieldName = 'POSITIESPEL'
-      Required = True
-    end
-    object mdSpelersVLEUGELSPEL: TFloatField
-      FieldName = 'VLEUGELSPEL'
-      Required = True
-    end
-    object mdSpelersPASSEN: TFloatField
-      FieldName = 'PASSEN'
-      Required = True
-    end
-    object mdSpelersSCOREN: TFloatField
-      FieldName = 'SCOREN'
-      Required = True
-    end
-    object mdSpelersSPELHERVATTEN: TFloatField
-      FieldName = 'SPELHERVATTEN'
-      Required = True
-    end
-    object mdSpelersERVARING: TFloatField
-      FieldName = 'ERVARING'
-      Required = True
-    end
-    object mdSpelersLAND: TStringField
-      FieldName = 'LAND'
-    end
-  end
-  object dsSpelers: TDataSource
-    DataSet = mdSpelers
-    Left = 264
-    Top = 176
   end
 end

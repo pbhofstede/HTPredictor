@@ -6,56 +6,34 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, Db, dxmdaset;
+  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls;
 
 type
   TfrmHTPredictor = class(TForm)
     cxpgctrlHTPredictor: TcxPageControl;
-    cxtbshtPlayers: TcxTabSheet;
-    cxTabSheet2: TcxTabSheet;
-    dxBarDockControl1: TdxBarDockControl;
+    cxtbTegenstander: TcxTabSheet;
+    cxtbEigenTeam: TcxTabSheet;
     dxBarManager1: TdxBarManager;
     imgListHTPredictor: TImageList;
-    dxBarManager1Bar1: TdxBar;
-    btnLaadSpelers: TdxBarButton;
-    cxGridSpelersView: TcxGridDBTableView;
-    cxGridSpelersLevel1: TcxGridLevel;
-    cxGridSpelers: TcxGrid;
-    mdSpelers: TdxMemData;
-    dsSpelers: TDataSource;
-    mdSpelersNAAM: TStringField;
-    mdSpelersSPECIALITEIT: TStringField;
-    mdSpelersVORM: TFloatField;
-    mdSpelersCONDITIE: TFloatField;
-    mdSpelersKEEPEN: TFloatField;
-    mdSpelersVERDEDIGEN: TFloatField;
-    mdSpelersPOSITIESPEL: TFloatField;
-    mdSpelersVLEUGELSPEL: TFloatField;
-    mdSpelersPASSEN: TFloatField;
-    mdSpelersSCOREN: TFloatField;
-    mdSpelersSPELHERVATTEN: TFloatField;
-    mdSpelersERVARING: TFloatField;
-    cxGridSpelersViewRecId: TcxGridDBColumn;
-    cxGridSpelersViewNAAM: TcxGridDBColumn;
-    cxGridSpelersViewSPECIALITEIT: TcxGridDBColumn;
-    cxGridSpelersViewVORM: TcxGridDBColumn;
-    cxGridSpelersViewCONDITIE: TcxGridDBColumn;
-    cxGridSpelersViewKEEPEN: TcxGridDBColumn;
-    cxGridSpelersViewVERDEDIGEN: TcxGridDBColumn;
-    cxGridSpelersViewPOSITIESPEL: TcxGridDBColumn;
-    cxGridSpelersViewVLEUGELSPEL: TcxGridDBColumn;
-    cxGridSpelersViewPASSEN: TcxGridDBColumn;
-    cxGridSpelersViewSCOREN: TcxGridDBColumn;
-    cxGridSpelersViewSPELHERVATTEN: TcxGridDBColumn;
-    cxGridSpelersViewERVARING: TcxGridDBColumn;
-    mdSpelersLAND: TStringField;
-    cxGridSpelersViewLAND: TcxGridDBColumn;
-    procedure btnLaadSpelersClick(Sender: TObject);
+    Panel1: TPanel;
+    pnlSpelersGrid1: TPanel;
+    Splitter1: TSplitter;
+    pnlSpelersGrid2: TPanel;
+    Panel4: TPanel;
+    Splitter2: TSplitter;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet2: TcxTabSheet;
+    tbResultaat: TcxTabSheet;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
-    procedure MapPlayerFields;
+    procedure ToonSpelersGrids(aPanel: TPanel);
   end;
 
 var
@@ -64,62 +42,25 @@ var
 implementation
 
 uses
-  uHTPredictor, FormFieldMapping;
+  FormSpelerGrid;
 
 {$R *.DFM}
 
-procedure TfrmHTPredictor.btnLaadSpelersClick(Sender: TObject);
-var
-  vFileName: String;
+procedure TfrmHTPredictor.ToonSpelersGrids(aPanel: TPanel);
 begin
-  vFileName := '';
-
-  with TOpenDialog.Create(nil) do
+  with TfrmSpelerGrid.Create(Self) do
   begin
-    try
-      Filter := 'Excel files|*.xls;*.xlsx';
-      if Execute then
-      begin
-        vFileName := FileName;
-      end;
-    finally
-      Free;
-    end;
-  end;
-
-  if (vFileName <> '') then
-  begin
-    if not (uHTPredictor.AllPlayerFieldsMapped(mdSpelers)) then
-    begin
-      MapPlayerFields;
-    end;
-
-    if (uHTPredictor.AllPlayerFieldsMapped(mdSpelers)) then
-    begin
-      uHTPredictor.ImportSpelers(vFileName, mdSpelers);
-    end;
+    Parent := aPanel;
+    Visible := TRUE;
+    Align := alClient;
   end;
 end;
 
-{-----------------------------------------------------------------------------
-  Procedure: MapPlayerFields
-  Author:    Harry
-  Date:      11-apr-2012
-  Arguments: None
-  Result:    None
------------------------------------------------------------------------------}
-procedure TfrmHTPredictor.MapPlayerFields;
+procedure TfrmHTPredictor.FormCreate(Sender: TObject);
 begin
-  with TfrmFieldMapping.Create(nil) do
-  begin
-    try
-      IniSection := 'PLAYER_MAPPING';
-      MapDataSet := mdSpelers;
-      ShowModal;
-    finally
-      Release;
-    end;
-  end;
+  cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
+  ToonSpelersGrids(pnlSpelersGrid1);
+  ToonSpelersGrids(pnlSpelersGrid2);
 end;
 
 end.

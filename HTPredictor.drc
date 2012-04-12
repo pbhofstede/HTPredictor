@@ -7,200 +7,1354 @@
   produced executable.
 */
 
-#define Consts_SmkcDel 65360
-#define Consts_SmkcShift 65361
-#define Consts_SmkcCtrl 65362
-#define Consts_SmkcAlt 65363
-#define Consts_SIconToClipboard 65364
-#define Consts_SBitsIndexError 65365
-#define Consts_SDuplicateMenus 65366
-#define Consts_SDockedCtlNeedsName 65367
-#define Consts_SDockTreeRemoveError 65368
-#define Consts_SDockZoneNotFound 65369
-#define Consts_SDockZoneHasNoCtl 65370
-#define Consts_SDuplicateItem 65371
-#define Consts_SMsgDlgNoToAll 65376
-#define Consts_SMsgDlgYesToAll 65377
-#define Consts_SmkcBkSp 65378
-#define Consts_SmkcTab 65379
-#define Consts_SmkcEsc 65380
-#define Consts_SmkcEnter 65381
-#define Consts_SmkcSpace 65382
-#define Consts_SmkcPgUp 65383
-#define Consts_SmkcPgDn 65384
-#define Consts_SmkcEnd 65385
-#define Consts_SmkcHome 65386
-#define Consts_SmkcLeft 65387
-#define Consts_SmkcUp 65388
-#define Consts_SmkcRight 65389
-#define Consts_SmkcDown 65390
-#define Consts_SmkcIns 65391
-#define Consts_SNoMDIForm 65392
-#define Consts_SControlParentSetToSelf 65393
-#define Consts_SCannotDragForm 65394
-#define Consts_SMsgDlgWarning 65395
-#define Consts_SMsgDlgError 65396
-#define Consts_SMsgDlgInformation 65397
-#define Consts_SMsgDlgConfirm 65398
-#define Consts_SMsgDlgYes 65399
-#define Consts_SMsgDlgNo 65400
-#define Consts_SMsgDlgOK 65401
-#define Consts_SMsgDlgCancel 65402
-#define Consts_SMsgDlgHelp 65403
-#define Consts_SMsgDlgAbort 65404
-#define Consts_SMsgDlgRetry 65405
-#define Consts_SMsgDlgIgnore 65406
-#define Consts_SMsgDlgAll 65407
-#define Consts_SInvalidImageSize 65408
-#define Consts_SInvalidImageList 65409
-#define Consts_SImageIndexError 65410
-#define Consts_SImageReadFail 65411
-#define Consts_SImageWriteFail 65412
-#define Consts_SWindowDCError 65413
-#define Consts_SWindowClass 65414
-#define Consts_SCannotFocus 65415
-#define Consts_SParentRequired 65416
-#define Consts_SMDIChildNotVisible 65417
-#define Consts_SVisibleChanged 65418
-#define Consts_SCannotShowModal 65419
-#define Consts_SMenuIndexError 65420
-#define Consts_SMenuReinserted 65421
-#define Consts_SMenuNotFound 65422
-#define Consts_SGroupIndexTooLow 65423
-#define Consts_SDuplicateString 65424
-#define Consts_SDuplicateName 65425
-#define Consts_SInvalidName 65426
-#define Consts_SDuplicateClass 65427
-#define Consts_SInvalidPropertyValue 65428
-#define Consts_SInvalidPropertyPath 65429
-#define Consts_SUnknownProperty 65430
-#define Consts_SReadOnlyProperty 65431
-#define Consts_SPropertyException 65432
-#define Consts_SAncestorNotFound 65433
-#define Consts_SInvalidBitmap 65434
-#define Consts_SInvalidIcon 65435
-#define Consts_SChangeIconSize 65436
-#define Consts_SUnknownClipboardFormat 65437
-#define Consts_SOutOfResources 65438
-#define Consts_SNoCanvasHandle 65439
-#define SysConst_SLongDayNameFri 65440
-#define SysConst_SLongDayNameSat 65441
-#define Consts_SAssignError 65442
-#define Consts_SFCreateError 65443
-#define Consts_SFOpenError 65444
-#define Consts_SReadError 65445
-#define Consts_SWriteError 65446
-#define Consts_SMemoryStreamError 65447
-#define Consts_SCantWriteResourceStreamError 65448
-#define Consts_SClassNotFound 65449
-#define Consts_SInvalidImage 65450
-#define Consts_SResNotFound 65451
-#define Consts_SListIndexError 65452
-#define Consts_SListCapacityError 65453
-#define Consts_SListCountError 65454
-#define Consts_SSortedListError 65455
-#define SysConst_SLongMonthNameSep 65456
-#define SysConst_SLongMonthNameOct 65457
-#define SysConst_SLongMonthNameNov 65458
-#define SysConst_SLongMonthNameDec 65459
-#define SysConst_SShortDayNameSun 65460
-#define SysConst_SShortDayNameMon 65461
-#define SysConst_SShortDayNameTue 65462
-#define SysConst_SShortDayNameWed 65463
-#define SysConst_SShortDayNameThu 65464
-#define SysConst_SShortDayNameFri 65465
-#define SysConst_SShortDayNameSat 65466
-#define SysConst_SLongDayNameSun 65467
-#define SysConst_SLongDayNameMon 65468
-#define SysConst_SLongDayNameTue 65469
-#define SysConst_SLongDayNameWed 65470
-#define SysConst_SLongDayNameThu 65471
-#define SysConst_SShortMonthNameMay 65472
-#define SysConst_SShortMonthNameJun 65473
-#define SysConst_SShortMonthNameJul 65474
-#define SysConst_SShortMonthNameAug 65475
-#define SysConst_SShortMonthNameSep 65476
-#define SysConst_SShortMonthNameOct 65477
-#define SysConst_SShortMonthNameNov 65478
-#define SysConst_SShortMonthNameDec 65479
-#define SysConst_SLongMonthNameJan 65480
-#define SysConst_SLongMonthNameFeb 65481
-#define SysConst_SLongMonthNameMar 65482
-#define SysConst_SLongMonthNameApr 65483
-#define SysConst_SLongMonthNameMay 65484
-#define SysConst_SLongMonthNameJun 65485
-#define SysConst_SLongMonthNameJul 65486
-#define SysConst_SLongMonthNameAug 65487
-#define SysConst_SVarArrayCreate 65488
-#define SysConst_SVarNotArray 65489
-#define SysConst_SVarArrayBounds 65490
-#define SysConst_SExternalException 65491
-#define SysConst_SAssertionFailed 65492
-#define SysConst_SIntfCastError 65493
-#define SysConst_SSafecallException 65494
-#define SysConst_SAssertError 65495
-#define SysConst_SAbstractError 65496
-#define SysConst_SModuleAccessViolation 65497
-#define SysConst_SWin32Error 65498
-#define SysConst_SUnkWin32Error 65499
-#define SysConst_SShortMonthNameJan 65500
-#define SysConst_SShortMonthNameFeb 65501
-#define SysConst_SShortMonthNameMar 65502
-#define SysConst_SShortMonthNameApr 65503
-#define SysConst_SUnderflow 65504
-#define SysConst_SInvalidPointer 65505
-#define SysConst_SInvalidCast 65506
-#define SysConst_SAccessViolation 65507
-#define SysConst_SStackOverflow 65508
-#define SysConst_SControlC 65509
-#define SysConst_SPrivilege 65510
-#define SysConst_SException 65511
-#define SysConst_SExceptTitle 65512
-#define SysConst_SInvalidFormat 65513
-#define SysConst_SArgumentMissing 65514
-#define SysConst_SInvalidVarCast 65515
-#define SysConst_SInvalidVarOp 65516
-#define SysConst_SDispatchError 65517
-#define SysConst_SReadAccess 65518
-#define SysConst_SWriteAccess 65519
+#define IBXConst_SStringTooLarge 64752
+#define cxTLStrs_scxInvalidStreamFormat 64753
+#define cxTLStrs_scxMultiSelectRequired 64754
+#define cxTLStrs_scxBands 64755
+#define cxTLStrs_scxCustomizeCaption 64756
+#define cxTLStrs_scxColumnsCaption 64757
+#define cxTLStrs_scxBandsCaption 64758
+#define cxTLStrs_scxTreeListDeletingFocusedConfirmationText 64759
+#define cxTLStrs_scxTreeListDeletingConfirmationCaption 64760
+#define IBXConst_SSuccess 64768
+#define IBXConst_SDelphiException 64769
+#define IBXConst_SNoOptionsSet 64770
+#define IBXConst_SNoDestinationDirectory 64771
+#define IBXConst_SNosourceDirectory 64772
+#define IBXConst_SNoUninstallFile 64773
+#define IBXConst_SOptionNeedsClient 64774
+#define IBXConst_SOptionNeedsServer 64775
+#define IBXConst_SInvalidOption 64776
+#define IBXConst_SInvalidOnErrorResult 64777
+#define IBXConst_SInvalidOnStatusResult 64778
+#define IBXConst_SDPBConstantUnknownEx 64779
+#define IBXConst_STPBConstantUnknownEx 64780
+#define IBXConst_SUnknownPlan 64781
+#define IBXConst_SFieldSizeMismatch 64782
+#define IBXConst_SEventAlreadyRegistered 64783
+#define IBXConst_SSQLDialectInvalid 64784
+#define IBXConst_SSPBConstantNotSupported 64785
+#define IBXConst_SSPBConstantUnknown 64786
+#define IBXConst_SServiceActive 64787
+#define IBXConst_SServiceInActive 64788
+#define IBXConst_SServerNameMissing 64789
+#define IBXConst_SQueryParamsError 64790
+#define IBXConst_SStartParamsError 64791
+#define IBXConst_SOutputParsingError 64792
+#define IBXConst_SUseSpecificProcedures 64793
+#define IBXConst_SSQLMonitorAlreadyPresent 64794
+#define IBXConst_SCantPrintValue 64795
+#define IBXConst_SEOFReached 64796
+#define IBXConst_SEOFInComment 64797
+#define IBXConst_SEOFInString 64798
+#define IBXConst_SParamNameExpected 64799
+#define IBXConst_SNotCachedUpdates 64800
+#define IBXConst_SNotLiveRequest 64801
+#define IBXConst_SNoProvider 64802
+#define IBXConst_SNoRecordsAffected 64803
+#define IBXConst_SNoTableName 64804
+#define IBXConst_SCannotCreatePrimaryIndex 64805
+#define IBXConst_SCannotDropSystemIndex 64806
+#define IBXConst_STableNameMismatch 64807
+#define IBXConst_SIndexFieldMissing 64808
+#define IBXConst_SInvalidCancellation 64809
+#define IBXConst_SInvalidEvent 64810
+#define IBXConst_SMaximumEvents 64811
+#define IBXConst_SNoEventsRegistered 64812
+#define IBXConst_SInvalidQueueing 64813
+#define IBXConst_SInvalidRegistration 64814
+#define IBXConst_SInvalidBatchMove 64815
+#define IBXConst_SSQLParseError 64816
+#define IBXConst_SUserAbort 64817
+#define IBXConst_SDataSetUniDirectional 64818
+#define IBXConst_SCannotCreateSharedResource 64819
+#define IBXConst_SWindowsAPIError 64820
+#define IBXConst_SColumnListsDontMatch 64821
+#define IBXConst_SColumnTypesDontMatch 64822
+#define IBXConst_SCantEndSharedTransaction 64823
+#define IBXConst_SFieldUnsupportedType 64824
+#define IBXConst_SCircularDataLink 64825
+#define IBXConst_SEmptySQLStatement 64826
+#define IBXConst_SIsASelectStatement 64827
+#define IBXConst_SRequiredParamNotSet 64828
+#define IBXConst_SNoStoredProcName 64829
+#define IBXConst_SIsAExecuteProcedure 64830
+#define IBXConst_SUpdateFailed 64831
+#define IBXConst_SColumnIsNotNullable 64832
+#define IBXConst_SBlobCannotBeRead 64833
+#define IBXConst_SBlobCannotBeWritten 64834
+#define IBXConst_SEmptyQuery 64835
+#define IBXConst_SCannotOpenNonSQLSelect 64836
+#define IBXConst_SNoFieldAccess 64837
+#define IBXConst_SFieldReadOnly 64838
+#define IBXConst_SFieldNotFound 64839
+#define IBXConst_SNotEditing 64840
+#define IBXConst_SCannotInsert 64841
+#define IBXConst_SCannotPost 64842
+#define IBXConst_SCannotUpdate 64843
+#define IBXConst_SCannotDelete 64844
+#define IBXConst_SCannotRefresh 64845
+#define IBXConst_SBufferNotSet 64846
+#define IBXConst_SCircularReference 64847
+#define IBXConst_SUpdateWrongTR 64848
+#define IBXConst_SDatabaseNotAssigned 64849
+#define IBXConst_STransactionNotAssigned 64850
+#define IBXConst_SXSQLDAIndexOutOfRange 64851
+#define IBXConst_SXSQLDANameDoesNotExist 64852
+#define IBXConst_SEOF 64853
+#define IBXConst_SBOF 64854
+#define IBXConst_SInvalidStatementHandle 64855
+#define IBXConst_SSQLOpen 64856
+#define IBXConst_SSQLClosed 64857
+#define IBXConst_SDatasetOpen 64858
+#define IBXConst_SDatasetClosed 64859
+#define IBXConst_SUnknownSQLDataType 64860
+#define IBXConst_SInvalidColumnIndex 64861
+#define IBXConst_SInvalidParamColumnIndex 64862
+#define IBXConst_SInvalidDataConversion 64863
+#define IBXConst_SConnectionTimeout 64864
+#define IBXConst_SCannotSetDatabase 64865
+#define IBXConst_SCannotSetTransaction 64866
+#define IBXConst_SOperationCancelled 64867
+#define IBXConst_SDPBConstantNotSupported 64868
+#define IBXConst_SDPBConstantUnknown 64869
+#define IBXConst_STPBConstantNotSupported 64870
+#define IBXConst_STPBConstantUnknown 64871
+#define IBXConst_SDatabaseClosed 64872
+#define IBXConst_SDatabaseOpen 64873
+#define IBXConst_SDatabaseNameMissing 64874
+#define IBXConst_SNotInTransaction 64875
+#define IBXConst_SInTransaction 64876
+#define IBXConst_STimeoutNegative 64877
+#define IBXConst_SNoDatabasesInTransaction 64878
+#define IBXConst_SUpdateWrongDB 64879
+#define DbConsts_SLastRecord 64880
+#define DbConsts_SInsertRecord 64881
+#define DbConsts_SDeleteRecord 64882
+#define DbConsts_SEditRecord 64883
+#define DbConsts_SPostEdit 64884
+#define DbConsts_SCancelEdit 64885
+#define DbConsts_SRefreshRecord 64886
+#define DbConsts_SRecordNotFound 64887
+#define DbConsts_SPropDefByLookup 64888
+#define IBXConst_SUnknownError 64889
+#define IBXConst_SInterBaseMissing 64890
+#define IBXConst_SInterBaseInstallMissing 64891
+#define IBXConst_SIB60feature 64892
+#define IBXConst_SNotSupported 64893
+#define IBXConst_SNotPermitted 64894
+#define IBXConst_SFileAccessError 64895
+#define DbConsts_SDataSetOpen 64896
+#define DbConsts_SNotEditing 64897
+#define DbConsts_SDataSetClosed 64898
+#define DbConsts_SDataSetEmpty 64899
+#define DbConsts_SDataSetReadOnly 64900
+#define DbConsts_SNestedDataSetClass 64901
+#define DbConsts_STextFalse 64902
+#define DbConsts_STextTrue 64903
+#define DbConsts_SParameterNotFound 64904
+#define DbConsts_SInvalidVersion 64905
+#define DbConsts_SBadFieldType 64906
+#define DbConsts_SProviderSQLNotSupported 64907
+#define DbConsts_SProviderExecuteNotSupported 64908
+#define DbConsts_SFirstRecord 64909
+#define DbConsts_SPriorRecord 64910
+#define DbConsts_SNextRecord 64911
+#define DbConsts_SFieldRangeError 64912
+#define DbConsts_SInvalidIntegerValue 64913
+#define DbConsts_SInvalidBoolValue 64914
+#define DbConsts_SInvalidFloatValue 64915
+#define DbConsts_SFieldTypeMismatch 64916
+#define DbConsts_SFieldSizeMismatch 64917
+#define DbConsts_SInvalidVarByteArray 64918
+#define DbConsts_SFieldOutOfRange 64919
+#define DbConsts_SBCDOverflow 64920
+#define DbConsts_SFieldRequired 64921
+#define DbConsts_SDataSetMissing 64922
+#define DbConsts_SInvalidCalcType 64923
+#define DbConsts_SFieldReadOnly 64924
+#define DbConsts_SCircularDataLink 64925
+#define DbConsts_SLookupInfoError 64926
+#define DbConsts_SDataSourceChange 64927
+#define cxGridStrs_scxGridNextMonth 64928
+#define cxGridStrs_scxGridLastYear 64929
+#define cxGridStrs_scxGridThisYear 64930
+#define cxGridStrs_scxGridNextYear 64931
+#define cxGridStrs_scxGridPast 64932
+#define cxGridStrs_scxGridFuture 64933
+#define cxGridStrs_scxGridMonthFormat 64934
+#define cxGridStrs_scxGridYearFormat 64935
+#define DbConsts_SInvalidFieldSize 64936
+#define DbConsts_SInvalidFieldKind 64937
+#define DbConsts_SUnknownFieldType 64938
+#define DbConsts_SFieldNameMissing 64939
+#define DbConsts_SDuplicateFieldName 64940
+#define DbConsts_SFieldNotFound 64941
+#define DbConsts_SFieldAccessError 64942
+#define DbConsts_SFieldValueError 64943
+#define cxGridStrs_scxGridYesterday 64944
+#define cxGridStrs_scxGridToday 64945
+#define cxGridStrs_scxGridTomorrow 64946
+#define cxGridStrs_scxGridLast30Days 64947
+#define cxGridStrs_scxGridLast14Days 64948
+#define cxGridStrs_scxGridLast7Days 64949
+#define cxGridStrs_scxGridNext7Days 64950
+#define cxGridStrs_scxGridNext14Days 64951
+#define cxGridStrs_scxGridNext30Days 64952
+#define cxGridStrs_scxGridLastTwoWeeks 64953
+#define cxGridStrs_scxGridLastWeek 64954
+#define cxGridStrs_scxGridThisWeek 64955
+#define cxGridStrs_scxGridNextWeek 64956
+#define cxGridStrs_scxGridNextTwoWeeks 64957
+#define cxGridStrs_scxGridLastMonth 64958
+#define cxGridStrs_scxGridThisMonth 64959
+#define jconsts_sJPEGError 64960
+#define jconsts_sJPEGImageFile 64961
+#define dxGDIPlusAPI_scxGdipInvalidOperation 64962
+#define cxGridStrs_scxGridDeletingConfirmationCaption 64963
+#define cxGridStrs_scxGridDeletingFocusedConfirmationText 64964
+#define cxGridStrs_scxGridDeletingSelectedConfirmationText 64965
+#define cxGridStrs_scxGridNoDataInfoText 64966
+#define cxGridStrs_scxGridFilterRowInfoText 64967
+#define cxGridStrs_scxGridNewItemRowInfoText 64968
+#define cxGridStrs_scxGridFilterIsEmpty 64969
+#define cxGridStrs_scxGridCustomizationFormCaption 64970
+#define cxGridStrs_scxGridCustomizationFormColumnsPageCaption 64971
+#define cxGridStrs_scxGridGroupByBoxCaption 64972
+#define cxGridStrs_scxGridFilterApplyButtonCaption 64973
+#define cxGridStrs_scxGridFilterCustomizeButtonCaption 64974
+#define cxGridStrs_scxGridColumnsQuickCustomizationHint 64975
+#define cxFilterControlStrs_cxSFilterDialogCharactersSeries 64976
+#define cxFilterControlStrs_cxSFilterDialogOperationAnd 64977
+#define cxFilterControlStrs_cxSFilterDialogOperationOr 64978
+#define cxFilterControlStrs_cxSFilterDialogRows 64979
+#define cxFilterControlStrs_cxSFilterControlDialogCaption 64980
+#define cxFilterControlStrs_cxSFilterControlDialogNewFile 64981
+#define cxFilterControlStrs_cxSFilterControlDialogOpenDialogCaption 64982
+#define cxFilterControlStrs_cxSFilterControlDialogSaveDialogCaption 64983
+#define cxFilterControlStrs_cxSFilterControlDialogActionSaveCaption 64984
+#define cxFilterControlStrs_cxSFilterControlDialogActionOpenCaption 64985
+#define cxFilterControlStrs_cxSFilterControlDialogActionApplyCaption 64986
+#define cxFilterControlStrs_cxSFilterControlDialogActionOkCaption 64987
+#define cxFilterControlStrs_cxSFilterControlDialogActionCancelCaption 64988
+#define cxFilterControlStrs_cxSFilterControlDialogFileExt 64989
+#define cxFilterControlStrs_cxSFilterControlDialogFileFilter 64990
+#define jconsts_sChangeJPGSize 64991
+#define cxFilterControlStrs_cxSFilterBoolOperatorNotAnd 64992
+#define cxFilterControlStrs_cxSFilterBoolOperatorNotOr 64993
+#define cxFilterControlStrs_cxSFilterRootButtonCaption 64994
+#define cxFilterControlStrs_cxSFilterAddCondition 64995
+#define cxFilterControlStrs_cxSFilterAddGroup 64996
+#define cxFilterControlStrs_cxSFilterRemoveRow 64997
+#define cxFilterControlStrs_cxSFilterClearAll 64998
+#define cxFilterControlStrs_cxSFilterFooterAddCondition 64999
+#define cxFilterControlStrs_cxSFilterGroupCaption 65000
+#define cxFilterControlStrs_cxSFilterRootGroupCaption 65001
+#define cxFilterControlStrs_cxSFilterControlNullString 65002
+#define cxFilterControlStrs_cxSFilterErrorBuilding 65003
+#define cxFilterControlStrs_cxSFilterDialogCaption 65004
+#define cxFilterControlStrs_cxSFilterDialogInvalidValue 65005
+#define cxFilterControlStrs_cxSFilterDialogUse 65006
+#define cxFilterControlStrs_cxSFilterDialogSingleCharacter 65007
+#define cxEditConsts_scxRegExprTooBigReferenceNumber 65008
+#define cxEditConsts_scxRegExprCantCreateEmptyEnum 65009
+#define cxEditConsts_scxRegExprSubrangeOrder 65010
+#define cxEditConsts_scxRegExprHexNumberExpected0 65011
+#define cxEditConsts_scxRegExprHexNumberExpected 65012
+#define cxEditConsts_scxRegExprMissing 65013
+#define cxEditConsts_scxRegExprUnnecessary 65014
+#define cxEditConsts_scxRegExprIncorrectSpace 65015
+#define cxEditConsts_scxRegExprNotCompiled 65016
+#define cxEditConsts_scxRegExprIncorrectParameterQuantifier 65017
+#define cxEditConsts_scxRegExprCantUseParameterQuantifier 65018
+#define cxEditConsts_scxMaskEditRegExprError 65019
+#define cxEditConsts_scxMaskEditInvalidEditValue 65020
+#define cxEditConsts_cxSSpinEditInvalidNumericValue 65021
+#define cxFilterControlStrs_cxSFilterBoolOperatorAnd 65022
+#define cxFilterControlStrs_cxSFilterBoolOperatorOr 65023
+#define cxEditConsts_scxSEditRepositoryPopupItem 65024
+#define cxEditConsts_scxSEditRepositorySpinItem 65025
+#define cxEditConsts_scxSEditRepositoryRadioGroupItem 65026
+#define cxEditConsts_scxSEditRepositoryTextItem 65027
+#define cxEditConsts_scxSEditRepositoryTimeItem 65028
+#define cxEditConsts_scxRegExprLine 65029
+#define cxEditConsts_scxRegExprChar 65030
+#define cxEditConsts_scxRegExprNotAssignedSourceStream 65031
+#define cxEditConsts_scxRegExprEmptySourceStream 65032
+#define cxEditConsts_scxRegExprCantUsePlusQuantifier 65033
+#define cxEditConsts_scxRegExprCantUseStarQuantifier 65034
+#define cxEditConsts_scxRegExprCantCreateEmptyAlt 65035
+#define cxEditConsts_scxRegExprCantCreateEmptyBlock 65036
+#define cxEditConsts_scxRegExprIllegalSymbol 65037
+#define cxEditConsts_scxRegExprIllegalQuantifier 65038
+#define cxEditConsts_scxRegExprIllegalIntegerValue 65039
+#define cxEditConsts_cxNavigatorHint_GotoBookmark 65040
+#define cxEditConsts_cxNavigatorHint_Filter 65041
+#define cxEditConsts_scxSEditRepositoryBlobItem 65042
+#define cxEditConsts_scxSEditRepositoryButtonItem 65043
+#define cxEditConsts_scxSEditRepositoryCalcItem 65044
+#define cxEditConsts_scxSEditRepositoryCheckBoxItem 65045
+#define cxEditConsts_scxSEditRepositoryComboBoxItem 65046
+#define cxEditConsts_scxSEditRepositoryCurrencyItem 65047
+#define cxEditConsts_scxSEditRepositoryDateItem 65048
+#define cxEditConsts_scxSEditRepositoryHyperLinkItem 65049
+#define cxEditConsts_scxSEditRepositoryImageComboBoxItem 65050
+#define cxEditConsts_scxSEditRepositoryImageItem 65051
+#define cxEditConsts_scxSEditRepositoryLookupComboBoxItem 65052
+#define cxEditConsts_scxSEditRepositoryMaskItem 65053
+#define cxEditConsts_scxSEditRepositoryMemoItem 65054
+#define cxEditConsts_scxSEditRepositoryMRUItem 65055
+#define cxEditConsts_scxSCalcError 65056
+#define cxEditConsts_scxSHyperLinkPrefix 65057
+#define cxEditConsts_cxNavigatorHint_First 65058
+#define cxEditConsts_cxNavigatorHint_Prior 65059
+#define cxEditConsts_cxNavigatorHint_PriorPage 65060
+#define cxEditConsts_cxNavigatorHint_Next 65061
+#define cxEditConsts_cxNavigatorHint_NextPage 65062
+#define cxEditConsts_cxNavigatorHint_Last 65063
+#define cxEditConsts_cxNavigatorHint_Insert 65064
+#define cxEditConsts_cxNavigatorHint_Append 65065
+#define cxEditConsts_cxNavigatorHint_Delete 65066
+#define cxEditConsts_cxNavigatorHint_Edit 65067
+#define cxEditConsts_cxNavigatorHint_Post 65068
+#define cxEditConsts_cxNavigatorHint_Cancel 65069
+#define cxEditConsts_cxNavigatorHint_Refresh 65070
+#define cxEditConsts_cxNavigatorHint_SaveBookmark 65071
+#define cxEditConsts_cxSBlobButtonClose 65072
+#define cxEditConsts_cxSBlobMemo 65073
+#define cxEditConsts_cxSBlobMemoEmpty 65074
+#define cxEditConsts_cxSBlobPicture 65075
+#define cxEditConsts_cxSBlobPictureEmpty 65076
+#define cxEditConsts_cxSMenuItemCaptionCut 65077
+#define cxEditConsts_cxSMenuItemCaptionCopy 65078
+#define cxEditConsts_cxSMenuItemCaptionPaste 65079
+#define cxEditConsts_cxSMenuItemCaptionDelete 65080
+#define cxEditConsts_cxSMenuItemCaptionLoad 65081
+#define cxEditConsts_cxSMenuItemCaptionSave 65082
+#define cxEditConsts_cxSDatePopupClear 65083
+#define cxEditConsts_cxSDatePopupNow 65084
+#define cxEditConsts_cxSDatePopupOK 65085
+#define cxEditConsts_cxSDatePopupToday 65086
+#define cxEditConsts_cxSDateError 65087
+#define cxLibraryStrs_cxSDateBOM 65088
+#define cxLibraryStrs_cxSDateEOM 65089
+#define cxLibraryStrs_cxSDateNow 65090
+#define cxEditConsts_cxSEditDateConvertError 65091
+#define cxEditConsts_cxSEditInvalidRepositoryItem 65092
+#define cxEditConsts_cxSEditNumericValueConvertError 65093
+#define cxEditConsts_cxSEditPopupCircularReferencingError 65094
+#define cxEditConsts_cxSEditTimeConvertError 65095
+#define cxEditConsts_cxSEditValidateErrorText 65096
+#define cxEditConsts_cxSEditValueOutOfBounds 65097
+#define cxEditConsts_cxSEditCheckBoxChecked 65098
+#define cxEditConsts_cxSEditCheckBoxGrayed 65099
+#define cxEditConsts_cxSEditCheckBoxUnchecked 65100
+#define cxEditConsts_cxSRadioGroupDefaultCaption 65101
+#define cxEditConsts_cxSBlobButtonOK 65102
+#define cxEditConsts_cxSBlobButtonCancel 65103
+#define cxLibraryStrs_cxSDateYesterday 65104
+#define cxLibraryStrs_cxSDateTomorrow 65105
+#define cxLibraryStrs_cxSDateSunday 65106
+#define cxLibraryStrs_cxSDateMonday 65107
+#define cxLibraryStrs_cxSDateTuesday 65108
+#define cxLibraryStrs_cxSDateWednesday 65109
+#define cxLibraryStrs_cxSDateThursday 65110
+#define cxLibraryStrs_cxSDateFriday 65111
+#define cxLibraryStrs_cxSDateSaturday 65112
+#define cxLibraryStrs_cxSDateFirst 65113
+#define cxLibraryStrs_cxSDateSecond 65114
+#define cxLibraryStrs_cxSDateThird 65115
+#define cxLibraryStrs_cxSDateFourth 65116
+#define cxLibraryStrs_cxSDateFifth 65117
+#define cxLibraryStrs_cxSDateSixth 65118
+#define cxLibraryStrs_cxSDateSeventh 65119
+#define cxFilterConsts_cxSFilterOrCaption 65120
+#define cxFilterConsts_cxSFilterNotCaption 65121
+#define cxFilterConsts_cxSFilterBlankCaption 65122
+#define cxFilterConsts_cxSFilterOperatorIsNull 65123
+#define cxFilterConsts_cxSFilterOperatorIsNotNull 65124
+#define cxFilterConsts_cxSFilterOperatorBeginsWith 65125
+#define cxFilterConsts_cxSFilterOperatorDoesNotBeginWith 65126
+#define cxFilterConsts_cxSFilterOperatorEndsWith 65127
+#define cxFilterConsts_cxSFilterOperatorDoesNotEndWith 65128
+#define cxFilterConsts_cxSFilterOperatorContains 65129
+#define cxFilterConsts_cxSFilterOperatorDoesNotContain 65130
+#define cxFilterConsts_cxSFilterBoxAllCaption 65131
+#define cxFilterConsts_cxSFilterBoxCustomCaption 65132
+#define cxFilterConsts_cxSFilterBoxBlanksCaption 65133
+#define cxFilterConsts_cxSFilterBoxNonBlanksCaption 65134
+#define cxLibraryStrs_cxSDateToday 65135
+#define cxFilterConsts_cxSFilterOperatorLast30Days 65136
+#define cxFilterConsts_cxSFilterOperatorLastMonth 65137
+#define cxFilterConsts_cxSFilterOperatorLastYear 65138
+#define cxFilterConsts_cxSFilterOperatorPast 65139
+#define cxFilterConsts_cxSFilterOperatorThisWeek 65140
+#define cxFilterConsts_cxSFilterOperatorThisMonth 65141
+#define cxFilterConsts_cxSFilterOperatorThisYear 65142
+#define cxFilterConsts_cxSFilterOperatorNext7Days 65143
+#define cxFilterConsts_cxSFilterOperatorNextWeek 65144
+#define cxFilterConsts_cxSFilterOperatorNext14Days 65145
+#define cxFilterConsts_cxSFilterOperatorNextTwoWeeks 65146
+#define cxFilterConsts_cxSFilterOperatorNext30Days 65147
+#define cxFilterConsts_cxSFilterOperatorNextMonth 65148
+#define cxFilterConsts_cxSFilterOperatorNextYear 65149
+#define cxFilterConsts_cxSFilterOperatorFuture 65150
+#define cxFilterConsts_cxSFilterAndCaption 65151
+#define cxFilterConsts_cxSFilterOperatorLessEqual 65152
+#define cxFilterConsts_cxSFilterOperatorGreater 65153
+#define cxFilterConsts_cxSFilterOperatorGreaterEqual 65154
+#define cxFilterConsts_cxSFilterOperatorLike 65155
+#define cxFilterConsts_cxSFilterOperatorNotLike 65156
+#define cxFilterConsts_cxSFilterOperatorBetween 65157
+#define cxFilterConsts_cxSFilterOperatorNotBetween 65158
+#define cxFilterConsts_cxSFilterOperatorInList 65159
+#define cxFilterConsts_cxSFilterOperatorNotInList 65160
+#define cxFilterConsts_cxSFilterOperatorYesterday 65161
+#define cxFilterConsts_cxSFilterOperatorToday 65162
+#define cxFilterConsts_cxSFilterOperatorTomorrow 65163
+#define cxFilterConsts_cxSFilterOperatorLast7Days 65164
+#define cxFilterConsts_cxSFilterOperatorLastWeek 65165
+#define cxFilterConsts_cxSFilterOperatorLast14Days 65166
+#define cxFilterConsts_cxSFilterOperatorLastTwoWeeks 65167
+#define dxBarStrs_dxSBAR_MENUANIM4 65168
+#define dxBarStrs_dxSBAR_MENUANIM5 65169
+#define cxDataConsts_cxSDataReadError 65170
+#define cxDataConsts_cxSDataWriteError 65171
+#define cxDataConsts_cxSDataItemExistError 65172
+#define cxDataConsts_cxSDataRecordIndexError 65173
+#define cxDataConsts_cxSDataItemIndexError 65174
+#define cxDataConsts_cxSDataProviderModeError 65175
+#define cxDataConsts_cxSDataInvalidStreamFormat 65176
+#define cxDataConsts_cxSDataRowIndexError 65177
+#define cxDataConsts_cxSDBDetailFilterControllerNotFound 65178
+#define cxDataConsts_cxSDBNotInGridMode 65179
+#define cxDataConsts_cxSDBKeyFieldNotFound 65180
+#define cxFilterConsts_cxSFilterOperatorEqual 65181
+#define cxFilterConsts_cxSFilterOperatorNotEqual 65182
+#define cxFilterConsts_cxSFilterOperatorLess 65183
+#define dxBarStrs_dxSBAR_TOOLBARRENAME 65184
+#define dxBarStrs_dxSBAR_CATEGORYNAME 65185
+#define dxBarStrs_dxSBAR_TOOLBARNAME 65186
+#define dxBarStrs_dxSBAR_MODIFY 65187
+#define dxBarStrs_dxSBAR_PERSMENUSANDTOOLBARS 65188
+#define dxBarStrs_dxSBAR_MENUSSHOWRECENTITEMS 65189
+#define dxBarStrs_dxSBAR_SHOWFULLMENUSAFTERDELAY 65190
+#define dxBarStrs_dxSBAR_RESETUSAGEDATA 65191
+#define dxBarStrs_dxSBAR_OTHEROPTIONS 65192
+#define dxBarStrs_dxSBAR_LARGEICONS 65193
+#define dxBarStrs_dxSBAR_HINTOPT1 65194
+#define dxBarStrs_dxSBAR_HINTOPT2 65195
+#define dxBarStrs_dxSBAR_MENUANIMATIONS 65196
+#define dxBarStrs_dxSBAR_MENUANIM1 65197
+#define dxBarStrs_dxSBAR_MENUANIM2 65198
+#define dxBarStrs_dxSBAR_MENUANIM3 65199
+#define dxBarStrs_dxSBAR_CLOSE 65200
+#define dxBarStrs_dxSBAR_CAPTION 65201
+#define dxBarStrs_dxSBAR_CATEGORIES 65202
+#define dxBarStrs_dxSBAR_COMMANDS 65203
+#define dxBarStrs_dxSBAR_DESCRIPTION 65204
+#define dxBarStrs_dxSBAR_CUSTOMIZE 65205
+#define dxBarStrs_dxSBAR_ADDREMOVEBUTTONS 65206
+#define dxBarStrs_dxSBAR_MOREBUTTONS 65207
+#define dxBarStrs_dxSBAR_RESETTOOLBAR 65208
+#define dxBarStrs_dxSBAR_EXPAND 65209
+#define dxBarStrs_dxSBAR_DRAGTOMAKEMENUFLOAT 65210
+#define dxBarStrs_dxSBAR_TOOLBARNEWNAME 65211
+#define dxBarStrs_dxSBAR_CATEGORYADD 65212
+#define dxBarStrs_dxSBAR_CATEGORYINSERT 65213
+#define dxBarStrs_dxSBAR_CATEGORYRENAME 65214
+#define dxBarStrs_dxSBAR_TOOLBARADD 65215
+#define dxBarStrs_dxSBAR_VISIBLE 65216
+#define dxBarStrs_dxSBAR_OK 65217
+#define dxBarStrs_dxSBAR_CANCEL 65218
+#define dxBarStrs_dxSBAR_SUBMENUEDITOR 65219
+#define dxBarStrs_dxSBAR_SUBMENUEDITORCAPTION 65220
+#define dxBarStrs_dxSBAR_INSERTEX 65221
+#define dxBarStrs_dxSBAR_MOVEUP 65222
+#define dxBarStrs_dxSBAR_MOVEDOWN 65223
+#define dxBarStrs_dxSBAR_TABSHEET1 65224
+#define dxBarStrs_dxSBAR_TABSHEET2 65225
+#define dxBarStrs_dxSBAR_TABSHEET3 65226
+#define dxBarStrs_dxSBAR_TOOLBARS 65227
+#define dxBarStrs_dxSBAR_TNEW 65228
+#define dxBarStrs_dxSBAR_TRENAME 65229
+#define dxBarStrs_dxSBAR_TDELETE 65230
+#define dxBarStrs_dxSBAR_TRESET 65231
+#define dxBarStrs_dxSBAR_CP_TEXTONLYINMENUS 65232
+#define dxBarStrs_dxSBAR_CP_IMAGEANDTEXT 65233
+#define dxBarStrs_dxSBAR_CP_BEGINAGROUP 65234
+#define dxBarStrs_dxSBAR_CP_VISIBLE 65235
+#define dxBarStrs_dxSBAR_CP_MOSTRECENTLYUSED 65236
+#define dxBarStrs_dxSBAR_CP_POSITIONMENU 65237
+#define dxBarStrs_dxSBAR_CP_VIEWLEVELSMENU 65238
+#define dxBarStrs_dxSBAR_CP_ALLVIEWLEVELS 65239
+#define dxBarStrs_dxSBAR_CP_SINGLEVIEWLEVELITEMSUFFIX 65240
+#define dxBarStrs_dxSBAR_CP_BUTTONGROUPMENU 65241
+#define dxBarStrs_dxSBAR_CP_BUTTONGROUP 65242
+#define dxBarStrs_dxSBAR_CP_BUTTONUNGROUP 65243
+#define dxBarStrs_dxSBAR_ADDEX 65244
+#define dxBarStrs_dxSBAR_RENAMEEX 65245
+#define dxBarStrs_dxSBAR_DELETE 65246
+#define dxBarStrs_dxSBAR_CLEAR 65247
+#define dxBarStrs_dxSBAR_NEWBUTTONCAPTION 65248
+#define dxBarStrs_dxSBAR_NEWITEMCAPTION 65249
+#define dxBarStrs_dxSBAR_NEWSEPARATORCAPTION 65250
+#define dxBarStrs_dxSBAR_NEWSUBITEMCAPTION 65251
+#define dxBarStrs_dxSBAR_CP_ADDSUBITEM 65252
+#define dxBarStrs_dxSBAR_CP_ADDBUTTON 65253
+#define dxBarStrs_dxSBAR_CP_ADDSEPARATOR 65254
+#define dxBarStrs_dxSBAR_CP_ADDDXITEM 65255
+#define dxBarStrs_dxSBAR_CP_DELETEITEM 65256
+#define dxBarStrs_dxSBAR_CP_DELETELINK 65257
+#define dxBarStrs_dxSBAR_CP_RESET 65258
+#define dxBarStrs_dxSBAR_CP_DELETE 65259
+#define dxBarStrs_dxSBAR_CP_NAME 65260
+#define dxBarStrs_dxSBAR_CP_CAPTION 65261
+#define dxBarStrs_dxSBAR_CP_DEFAULTSTYLE 65262
+#define dxBarStrs_dxSBAR_CP_TEXTONLYALWAYS 65263
+#define dxBarStrs_dxSBAR_WANTTODELETETOOLBARS 65264
+#define dxBarStrs_dxSBAR_WANTTODELETECATEGORY 65265
+#define dxBarStrs_dxSBAR_WANTTOCLEARCOMMANDS 65266
+#define dxBarStrs_dxSBAR_RECURSIVEMENUS 65267
+#define dxBarStrs_dxSBAR_COMMANDNAMECANNOTBEBLANK 65268
+#define dxBarStrs_dxSBAR_TOOLBAREXISTS 65269
+#define dxBarStrs_dxSBAR_RECURSIVEGROUPS 65270
+#define dxBarStrs_dxSBAR_WANTTODELETECOMPLEXITEM 65271
+#define dxBarStrs_dxSBAR_CANTPLACESEPARATOR 65272
+#define dxBarStrs_dxSBAR_CANTMERGETOOLBAR 65273
+#define dxBarStrs_dxSBAR_CANTMERGEWITHMERGEDTOOLBAR 65274
+#define dxBarStrs_dxSBAR_CANTUNMERGETOOLBAR 65275
+#define dxBarStrs_dxSBAR_TOOLBARHASMERGEDTOOLBARS 65276
+#define dxBarStrs_dxSBAR_TOOLBARSALREADYMERGED 65277
+#define dxBarStrs_dxSBAR_TOOLBARSARENOTMERGED 65278
+#define dxBarStrs_dxSBAR_DEFAULTCATEGORYNAME 65279
+#define cxPCConsts_scxPCPageIndexError 65280
+#define cxPCConsts_scxPCPainterClassError 65281
+#define cxPCConsts_scxPCTabCountEqualsZero 65282
+#define cxPCConsts_scxPCTabIndexError 65283
+#define cxPCConsts_scxPCTabVisibleIndexOutsOfBounds 65284
+#define cxPCConsts_scxPCVisibleTabListEmpty 65285
+#define cxPCConsts_scxPCAllowRotateError 65286
+#define ComConst_SOleError 65287
+#define ComConst_SNoMethod 65288
+#define ComConst_SVarNotObject 65289
+#define dxBarStrs_dxSBAR_WANTTORESETTOOLBAR 65290
+#define dxBarStrs_dxSBAR_WANTTORESETUSAGEDATA 65291
+#define dxBarStrs_dxSBAR_BARMANAGERMORETHANONE 65292
+#define dxBarStrs_dxSBAR_BARMANAGERBADOWNER 65293
+#define dxBarStrs_dxSBAR_NOBARMANAGERS 65294
+#define dxBarStrs_dxSBAR_WANTTODELETETOOLBAR 65295
+#define Consts_SDockZoneNotFound 65296
+#define Consts_SDockZoneHasNoCtl 65297
+#define Consts_SDuplicateItem 65298
+#define ComStrs_sTabFailClear 65299
+#define ComStrs_sTabFailDelete 65300
+#define ComStrs_sTabFailRetrieve 65301
+#define ComStrs_sTabFailGetObject 65302
+#define ComStrs_sTabFailSet 65303
+#define ComStrs_sTabFailSetObject 65304
+#define ComStrs_sTabMustBeMultiLine 65305
+#define ComStrs_sInvalidIndex 65306
+#define ComStrs_sInsertError 65307
+#define ComStrs_sPageIndexError 65308
+#define cxPCConsts_scxPCImageListIndexError 65309
+#define cxPCConsts_scxPCNoBaseImages 65310
+#define cxPCConsts_scxPCNoRegisteredStyles 65311
+#define Consts_SIconToClipboard 65312
+#define Consts_SCannotOpenClipboard 65313
+#define Consts_SInvalidMemoSize 65314
+#define Consts_SNoDefaultPrinter 65315
+#define Consts_SIniFileWriteError 65316
+#define Consts_SBitsIndexError 65317
+#define Consts_SInvalidRegType 65318
+#define Consts_SRegCreateFailed 65319
+#define Consts_SRegSetDataFailed 65320
+#define Consts_SRegGetDataFailed 65321
+#define Consts_SDuplicateMenus 65322
+#define Consts_SPictureLabel 65323
+#define Consts_SPictureDesc 65324
+#define Consts_SPreviewLabel 65325
+#define Consts_SDockedCtlNeedsName 65326
+#define Consts_SDockTreeRemoveError 65327
+#define Consts_SmkcPgDn 65328
+#define Consts_SmkcEnd 65329
+#define Consts_SmkcHome 65330
+#define Consts_SmkcLeft 65331
+#define Consts_SmkcUp 65332
+#define Consts_SmkcRight 65333
+#define Consts_SmkcDown 65334
+#define Consts_SmkcIns 65335
+#define Consts_SmkcDel 65336
+#define Consts_SmkcShift 65337
+#define Consts_SmkcCtrl 65338
+#define Consts_SmkcAlt 65339
+#define Consts_srNone 65340
+#define Consts_sAllFilter 65341
+#define Consts_SInsertLineError 65342
+#define Consts_SInvalidClipFmt 65343
+#define Consts_SMsgDlgNo 65344
+#define Consts_SMsgDlgOK 65345
+#define Consts_SMsgDlgCancel 65346
+#define Consts_SMsgDlgHelp 65347
+#define Consts_SMsgDlgAbort 65348
+#define Consts_SMsgDlgRetry 65349
+#define Consts_SMsgDlgIgnore 65350
+#define Consts_SMsgDlgAll 65351
+#define Consts_SMsgDlgNoToAll 65352
+#define Consts_SMsgDlgYesToAll 65353
+#define Consts_SmkcBkSp 65354
+#define Consts_SmkcTab 65355
+#define Consts_SmkcEsc 65356
+#define Consts_SmkcEnter 65357
+#define Consts_SmkcSpace 65358
+#define Consts_SmkcPgUp 65359
+#define Consts_SCloseButton 65360
+#define Consts_SIgnoreButton 65361
+#define Consts_SRetryButton 65362
+#define Consts_SAbortButton 65363
+#define Consts_SAllButton 65364
+#define Consts_SCannotDragForm 65365
+#define Consts_SVMetafiles 65366
+#define Consts_SVEnhMetafiles 65367
+#define Consts_SVIcons 65368
+#define Consts_SVBitmaps 65369
+#define Consts_SInvalidProperty 65370
+#define Consts_SMsgDlgWarning 65371
+#define Consts_SMsgDlgError 65372
+#define Consts_SMsgDlgInformation 65373
+#define Consts_SMsgDlgConfirm 65374
+#define Consts_SMsgDlgYes 65375
+#define Consts_SMenuIndexError 65376
+#define Consts_SMenuReinserted 65377
+#define Consts_SMenuNotFound 65378
+#define Consts_SNotPrinting 65379
+#define Consts_SPrinting 65380
+#define Consts_SPrinterIndexError 65381
+#define Consts_SInvalidPrinter 65382
+#define Consts_SDeviceOnPort 65383
+#define Consts_SGroupIndexTooLow 65384
+#define Consts_SNoMDIForm 65385
+#define Consts_SControlParentSetToSelf 65386
+#define Consts_SOKButton 65387
+#define Consts_SCancelButton 65388
+#define Consts_SYesButton 65389
+#define Consts_SNoButton 65390
+#define Consts_SHelpButton 65391
+#define Consts_SNoCanvasHandle 65392
+#define Consts_SInvalidImageSize 65393
+#define Consts_SInvalidImageList 65394
+#define Consts_SReplaceImage 65395
+#define Consts_SImageIndexError 65396
+#define Consts_SImageReadFail 65397
+#define Consts_SImageWriteFail 65398
+#define Consts_SWindowDCError 65399
+#define Consts_SWindowClass 65400
+#define Consts_SCannotFocus 65401
+#define Consts_SParentRequired 65402
+#define Consts_SMDIChildNotVisible 65403
+#define Consts_SVisibleChanged 65404
+#define Consts_SCannotShowModal 65405
+#define Consts_SScrollBarRange 65406
+#define Consts_SPropertyOutOfRange 65407
+#define Consts_SInvalidPropertyPath 65408
+#define Consts_SInvalidPropertyType 65409
+#define Consts_SUnknownProperty 65410
+#define Consts_SReadOnlyProperty 65411
+#define Consts_SPropertyException 65412
+#define Consts_SAncestorNotFound 65413
+#define Consts_SInvalidBitmap 65414
+#define Consts_SInvalidIcon 65415
+#define Consts_SInvalidMetafile 65416
+#define Consts_SInvalidPixelFormat 65417
+#define Consts_SScanLine 65418
+#define Consts_SChangeIconSize 65419
+#define Consts_SOleGraphic 65420
+#define Consts_SUnknownExtension 65421
+#define Consts_SUnknownClipboardFormat 65422
+#define Consts_SOutOfResources 65423
+#define Consts_SMemoryStreamError 65424
+#define Consts_SCantWriteResourceStreamError 65425
+#define Consts_SClassNotFound 65426
+#define Consts_SInvalidImage 65427
+#define Consts_SResNotFound 65428
+#define Consts_SListIndexError 65429
+#define Consts_SListCapacityError 65430
+#define Consts_SListCountError 65431
+#define Consts_SSortedListError 65432
+#define Consts_SDuplicateString 65433
+#define Consts_SInvalidTabPosition 65434
+#define Consts_SInvalidTabStyle 65435
+#define Consts_SDuplicateName 65436
+#define Consts_SInvalidName 65437
+#define Consts_SDuplicateClass 65438
+#define Consts_SInvalidPropertyValue 65439
+#define SysConst_SShortDayNameWed 65440
+#define SysConst_SShortDayNameThu 65441
+#define SysConst_SShortDayNameFri 65442
+#define SysConst_SShortDayNameSat 65443
+#define SysConst_SLongDayNameSun 65444
+#define SysConst_SLongDayNameMon 65445
+#define SysConst_SLongDayNameTue 65446
+#define SysConst_SLongDayNameWed 65447
+#define SysConst_SLongDayNameThu 65448
+#define SysConst_SLongDayNameFri 65449
+#define SysConst_SLongDayNameSat 65450
+#define Consts_SAssignError 65451
+#define Consts_SFCreateError 65452
+#define Consts_SFOpenError 65453
+#define Consts_SReadError 65454
+#define Consts_SWriteError 65455
+#define SysConst_SShortMonthNameDec 65456
+#define SysConst_SLongMonthNameJan 65457
+#define SysConst_SLongMonthNameFeb 65458
+#define SysConst_SLongMonthNameMar 65459
+#define SysConst_SLongMonthNameApr 65460
+#define SysConst_SLongMonthNameMay 65461
+#define SysConst_SLongMonthNameJun 65462
+#define SysConst_SLongMonthNameJul 65463
+#define SysConst_SLongMonthNameAug 65464
+#define SysConst_SLongMonthNameSep 65465
+#define SysConst_SLongMonthNameOct 65466
+#define SysConst_SLongMonthNameNov 65467
+#define SysConst_SLongMonthNameDec 65468
+#define SysConst_SShortDayNameSun 65469
+#define SysConst_SShortDayNameMon 65470
+#define SysConst_SShortDayNameTue 65471
+#define SysConst_SAbstractError 65472
+#define SysConst_SModuleAccessViolation 65473
+#define SysConst_SWin32Error 65474
+#define SysConst_SUnkWin32Error 65475
+#define SysConst_SNL 65476
+#define SysConst_SShortMonthNameJan 65477
+#define SysConst_SShortMonthNameFeb 65478
+#define SysConst_SShortMonthNameMar 65479
+#define SysConst_SShortMonthNameApr 65480
+#define SysConst_SShortMonthNameMay 65481
+#define SysConst_SShortMonthNameJun 65482
+#define SysConst_SShortMonthNameJul 65483
+#define SysConst_SShortMonthNameAug 65484
+#define SysConst_SShortMonthNameSep 65485
+#define SysConst_SShortMonthNameOct 65486
+#define SysConst_SShortMonthNameNov 65487
+#define SysConst_SInvalidFormat 65488
+#define SysConst_SArgumentMissing 65489
+#define SysConst_SInvalidVarCast 65490
+#define SysConst_SInvalidVarOp 65491
+#define SysConst_SDispatchError 65492
+#define SysConst_SReadAccess 65493
+#define SysConst_SWriteAccess 65494
+#define SysConst_SFormatTooLong 65495
+#define SysConst_SVarArrayCreate 65496
+#define SysConst_SVarNotArray 65497
+#define SysConst_SVarArrayBounds 65498
+#define SysConst_SExternalException 65499
+#define SysConst_SAssertionFailed 65500
+#define SysConst_SIntfCastError 65501
+#define SysConst_SSafecallException 65502
+#define SysConst_SAssertError 65503
+#define SysConst_SDivByZero 65504
+#define SysConst_SRangeError 65505
+#define SysConst_SIntOverflow 65506
+#define SysConst_SInvalidOp 65507
+#define SysConst_SZeroDivide 65508
+#define SysConst_SOverflow 65509
+#define SysConst_SUnderflow 65510
+#define SysConst_SInvalidPointer 65511
+#define SysConst_SInvalidCast 65512
+#define SysConst_SAccessViolation 65513
+#define SysConst_SStackOverflow 65514
+#define SysConst_SControlC 65515
+#define SysConst_SPrivilege 65516
+#define SysConst_SOperationAborted 65517
+#define SysConst_SException 65518
+#define SysConst_SExceptTitle 65519
 #define SysConst_SInvalidInteger 65520
-#define SysConst_SOutOfMemory 65521
-#define SysConst_SInOutError 65522
-#define SysConst_SFileNotFound 65523
-#define SysConst_SInvalidFilename 65524
-#define SysConst_STooManyOpenFiles 65525
-#define SysConst_SAccessDenied 65526
-#define SysConst_SEndOfFile 65527
-#define SysConst_SDiskFull 65528
-#define SysConst_SInvalidInput 65529
-#define SysConst_SDivByZero 65530
-#define SysConst_SRangeError 65531
-#define SysConst_SIntOverflow 65532
-#define SysConst_SInvalidOp 65533
-#define SysConst_SZeroDivide 65534
-#define SysConst_SOverflow 65535
+#define SysConst_SInvalidFloat 65521
+#define SysConst_SInvalidDate 65522
+#define SysConst_SInvalidTime 65523
+#define SysConst_SInvalidDateTime 65524
+#define SysConst_STimeEncodeError 65525
+#define SysConst_SDateEncodeError 65526
+#define SysConst_SOutOfMemory 65527
+#define SysConst_SInOutError 65528
+#define SysConst_SFileNotFound 65529
+#define SysConst_SInvalidFilename 65530
+#define SysConst_STooManyOpenFiles 65531
+#define SysConst_SAccessDenied 65532
+#define SysConst_SEndOfFile 65533
+#define SysConst_SDiskFull 65534
+#define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
-	Consts_SmkcDel,	"Del"
-	Consts_SmkcShift,	"Shift+"
-	Consts_SmkcCtrl,	"Ctrl+"
-	Consts_SmkcAlt,	"Alt+"
-	Consts_SIconToClipboard,	"Clipboard does not support Icons"
-	Consts_SBitsIndexError,	"Bits index out of range"
-	Consts_SDuplicateMenus,	"Menu '%s' is already being used by another form"
-	Consts_SDockedCtlNeedsName,	"Docked control must have a name"
-	Consts_SDockTreeRemoveError,	"Error removing control from dock tree"
+	IBXConst_SStringTooLarge,	"Trying to store a string of length %d into a field that can only contain %d"
+	cxTLStrs_scxInvalidStreamFormat,	"Invalid stream format"
+	cxTLStrs_scxMultiSelectRequired,	"Multi select required"
+	cxTLStrs_scxBands,	"Bands..."
+	cxTLStrs_scxCustomizeCaption,	"Customize"
+	cxTLStrs_scxColumnsCaption,	"   Columns   "
+	cxTLStrs_scxBandsCaption,	"    Bands    "
+	cxTLStrs_scxTreeListDeletingFocusedConfirmationText,	"Delete record(s)?"
+	cxTLStrs_scxTreeListDeletingConfirmationCaption,	"Confirm"
+	IBXConst_SSuccess,	"Successful execution"
+	IBXConst_SDelphiException,	"DelphiException %s"
+	IBXConst_SNoOptionsSet,	"No Install Options selected"
+	IBXConst_SNoDestinationDirectory,	"DestinationDirectory is not set"
+	IBXConst_SNosourceDirectory,	"SourceDirectory is not set"
+	IBXConst_SNoUninstallFile,	"Uninstall File Name is not set"
+	IBXConst_SOptionNeedsClient,	"%s component requires Client to function properly"
+	IBXConst_SOptionNeedsServer,	"%s component requires Server to function properly"
+	IBXConst_SInvalidOption,	"Invalid option specified"
+	IBXConst_SInvalidOnErrorResult,	"Unexpected onError return value"
+	IBXConst_SInvalidOnStatusResult,	"Unexpected onStatus return value"
+	IBXConst_SDPBConstantUnknownEx,	"DPB Constant (%s) is unknown"
+	IBXConst_STPBConstantUnknownEx,	"TPB Constant (%s) is unknown"
+	IBXConst_SUnknownPlan,	"Unknown Error - Can't retrieve plan"
+	IBXConst_SFieldSizeMismatch,	"Size Mismatch - Field %s size is too small for data"
+	IBXConst_SEventAlreadyRegistered,	"Events already registered"
+	IBXConst_SSQLDialectInvalid,	"SQL Dialect Invalid"
+	IBXConst_SSPBConstantNotSupported,	"SPB Constant Not supported"
+	IBXConst_SSPBConstantUnknown,	"SPB Constant Unknown"
+	IBXConst_SServiceActive,	"Cannot perform operation -- service is not attached"
+	IBXConst_SServiceInActive,	"Cannot perform operation -- service is attached"
+	IBXConst_SServerNameMissing,	"Server Name Missing"
+	IBXConst_SQueryParamsError,	"Query Parameters missing or incorrect"
+	IBXConst_SStartParamsError,	"start Parameters missing or incorrect"
+	IBXConst_SOutputParsingError,	"Unexpected Output buffer value"
+	IBXConst_SUseSpecificProcedures,	"Generic ServiceStart not applicable: Use Specific Procedures to set configuration params"
+	IBXConst_SSQLMonitorAlreadyPresent,	"SQL Monitor Instance is already present"
+	IBXConst_SCantPrintValue,	"Cannot print value"
+	IBXConst_SEOFReached,	"SEOFReached"
+	IBXConst_SEOFInComment,	"EOF in comment detected"
+	IBXConst_SEOFInString,	"EOF in string detected"
+	IBXConst_SParamNameExpected,	"Parameter name expected"
+	IBXConst_SNotCachedUpdates,	"CachedUpdates not enabled"
+	IBXConst_SNotLiveRequest,	"Request is not live - cannot modify"
+	IBXConst_SNoProvider,	"No Provider"
+	IBXConst_SNoRecordsAffected,	"No Records Affected"
+	IBXConst_SNoTableName,	"No Table Name assigned"
+	IBXConst_SCannotCreatePrimaryIndex,	"Cannot Create Primary Index; are created automatically"
+	IBXConst_SCannotDropSystemIndex,	"Cannot Drop System Index"
+	IBXConst_STableNameMismatch,	"Table Name Mismatch"
+	IBXConst_SIndexFieldMissing,	"Index Field Missing"
+	IBXConst_SInvalidCancellation,	"Cannot Cancel events while processing"
+	IBXConst_SInvalidEvent,	"Invalid Event"
+	IBXConst_SMaximumEvents,	"Exceded Maximum Event limits"
+	IBXConst_SNoEventsRegistered,	"No Events Registered"
+	IBXConst_SInvalidQueueing,	"Invalid Queueing"
+	IBXConst_SInvalidRegistration,	"Invalid Registration"
+	IBXConst_SInvalidBatchMove,	"Invalid Batch Move"
+	IBXConst_SSQLParseError,	"SQL Parse Error:\r\n\r\n%s"
+	IBXConst_SUserAbort,	"User abort"
+	IBXConst_SDataSetUniDirectional,	"Data set is uni-directional"
+	IBXConst_SCannotCreateSharedResource,	"Cannot create shared resource. (Windows error %d)"
+	IBXConst_SWindowsAPIError,	"Windows API error. (Windows error %d [$%.8x])"
+	IBXConst_SColumnListsDontMatch,	"Column lists do not match"
+	IBXConst_SColumnTypesDontMatch,	"Column types don't match. (From index: %d; To index: %d)"
+	IBXConst_SCantEndSharedTransaction,	"Can't end a shared transaction unless it is forced and equal to the transaction's TimeoutAction"
+	IBXConst_SFieldUnsupportedType,	"Unsupported Field Type"
+	IBXConst_SCircularDataLink,	"Circular DataLink Reference"
+	IBXConst_SEmptySQLStatement,	"Empty SQL Statement"
+	IBXConst_SIsASelectStatement,	"use Open for a Select Statement"
+	IBXConst_SRequiredParamNotSet,	"Required Param value not set"
+	IBXConst_SNoStoredProcName,	"No Stored Procedure Name assigned"
+	IBXConst_SIsAExecuteProcedure,	"use ExecProc for Procedure; use TQuery for Select procedures"
+	IBXConst_SUpdateFailed,	"Update Failed"
+	IBXConst_SColumnIsNotNullable,	"Column cannot be set to null (%s)"
+	IBXConst_SBlobCannotBeRead,	"Blob stream cannot be read"
+	IBXConst_SBlobCannotBeWritten,	"Blob stream cannot be written"
+	IBXConst_SEmptyQuery,	"Empty query"
+	IBXConst_SCannotOpenNonSQLSelect,	"Cannot \"open\" a non-select statement. Use ExecQuery"
+	IBXConst_SNoFieldAccess,	"No access to field \"%s\""
+	IBXConst_SFieldReadOnly,	"Field \"%s\" is read-only"
+	IBXConst_SFieldNotFound,	"Field \"%s\" not found"
+	IBXConst_SNotEditing,	"Not in edit mode"
+	IBXConst_SCannotInsert,	"Cannot insert into dataset. (No insert query)"
+	IBXConst_SCannotPost,	"Cannot post. (No update/insert query)"
+	IBXConst_SCannotUpdate,	"Cannot update. (No update query)"
+	IBXConst_SCannotDelete,	"Cannot delete from dataset. (No delete query)"
+	IBXConst_SCannotRefresh,	"Cannot refresh row. (No refresh query)"
+	IBXConst_SBufferNotSet,	"Buffer not set"
+	IBXConst_SCircularReference,	"Circular references not permitted"
+	IBXConst_SUpdateWrongTR,	"Updating wrong transaction. Unique transaction expected in set"
+	IBXConst_SDatabaseNotAssigned,	"Database not assigned"
+	IBXConst_STransactionNotAssigned,	"Transaction not assigned"
+	IBXConst_SXSQLDAIndexOutOfRange,	"XSQLDA index out of range"
+	IBXConst_SXSQLDANameDoesNotExist,	"XSQLDA name does not exist (%s)"
+	IBXConst_SEOF,	"End of file"
+	IBXConst_SBOF,	"Beginning of file"
+	IBXConst_SInvalidStatementHandle,	"Invalid statement handle"
+	IBXConst_SSQLOpen,	"IBSQL Open"
+	IBXConst_SSQLClosed,	"IBSQL Closed"
+	IBXConst_SDatasetOpen,	"Dataset open"
+	IBXConst_SDatasetClosed,	"Dataset closed"
+	IBXConst_SUnknownSQLDataType,	"Unknown SQL Data type (%d)"
+	IBXConst_SInvalidColumnIndex,	"Invalid column index (index exceeds permitted range)"
+	IBXConst_SInvalidParamColumnIndex,	"Invalid parameter index (index exceeds permitted range)"
+	IBXConst_SInvalidDataConversion,	"Invalid data conversion"
+	IBXConst_SConnectionTimeout,	"Database connection timed out"
+	IBXConst_SCannotSetDatabase,	"Cannot set database"
+	IBXConst_SCannotSetTransaction,	"Cannot set transaction"
+	IBXConst_SOperationCancelled,	"Operation cancelled at user's request"
+	IBXConst_SDPBConstantNotSupported,	"DPB Constant (isc_dpb_%s) is unsupported"
+	IBXConst_SDPBConstantUnknown,	"DPB Constant (%d) is unknown"
+	IBXConst_STPBConstantNotSupported,	"TPB Constant (isc_tpb_%s) is unsupported"
+	IBXConst_STPBConstantUnknown,	"TPB Constant (%d) is unknown"
+	IBXConst_SDatabaseClosed,	"Cannot perform operation -- DB is not open"
+	IBXConst_SDatabaseOpen,	"Cannot perform operation -- DB is currently open"
+	IBXConst_SDatabaseNameMissing,	"Database name is missing"
+	IBXConst_SNotInTransaction,	"Transaction is not active"
+	IBXConst_SInTransaction,	"Transaction is active"
+	IBXConst_STimeoutNegative,	"Timeout values cannot be negative"
+	IBXConst_SNoDatabasesInTransaction,	"No databases are listed in transaction component"
+	IBXConst_SUpdateWrongDB,	"Updating wrong database"
+	DbConsts_SLastRecord,	"Last record"
+	DbConsts_SInsertRecord,	"Insert record"
+	DbConsts_SDeleteRecord,	"Delete record"
+	DbConsts_SEditRecord,	"Edit record"
+	DbConsts_SPostEdit,	"Post edit"
+	DbConsts_SCancelEdit,	"Cancel edit"
+	DbConsts_SRefreshRecord,	"Refresh data"
+	DbConsts_SRecordNotFound,	"Record not found"
+	DbConsts_SPropDefByLookup,	"Property already defined by lookup field"
+	IBXConst_SUnknownError,	"Unknown error"
+	IBXConst_SInterBaseMissing,	"InterBase library gds32.dll not found in the path. Please install InterBase to use this functionality"
+	IBXConst_SInterBaseInstallMissing,	"InterBase Install DLL ibinstall.dll not found in the path. Please install InterBase 6 to use this functionality"
+	IBXConst_SIB60feature,	"%s is an InterBase 6 function. Please upgrade to InterBase 6 to use this functonality"
+	IBXConst_SNotSupported,	"Unsupported feature"
+	IBXConst_SNotPermitted,	"Not permitted"
+	IBXConst_SFileAccessError,	"Temporary file access error"
+	DbConsts_SDataSetOpen,	"Cannot perform this operation on an open dataset"
+	DbConsts_SNotEditing,	"Dataset not in edit or insert mode"
+	DbConsts_SDataSetClosed,	"Cannot perform this operation on a closed dataset"
+	DbConsts_SDataSetEmpty,	"Cannot perform this operation on an empty dataset"
+	DbConsts_SDataSetReadOnly,	"Cannot modify a read-only dataset"
+	DbConsts_SNestedDataSetClass,	"Nested dataset must inherit from %s"
+	DbConsts_STextFalse,	"False"
+	DbConsts_STextTrue,	"True"
+	DbConsts_SParameterNotFound,	"Parameter '%s' not found"
+	DbConsts_SInvalidVersion,	"Unable to load bind parameters"
+	DbConsts_SBadFieldType,	"Field '%s' is of an unsupported type"
+	DbConsts_SProviderSQLNotSupported,	"SQL not supported: %s"
+	DbConsts_SProviderExecuteNotSupported,	"Execute not supported: %s"
+	DbConsts_SFirstRecord,	"First record"
+	DbConsts_SPriorRecord,	"Prior record"
+	DbConsts_SNextRecord,	"Next record"
+	DbConsts_SFieldRangeError,	"%g is not a valid value for field '%s'. The allowed range is %g to %g"
+	DbConsts_SInvalidIntegerValue,	"'%s' is not a valid integer value for field '%s'"
+	DbConsts_SInvalidBoolValue,	"'%s' is not a valid boolean value for field '%s'"
+	DbConsts_SInvalidFloatValue,	"'%s' is not a valid floating point value for field '%s'"
+	DbConsts_SFieldTypeMismatch,	"Type mismatch for field '%s', expecting: %s actual: %s"
+	DbConsts_SFieldSizeMismatch,	"Size mismatch for field '%s', expecting: %d actual: %d"
+	DbConsts_SInvalidVarByteArray,	"Invalid variant type or size for field '%s'"
+	DbConsts_SFieldOutOfRange,	"Value of field '%s' is out of range"
+	DbConsts_SBCDOverflow,	"(Overflow)"
+	DbConsts_SFieldRequired,	"Field '%s' must have a value"
+	DbConsts_SDataSetMissing,	"Field '%s' has no dataset"
+	DbConsts_SInvalidCalcType,	"Field '%s' cannot be a calculated or lookup field"
+	DbConsts_SFieldReadOnly,	"Field '%s' cannot be modified"
+	DbConsts_SCircularDataLink,	"Circular datalinks are not allowed"
+	DbConsts_SLookupInfoError,	"Lookup information for field '%s' is incomplete"
+	DbConsts_SDataSourceChange,	"DataSource cannot be changed"
+	cxGridStrs_scxGridNextMonth,	"Next month"
+	cxGridStrs_scxGridLastYear,	"Last year"
+	cxGridStrs_scxGridThisYear,	"This year"
+	cxGridStrs_scxGridNextYear,	"Next year"
+	cxGridStrs_scxGridPast,	"Past"
+	cxGridStrs_scxGridFuture,	"Future"
+	cxGridStrs_scxGridMonthFormat,	"mmmm yyyy"
+	cxGridStrs_scxGridYearFormat,	"yyyy"
+	DbConsts_SInvalidFieldSize,	"Invalid field size"
+	DbConsts_SInvalidFieldKind,	"Invalid FieldKind"
+	DbConsts_SUnknownFieldType,	"Field '%s' is of an unknown type"
+	DbConsts_SFieldNameMissing,	"Field name missing"
+	DbConsts_SDuplicateFieldName,	"Duplicate field name '%s'"
+	DbConsts_SFieldNotFound,	"Field '%s' not found"
+	DbConsts_SFieldAccessError,	"Cannot access field '%s' as type %s"
+	DbConsts_SFieldValueError,	"Invalid value for field '%s'"
+	cxGridStrs_scxGridYesterday,	"Yesterday"
+	cxGridStrs_scxGridToday,	"Today"
+	cxGridStrs_scxGridTomorrow,	"Tomorrow"
+	cxGridStrs_scxGridLast30Days,	"Last 30 days"
+	cxGridStrs_scxGridLast14Days,	"Last 14 days"
+	cxGridStrs_scxGridLast7Days,	"Last 7 days"
+	cxGridStrs_scxGridNext7Days,	"Next 7 days"
+	cxGridStrs_scxGridNext14Days,	"Next 14 days"
+	cxGridStrs_scxGridNext30Days,	"Next 30 days"
+	cxGridStrs_scxGridLastTwoWeeks,	"Last two weeks"
+	cxGridStrs_scxGridLastWeek,	"Last week"
+	cxGridStrs_scxGridThisWeek,	"This week"
+	cxGridStrs_scxGridNextWeek,	"Next week"
+	cxGridStrs_scxGridNextTwoWeeks,	"Next two weeks"
+	cxGridStrs_scxGridLastMonth,	"Last month"
+	cxGridStrs_scxGridThisMonth,	"This month"
+	jconsts_sJPEGError,	"JPEG error #%d"
+	jconsts_sJPEGImageFile,	"JPEG Image File"
+	dxGDIPlusAPI_scxGdipInvalidOperation,	"Invalid operation in GDI+"
+	cxGridStrs_scxGridDeletingConfirmationCaption,	"Confirm"
+	cxGridStrs_scxGridDeletingFocusedConfirmationText,	"Delete record?"
+	cxGridStrs_scxGridDeletingSelectedConfirmationText,	"Delete all selected records?"
+	cxGridStrs_scxGridNoDataInfoText,	"<No data to display>"
+	cxGridStrs_scxGridFilterRowInfoText,	"Click here to define a filter"
+	cxGridStrs_scxGridNewItemRowInfoText,	"Click here to add a new row"
+	cxGridStrs_scxGridFilterIsEmpty,	"<Filter is Empty>"
+	cxGridStrs_scxGridCustomizationFormCaption,	"Customization"
+	cxGridStrs_scxGridCustomizationFormColumnsPageCaption,	"Columns"
+	cxGridStrs_scxGridGroupByBoxCaption,	"Drag a column header here to group by that column"
+	cxGridStrs_scxGridFilterApplyButtonCaption,	"Apply Filter"
+	cxGridStrs_scxGridFilterCustomizeButtonCaption,	"Customize..."
+	cxGridStrs_scxGridColumnsQuickCustomizationHint,	"Click here to show/hide/move columns"
+	cxFilterControlStrs_cxSFilterDialogCharactersSeries,	"to represent any series of characters"
+	cxFilterControlStrs_cxSFilterDialogOperationAnd,	"AND"
+	cxFilterControlStrs_cxSFilterDialogOperationOr,	"OR"
+	cxFilterControlStrs_cxSFilterDialogRows,	"Show rows where:"
+	cxFilterControlStrs_cxSFilterControlDialogCaption,	"Filter builder"
+	cxFilterControlStrs_cxSFilterControlDialogNewFile,	"untitled.flt"
+	cxFilterControlStrs_cxSFilterControlDialogOpenDialogCaption,	"Open an existing filter"
+	cxFilterControlStrs_cxSFilterControlDialogSaveDialogCaption,	"Save the active filter to file"
+	cxFilterControlStrs_cxSFilterControlDialogActionSaveCaption,	"&Save As..."
+	cxFilterControlStrs_cxSFilterControlDialogActionOpenCaption,	"&Open..."
+	cxFilterControlStrs_cxSFilterControlDialogActionApplyCaption,	"&Apply"
+	cxFilterControlStrs_cxSFilterControlDialogActionOkCaption,	"OK"
+	cxFilterControlStrs_cxSFilterControlDialogActionCancelCaption,	"Cancel"
+	cxFilterControlStrs_cxSFilterControlDialogFileExt,	"flt"
+	cxFilterControlStrs_cxSFilterControlDialogFileFilter,	"Filters (*.flt)|*.flt"
+	jconsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
+	cxFilterControlStrs_cxSFilterBoolOperatorNotAnd,	"NOT AND"
+	cxFilterControlStrs_cxSFilterBoolOperatorNotOr,	"NOT OR"
+	cxFilterControlStrs_cxSFilterRootButtonCaption,	"Filter"
+	cxFilterControlStrs_cxSFilterAddCondition,	"Add &Condition"
+	cxFilterControlStrs_cxSFilterAddGroup,	"Add &Group"
+	cxFilterControlStrs_cxSFilterRemoveRow,	"&Remove Row"
+	cxFilterControlStrs_cxSFilterClearAll,	"Clear &All"
+	cxFilterControlStrs_cxSFilterFooterAddCondition,	"press the button to add a new condition"
+	cxFilterControlStrs_cxSFilterGroupCaption,	"applies to the following conditions"
+	cxFilterControlStrs_cxSFilterRootGroupCaption,	"<root>"
+	cxFilterControlStrs_cxSFilterControlNullString,	"<empty>"
+	cxFilterControlStrs_cxSFilterErrorBuilding,	"Can't build filter from source"
+	cxFilterControlStrs_cxSFilterDialogCaption,	"Custom Filter"
+	cxFilterControlStrs_cxSFilterDialogInvalidValue,	"Invalid value"
+	cxFilterControlStrs_cxSFilterDialogUse,	"Use"
+	cxFilterControlStrs_cxSFilterDialogSingleCharacter,	"to represent any single character"
+	cxEditConsts_scxRegExprTooBigReferenceNumber,	"Too big reference number"
+	cxEditConsts_scxRegExprCantCreateEmptyEnum,	"Can't create empty enumeration"
+	cxEditConsts_scxRegExprSubrangeOrder,	"The starting character of the subrange must be less than the finishing one"
+	cxEditConsts_scxRegExprHexNumberExpected0,	"Hexadecimal number expected"
+	cxEditConsts_scxRegExprHexNumberExpected,	"Hexadecimal number expected but '%s' found"
+	cxEditConsts_scxRegExprMissing,	"Missing '%s'"
+	cxEditConsts_scxRegExprUnnecessary,	"Unnecessary '%s'"
+	cxEditConsts_scxRegExprIncorrectSpace,	"The space character is not allowed after '\\'"
+	cxEditConsts_scxRegExprNotCompiled,	"Regular expression is not compiled"
+	cxEditConsts_scxRegExprIncorrectParameterQuantifier,	"Incorrect parameter quantifier"
+	cxEditConsts_scxRegExprCantUseParameterQuantifier,	"The parameter quantifier cannot be applied here"
+	cxEditConsts_scxMaskEditRegExprError,	"Regular expression errors:"
+	cxEditConsts_scxMaskEditInvalidEditValue,	"The edit value is invalid"
+	cxEditConsts_cxSSpinEditInvalidNumericValue,	"Invalid numeric value"
+	cxFilterControlStrs_cxSFilterBoolOperatorAnd,	"AND"
+	cxFilterControlStrs_cxSFilterBoolOperatorOr,	"OR"
+	cxEditConsts_scxSEditRepositoryPopupItem,	"PopupEdit|Represents an edit control with a dropdown list"
+	cxEditConsts_scxSEditRepositorySpinItem,	"SpinEdit|Represents a spin editor"
+	cxEditConsts_scxSEditRepositoryRadioGroupItem,	"RadioGroup|Represents a group of radio buttons"
+	cxEditConsts_scxSEditRepositoryTextItem,	"TextEdit|Represents a single line text editor"
+	cxEditConsts_scxSEditRepositoryTimeItem,	"TimeEdit|Represents an editor displaying time values"
+	cxEditConsts_scxRegExprLine,	"Line"
+	cxEditConsts_scxRegExprChar,	"Char"
+	cxEditConsts_scxRegExprNotAssignedSourceStream,	"The source stream is not assigned"
+	cxEditConsts_scxRegExprEmptySourceStream,	"The source stream is empty"
+	cxEditConsts_scxRegExprCantUsePlusQuantifier,	"The '+' quantifier cannot be applied here"
+	cxEditConsts_scxRegExprCantUseStarQuantifier,	"The '*' quantifier cannot be applied here"
+	cxEditConsts_scxRegExprCantCreateEmptyAlt,	"The alternative should not be empty"
+	cxEditConsts_scxRegExprCantCreateEmptyBlock,	"The block should not be empty"
+	cxEditConsts_scxRegExprIllegalSymbol,	"Illegal '%s'"
+	cxEditConsts_scxRegExprIllegalQuantifier,	"Illegal quantifier '%s'"
+	cxEditConsts_scxRegExprIllegalIntegerValue,	"Illegal integer value"
+	cxEditConsts_cxNavigatorHint_GotoBookmark,	"Goto Bookmark"
+	cxEditConsts_cxNavigatorHint_Filter,	"Filter data"
+	cxEditConsts_scxSEditRepositoryBlobItem,	"BlobEdit|Represents the BLOB editor"
+	cxEditConsts_scxSEditRepositoryButtonItem,	"ButtonEdit|Represents an edit control with embedded buttons"
+	cxEditConsts_scxSEditRepositoryCalcItem,	"CalcEdit|Represents an edit control with a dropdown calculator window"
+	cxEditConsts_scxSEditRepositoryCheckBoxItem,	"CheckBox|Represents a check box control that allows selecting an option"
+	cxEditConsts_scxSEditRepositoryComboBoxItem,	"ComboBox|Represents the combo box editor"
+	cxEditConsts_scxSEditRepositoryCurrencyItem,	"CurrencyEdit|Represents an editor enabling editing currency data"
+	cxEditConsts_scxSEditRepositoryDateItem,	"DateEdit|Represents an edit control with a dropdown calendar"
+	cxEditConsts_scxSEditRepositoryHyperLinkItem,	"HyperLink|Represents a text editor with hyperlink functionality"
+	cxEditConsts_scxSEditRepositoryImageComboBoxItem,	"ImageComboBox|Represents an editor displaying the list of images and text strings within the dropdown window"
+	cxEditConsts_scxSEditRepositoryImageItem,	"Image|Represents an image editor"
+	cxEditConsts_scxSEditRepositoryLookupComboBoxItem,	"LookupComboBox|Represents a lookup combo box control"
+	cxEditConsts_scxSEditRepositoryMaskItem,	"MaskEdit|Represents a generic masked edit control."
+	cxEditConsts_scxSEditRepositoryMemoItem,	"Memo|Represents an edit control that allows editing memo data"
+	cxEditConsts_scxSEditRepositoryMRUItem,	"MRUEdit|Represents a text editor displaying the list of most recently used items (MRU) within a dropdown window"
+	cxEditConsts_scxSCalcError,	"Error"
+	cxEditConsts_scxSHyperLinkPrefix,	"http://"
+	cxEditConsts_cxNavigatorHint_First,	"First record"
+	cxEditConsts_cxNavigatorHint_Prior,	"Prior record"
+	cxEditConsts_cxNavigatorHint_PriorPage,	"Prior page"
+	cxEditConsts_cxNavigatorHint_Next,	"Next record"
+	cxEditConsts_cxNavigatorHint_NextPage,	"Next page"
+	cxEditConsts_cxNavigatorHint_Last,	"Last record"
+	cxEditConsts_cxNavigatorHint_Insert,	"Insert record"
+	cxEditConsts_cxNavigatorHint_Append,	"Append record"
+	cxEditConsts_cxNavigatorHint_Delete,	"Delete record"
+	cxEditConsts_cxNavigatorHint_Edit,	"Edit record"
+	cxEditConsts_cxNavigatorHint_Post,	"Post edit"
+	cxEditConsts_cxNavigatorHint_Cancel,	"Cancel edit"
+	cxEditConsts_cxNavigatorHint_Refresh,	"Refresh data"
+	cxEditConsts_cxNavigatorHint_SaveBookmark,	"Save Bookmark"
+	cxEditConsts_cxSBlobButtonClose,	"&Close"
+	cxEditConsts_cxSBlobMemo,	"(MEMO)"
+	cxEditConsts_cxSBlobMemoEmpty,	"(memo)"
+	cxEditConsts_cxSBlobPicture,	"(PICTURE)"
+	cxEditConsts_cxSBlobPictureEmpty,	"(picture)"
+	cxEditConsts_cxSMenuItemCaptionCut,	"Cu&t"
+	cxEditConsts_cxSMenuItemCaptionCopy,	"&Copy"
+	cxEditConsts_cxSMenuItemCaptionPaste,	"&Paste"
+	cxEditConsts_cxSMenuItemCaptionDelete,	"&Delete"
+	cxEditConsts_cxSMenuItemCaptionLoad,	"&Load..."
+	cxEditConsts_cxSMenuItemCaptionSave,	"Save &As..."
+	cxEditConsts_cxSDatePopupClear,	"Clear"
+	cxEditConsts_cxSDatePopupNow,	"Now"
+	cxEditConsts_cxSDatePopupOK,	"OK"
+	cxEditConsts_cxSDatePopupToday,	"Today"
+	cxEditConsts_cxSDateError,	"Invalid Date"
+	cxLibraryStrs_cxSDateBOM,	"bom"
+	cxLibraryStrs_cxSDateEOM,	"eom"
+	cxLibraryStrs_cxSDateNow,	"now"
+	cxEditConsts_cxSEditDateConvertError,	"Could not convert to date"
+	cxEditConsts_cxSEditInvalidRepositoryItem,	"The repository item is not acceptable"
+	cxEditConsts_cxSEditNumericValueConvertError,	"Could not convert to numeric value"
+	cxEditConsts_cxSEditPopupCircularReferencingError,	"Circular referencing is not allowed"
+	cxEditConsts_cxSEditTimeConvertError,	"Could not convert to time"
+	cxEditConsts_cxSEditValidateErrorText,	"Invalid input value. Use escape key to abandon changes"
+	cxEditConsts_cxSEditValueOutOfBounds,	"Value out of bounds"
+	cxEditConsts_cxSEditCheckBoxChecked,	"True"
+	cxEditConsts_cxSEditCheckBoxGrayed,	""
+	cxEditConsts_cxSEditCheckBoxUnchecked,	"False"
+	cxEditConsts_cxSRadioGroupDefaultCaption,	""
+	cxEditConsts_cxSBlobButtonOK,	"&OK"
+	cxEditConsts_cxSBlobButtonCancel,	"&Cancel"
+	cxLibraryStrs_cxSDateYesterday,	"yesterday"
+	cxLibraryStrs_cxSDateTomorrow,	"tomorrow"
+	cxLibraryStrs_cxSDateSunday,	"Sunday"
+	cxLibraryStrs_cxSDateMonday,	"Monday"
+	cxLibraryStrs_cxSDateTuesday,	"Tuesday"
+	cxLibraryStrs_cxSDateWednesday,	"Wednesday"
+	cxLibraryStrs_cxSDateThursday,	"Thursday"
+	cxLibraryStrs_cxSDateFriday,	"Friday"
+	cxLibraryStrs_cxSDateSaturday,	"Saturday"
+	cxLibraryStrs_cxSDateFirst,	"first"
+	cxLibraryStrs_cxSDateSecond,	"second"
+	cxLibraryStrs_cxSDateThird,	"third"
+	cxLibraryStrs_cxSDateFourth,	"fourth"
+	cxLibraryStrs_cxSDateFifth,	"fifth"
+	cxLibraryStrs_cxSDateSixth,	"sixth"
+	cxLibraryStrs_cxSDateSeventh,	"seventh"
+	cxFilterConsts_cxSFilterOrCaption,	"or"
+	cxFilterConsts_cxSFilterNotCaption,	"not"
+	cxFilterConsts_cxSFilterBlankCaption,	"blank"
+	cxFilterConsts_cxSFilterOperatorIsNull,	"is blank"
+	cxFilterConsts_cxSFilterOperatorIsNotNull,	"is not blank"
+	cxFilterConsts_cxSFilterOperatorBeginsWith,	"begins with"
+	cxFilterConsts_cxSFilterOperatorDoesNotBeginWith,	"does not begin with"
+	cxFilterConsts_cxSFilterOperatorEndsWith,	"ends with"
+	cxFilterConsts_cxSFilterOperatorDoesNotEndWith,	"does not end with"
+	cxFilterConsts_cxSFilterOperatorContains,	"contains"
+	cxFilterConsts_cxSFilterOperatorDoesNotContain,	"does not contain"
+	cxFilterConsts_cxSFilterBoxAllCaption,	"(All)"
+	cxFilterConsts_cxSFilterBoxCustomCaption,	"(Custom...)"
+	cxFilterConsts_cxSFilterBoxBlanksCaption,	"(Blanks)"
+	cxFilterConsts_cxSFilterBoxNonBlanksCaption,	"(NonBlanks)"
+	cxLibraryStrs_cxSDateToday,	"today"
+	cxFilterConsts_cxSFilterOperatorLast30Days,	"is last 30 days"
+	cxFilterConsts_cxSFilterOperatorLastMonth,	"is last month"
+	cxFilterConsts_cxSFilterOperatorLastYear,	"is last year"
+	cxFilterConsts_cxSFilterOperatorPast,	"is past"
+	cxFilterConsts_cxSFilterOperatorThisWeek,	"is this week"
+	cxFilterConsts_cxSFilterOperatorThisMonth,	"is this month"
+	cxFilterConsts_cxSFilterOperatorThisYear,	"is this year"
+	cxFilterConsts_cxSFilterOperatorNext7Days,	"is next 7 days"
+	cxFilterConsts_cxSFilterOperatorNextWeek,	"is next week"
+	cxFilterConsts_cxSFilterOperatorNext14Days,	"is next 14 days"
+	cxFilterConsts_cxSFilterOperatorNextTwoWeeks,	"is next two weeks"
+	cxFilterConsts_cxSFilterOperatorNext30Days,	"is next 30 days"
+	cxFilterConsts_cxSFilterOperatorNextMonth,	"is next month"
+	cxFilterConsts_cxSFilterOperatorNextYear,	"is next year"
+	cxFilterConsts_cxSFilterOperatorFuture,	"is future"
+	cxFilterConsts_cxSFilterAndCaption,	"and"
+	cxFilterConsts_cxSFilterOperatorLessEqual,	"is less than or equal to"
+	cxFilterConsts_cxSFilterOperatorGreater,	"is greater than"
+	cxFilterConsts_cxSFilterOperatorGreaterEqual,	"is greater than or equal to"
+	cxFilterConsts_cxSFilterOperatorLike,	"like"
+	cxFilterConsts_cxSFilterOperatorNotLike,	"not like"
+	cxFilterConsts_cxSFilterOperatorBetween,	"between"
+	cxFilterConsts_cxSFilterOperatorNotBetween,	"not between"
+	cxFilterConsts_cxSFilterOperatorInList,	"in"
+	cxFilterConsts_cxSFilterOperatorNotInList,	"not in"
+	cxFilterConsts_cxSFilterOperatorYesterday,	"is yesterday"
+	cxFilterConsts_cxSFilterOperatorToday,	"is today"
+	cxFilterConsts_cxSFilterOperatorTomorrow,	"is tomorrow"
+	cxFilterConsts_cxSFilterOperatorLast7Days,	"is last 7 days"
+	cxFilterConsts_cxSFilterOperatorLastWeek,	"is last week"
+	cxFilterConsts_cxSFilterOperatorLast14Days,	"is last 14 days"
+	cxFilterConsts_cxSFilterOperatorLastTwoWeeks,	"is last two weeks"
+	dxBarStrs_dxSBAR_MENUANIM4,	"Slide"
+	dxBarStrs_dxSBAR_MENUANIM5,	"Fade"
+	cxDataConsts_cxSDataReadError,	"Stream read error"
+	cxDataConsts_cxSDataWriteError,	"Stream write error"
+	cxDataConsts_cxSDataItemExistError,	"Item already exists"
+	cxDataConsts_cxSDataRecordIndexError,	"RecordIndex out of range"
+	cxDataConsts_cxSDataItemIndexError,	"ItemIndex out of range"
+	cxDataConsts_cxSDataProviderModeError,	"This operation is not supported in provider mode"
+	cxDataConsts_cxSDataInvalidStreamFormat,	"Invalid stream format"
+	cxDataConsts_cxSDataRowIndexError,	"RowIndex out of range"
+	cxDataConsts_cxSDBDetailFilterControllerNotFound,	"DetailFilterController not found"
+	cxDataConsts_cxSDBNotInGridMode,	"DataController not in GridMode"
+	cxDataConsts_cxSDBKeyFieldNotFound,	"Key Field not found"
+	cxFilterConsts_cxSFilterOperatorEqual,	"equals"
+	cxFilterConsts_cxSFilterOperatorNotEqual,	"does not equal"
+	cxFilterConsts_cxSFilterOperatorLess,	"is less than"
+	dxBarStrs_dxSBAR_TOOLBARRENAME,	"Rename Toolbar"
+	dxBarStrs_dxSBAR_CATEGORYNAME,	"&Category name:"
+	dxBarStrs_dxSBAR_TOOLBARNAME,	"&Toolbar name:"
+	dxBarStrs_dxSBAR_MODIFY,	"... modify"
+	dxBarStrs_dxSBAR_PERSMENUSANDTOOLBARS,	"Personalized Menus and Toolbars  "
+	dxBarStrs_dxSBAR_MENUSSHOWRECENTITEMS,	"Me&nus show recently used commands first"
+	dxBarStrs_dxSBAR_SHOWFULLMENUSAFTERDELAY,	"Show f&ull menus after a short delay"
+	dxBarStrs_dxSBAR_RESETUSAGEDATA,	"&Reset my usage data"
+	dxBarStrs_dxSBAR_OTHEROPTIONS,	"Other  "
+	dxBarStrs_dxSBAR_LARGEICONS,	"&Large icons"
+	dxBarStrs_dxSBAR_HINTOPT1,	"Show Tool&Tips on toolbars"
+	dxBarStrs_dxSBAR_HINTOPT2,	"Show s&hortcut keys in ToolTips"
+	dxBarStrs_dxSBAR_MENUANIMATIONS,	"&Menu animations:"
+	dxBarStrs_dxSBAR_MENUANIM1,	"(None)"
+	dxBarStrs_dxSBAR_MENUANIM2,	"Random"
+	dxBarStrs_dxSBAR_MENUANIM3,	"Unfold"
+	dxBarStrs_dxSBAR_CLOSE,	"Close"
+	dxBarStrs_dxSBAR_CAPTION,	"Customize"
+	dxBarStrs_dxSBAR_CATEGORIES,	"Cate&gories:"
+	dxBarStrs_dxSBAR_COMMANDS,	"Comman&ds:"
+	dxBarStrs_dxSBAR_DESCRIPTION,	"Description  "
+	dxBarStrs_dxSBAR_CUSTOMIZE,	"&Customize..."
+	dxBarStrs_dxSBAR_ADDREMOVEBUTTONS,	"&Add or Remove Buttons"
+	dxBarStrs_dxSBAR_MOREBUTTONS,	"More Buttons"
+	dxBarStrs_dxSBAR_RESETTOOLBAR,	"&Reset Toolbar"
+	dxBarStrs_dxSBAR_EXPAND,	"Expand (Ctrl-Down)"
+	dxBarStrs_dxSBAR_DRAGTOMAKEMENUFLOAT,	"Drag to make this menu float"
+	dxBarStrs_dxSBAR_TOOLBARNEWNAME,	"Custom "
+	dxBarStrs_dxSBAR_CATEGORYADD,	"Add Category"
+	dxBarStrs_dxSBAR_CATEGORYINSERT,	"Insert Category"
+	dxBarStrs_dxSBAR_CATEGORYRENAME,	"Rename Category"
+	dxBarStrs_dxSBAR_TOOLBARADD,	"Add Toolbar"
+	dxBarStrs_dxSBAR_VISIBLE,	"Visible"
+	dxBarStrs_dxSBAR_OK,	"OK"
+	dxBarStrs_dxSBAR_CANCEL,	"Cancel"
+	dxBarStrs_dxSBAR_SUBMENUEDITOR,	"SubMenu Editor..."
+	dxBarStrs_dxSBAR_SUBMENUEDITORCAPTION,	"ExpressBars SubMenu Editor"
+	dxBarStrs_dxSBAR_INSERTEX,	"Insert..."
+	dxBarStrs_dxSBAR_MOVEUP,	"Move Up"
+	dxBarStrs_dxSBAR_MOVEDOWN,	"Move Down"
+	dxBarStrs_dxSBAR_TABSHEET1,	" Toolbars "
+	dxBarStrs_dxSBAR_TABSHEET2,	" Commands "
+	dxBarStrs_dxSBAR_TABSHEET3,	" Options "
+	dxBarStrs_dxSBAR_TOOLBARS,	"Toolb&ars:"
+	dxBarStrs_dxSBAR_TNEW,	"&New..."
+	dxBarStrs_dxSBAR_TRENAME,	"R&ename..."
+	dxBarStrs_dxSBAR_TDELETE,	"&Delete"
+	dxBarStrs_dxSBAR_TRESET,	"&Reset..."
+	dxBarStrs_dxSBAR_CP_TEXTONLYINMENUS,	"Text &Only (in Menus)"
+	dxBarStrs_dxSBAR_CP_IMAGEANDTEXT,	"Image &and Text"
+	dxBarStrs_dxSBAR_CP_BEGINAGROUP,	"Begin a &Group"
+	dxBarStrs_dxSBAR_CP_VISIBLE,	"&Visible"
+	dxBarStrs_dxSBAR_CP_MOSTRECENTLYUSED,	"&Most recently used"
+	dxBarStrs_dxSBAR_CP_POSITIONMENU,	"&Position"
+	dxBarStrs_dxSBAR_CP_VIEWLEVELSMENU,	"View&Levels"
+	dxBarStrs_dxSBAR_CP_ALLVIEWLEVELS,	"All"
+	dxBarStrs_dxSBAR_CP_SINGLEVIEWLEVELITEMSUFFIX,	" ONLY"
+	dxBarStrs_dxSBAR_CP_BUTTONGROUPMENU,	"ButtonG&roup"
+	dxBarStrs_dxSBAR_CP_BUTTONGROUP,	"Group"
+	dxBarStrs_dxSBAR_CP_BUTTONUNGROUP,	"Ungroup"
+	dxBarStrs_dxSBAR_ADDEX,	"Add..."
+	dxBarStrs_dxSBAR_RENAMEEX,	"Rename..."
+	dxBarStrs_dxSBAR_DELETE,	"Delete"
+	dxBarStrs_dxSBAR_CLEAR,	"Clear"
+	dxBarStrs_dxSBAR_NEWBUTTONCAPTION,	"New Button"
+	dxBarStrs_dxSBAR_NEWITEMCAPTION,	"New Item"
+	dxBarStrs_dxSBAR_NEWSEPARATORCAPTION,	"New Separator"
+	dxBarStrs_dxSBAR_NEWSUBITEMCAPTION,	"New SubItem"
+	dxBarStrs_dxSBAR_CP_ADDSUBITEM,	"Add &SubItem"
+	dxBarStrs_dxSBAR_CP_ADDBUTTON,	"Add &Button"
+	dxBarStrs_dxSBAR_CP_ADDSEPARATOR,	"Add &Separator"
+	dxBarStrs_dxSBAR_CP_ADDDXITEM,	"Add &Item"
+	dxBarStrs_dxSBAR_CP_DELETEITEM,	"Delete Item"
+	dxBarStrs_dxSBAR_CP_DELETELINK,	"Delete Link"
+	dxBarStrs_dxSBAR_CP_RESET,	"&Reset"
+	dxBarStrs_dxSBAR_CP_DELETE,	"&Delete"
+	dxBarStrs_dxSBAR_CP_NAME,	"&Name:"
+	dxBarStrs_dxSBAR_CP_CAPTION,	"&Caption:"
+	dxBarStrs_dxSBAR_CP_DEFAULTSTYLE,	"Defa&ult style"
+	dxBarStrs_dxSBAR_CP_TEXTONLYALWAYS,	"&Text Only (Always)"
+	dxBarStrs_dxSBAR_WANTTODELETETOOLBARS,	"Are you sure you want to delete selected toolbars?"
+	dxBarStrs_dxSBAR_WANTTODELETECATEGORY,	"Are you sure you want to delete the '%s' category?"
+	dxBarStrs_dxSBAR_WANTTOCLEARCOMMANDS,	"Are you sure you want to delete all commands in the '%s' category?"
+	dxBarStrs_dxSBAR_RECURSIVEMENUS,	"You cannot create recursive menus"
+	dxBarStrs_dxSBAR_COMMANDNAMECANNOTBEBLANK,	"A command name cannot be blank. Please enter a name."
+	dxBarStrs_dxSBAR_TOOLBAREXISTS,	"A toolbar named '%s' already exists. Type another name."
+	dxBarStrs_dxSBAR_RECURSIVEGROUPS,	"You cannot create recursive groups"
+	dxBarStrs_dxSBAR_WANTTODELETECOMPLEXITEM,	"One of the selected objects is an item which has several links. Are you sure you want to delete these links?"
+	dxBarStrs_dxSBAR_CANTPLACESEPARATOR,	"A separator item cannot be placed on the specified toolbar"
+	dxBarStrs_dxSBAR_CANTMERGETOOLBAR,	"You cannot merge with the specified toolbar"
+	dxBarStrs_dxSBAR_CANTMERGEWITHMERGEDTOOLBAR,	"You cannot merge a toolbar with a toolbar that is already merged"
+	dxBarStrs_dxSBAR_CANTUNMERGETOOLBAR,	"You cannot unmerge the specified toolbar"
+	dxBarStrs_dxSBAR_TOOLBARHASMERGEDTOOLBARS,	"The '%s' toolbar has merged toolbars"
+	dxBarStrs_dxSBAR_TOOLBARSALREADYMERGED,	"The '%s' toolbar is already merged with the '%s' toolbar"
+	dxBarStrs_dxSBAR_TOOLBARSARENOTMERGED,	"The '%s' toolbar is not merged with the '%s' toolbar"
+	dxBarStrs_dxSBAR_DEFAULTCATEGORYNAME,	"Default"
+	cxPCConsts_scxPCPageIndexError,	"%d is an invalid PageIndex value.  PageIndex must be between 0 and %d"
+	cxPCConsts_scxPCPainterClassError,	"PCPainterClass is nil"
+	cxPCConsts_scxPCTabCountEqualsZero,	"Tabs.Count = 0"
+	cxPCConsts_scxPCTabIndexError,	"Tab's index (%d) out of bounds"
+	cxPCConsts_scxPCTabVisibleIndexOutsOfBounds,	"TabVisibleIndex (%d) must be between 0 and %d"
+	cxPCConsts_scxPCVisibleTabListEmpty,	"There are no visible tabs"
+	cxPCConsts_scxPCAllowRotateError,	"%s style does not support rotation of tabs"
+	ComConst_SOleError,	"OLE error %.8x"
+	ComConst_SNoMethod,	"Method '%s' not supported by automation object"
+	ComConst_SVarNotObject,	"Variant does not reference an automation object"
+	dxBarStrs_dxSBAR_WANTTORESETTOOLBAR,	"Are you sure you want to reset the changes made to the '%s' toolbar?"
+	dxBarStrs_dxSBAR_WANTTORESETUSAGEDATA,	"This will delete the record of the commands you've used in this application and restore the default set of visible commands to the menus and toolbars. It will not undo any explicit customizations.   Are you sure you want to proceed?"
+	dxBarStrs_dxSBAR_BARMANAGERMORETHANONE,	"A control should contain only a single TdxBarManager"
+	dxBarStrs_dxSBAR_BARMANAGERBADOWNER,	"TdxBarManager should have TWinControl as its Owner"
+	dxBarStrs_dxSBAR_NOBARMANAGERS,	"There are no TdxBarManagers available"
+	dxBarStrs_dxSBAR_WANTTODELETETOOLBAR,	"Are you sure you want to delete the '%s' toolbar?"
 	Consts_SDockZoneNotFound,	" - Dock zone not found"
 	Consts_SDockZoneHasNoCtl,	" - Dock zone has no control"
 	Consts_SDuplicateItem,	"List does not allow duplicates ($0%x)"
-	Consts_SMsgDlgNoToAll,	"N&o to All"
-	Consts_SMsgDlgYesToAll,	"Yes to &All"
-	Consts_SmkcBkSp,	"BkSp"
-	Consts_SmkcTab,	"Tab"
-	Consts_SmkcEsc,	"Esc"
-	Consts_SmkcEnter,	"Enter"
-	Consts_SmkcSpace,	"Space"
-	Consts_SmkcPgUp,	"PgUp"
+	ComStrs_sTabFailClear,	"Failed to clear tab control"
+	ComStrs_sTabFailDelete,	"Failed to delete tab at index %d"
+	ComStrs_sTabFailRetrieve,	"Failed to retrieve tab at index %d"
+	ComStrs_sTabFailGetObject,	"Failed to get object at index %d"
+	ComStrs_sTabFailSet,	"Failed to set tab \"%s\" at index %d"
+	ComStrs_sTabFailSetObject,	"Failed to set object at index %d"
+	ComStrs_sTabMustBeMultiLine,	"MultiLine must be True when TabPosition is tpLeft or tpRight"
+	ComStrs_sInvalidIndex,	"Invalid index"
+	ComStrs_sInsertError,	"Unable to insert an item"
+	ComStrs_sPageIndexError,	"%d is an invalid PageIndex value.  PageIndex must be between 0 and %d"
+	cxPCConsts_scxPCImageListIndexError,	"Index (%d) must be between 0 and %d"
+	cxPCConsts_scxPCNoBaseImages,	"BaseImages is not assigned"
+	cxPCConsts_scxPCNoRegisteredStyles,	"There are no styles registered"
+	Consts_SIconToClipboard,	"Clipboard does not support Icons"
+	Consts_SCannotOpenClipboard,	"Cannot open clipboard"
+	Consts_SInvalidMemoSize,	"Text exceeds memo capacity"
+	Consts_SNoDefaultPrinter,	"There is no default printer currently selected"
+	Consts_SIniFileWriteError,	"Unable to write to %s"
+	Consts_SBitsIndexError,	"Bits index out of range"
+	Consts_SInvalidRegType,	"Invalid data type for '%s'"
+	Consts_SRegCreateFailed,	"Failed to create key %s"
+	Consts_SRegSetDataFailed,	"Failed to set data for '%s'"
+	Consts_SRegGetDataFailed,	"Failed to get data for '%s'"
+	Consts_SDuplicateMenus,	"Menu '%s' is already being used by another form"
+	Consts_SPictureLabel,	"Picture:"
+	Consts_SPictureDesc,	" (%dx%d)"
+	Consts_SPreviewLabel,	"Preview"
+	Consts_SDockedCtlNeedsName,	"Docked control must have a name"
+	Consts_SDockTreeRemoveError,	"Error removing control from dock tree"
 	Consts_SmkcPgDn,	"PgDn"
 	Consts_SmkcEnd,	"End"
 	Consts_SmkcHome,	"Home"
@@ -209,14 +1363,14 @@ BEGIN
 	Consts_SmkcRight,	"Right"
 	Consts_SmkcDown,	"Down"
 	Consts_SmkcIns,	"Ins"
-	Consts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
-	Consts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
-	Consts_SCannotDragForm,	"Cannot drag a form"
-	Consts_SMsgDlgWarning,	"Warning"
-	Consts_SMsgDlgError,	"Error"
-	Consts_SMsgDlgInformation,	"Information"
-	Consts_SMsgDlgConfirm,	"Confirm"
-	Consts_SMsgDlgYes,	"&Yes"
+	Consts_SmkcDel,	"Del"
+	Consts_SmkcShift,	"Shift+"
+	Consts_SmkcCtrl,	"Ctrl+"
+	Consts_SmkcAlt,	"Alt+"
+	Consts_srNone,	"(None)"
+	Consts_sAllFilter,	"All"
+	Consts_SInsertLineError,	"Unable to insert a line"
+	Consts_SInvalidClipFmt,	"Invalid clipboard format"
 	Consts_SMsgDlgNo,	"&No"
 	Consts_SMsgDlgOK,	"OK"
 	Consts_SMsgDlgCancel,	"Cancel"
@@ -225,8 +1379,50 @@ BEGIN
 	Consts_SMsgDlgRetry,	"&Retry"
 	Consts_SMsgDlgIgnore,	"&Ignore"
 	Consts_SMsgDlgAll,	"&All"
+	Consts_SMsgDlgNoToAll,	"N&o to All"
+	Consts_SMsgDlgYesToAll,	"Yes to &All"
+	Consts_SmkcBkSp,	"BkSp"
+	Consts_SmkcTab,	"Tab"
+	Consts_SmkcEsc,	"Esc"
+	Consts_SmkcEnter,	"Enter"
+	Consts_SmkcSpace,	"Space"
+	Consts_SmkcPgUp,	"PgUp"
+	Consts_SCloseButton,	"&Close"
+	Consts_SIgnoreButton,	"&Ignore"
+	Consts_SRetryButton,	"&Retry"
+	Consts_SAbortButton,	"Abort"
+	Consts_SAllButton,	"&All"
+	Consts_SCannotDragForm,	"Cannot drag a form"
+	Consts_SVMetafiles,	"Metafiles"
+	Consts_SVEnhMetafiles,	"Enhanced Metafiles"
+	Consts_SVIcons,	"Icons"
+	Consts_SVBitmaps,	"Bitmaps"
+	Consts_SInvalidProperty,	"Invalid property value"
+	Consts_SMsgDlgWarning,	"Warning"
+	Consts_SMsgDlgError,	"Error"
+	Consts_SMsgDlgInformation,	"Information"
+	Consts_SMsgDlgConfirm,	"Confirm"
+	Consts_SMsgDlgYes,	"&Yes"
+	Consts_SMenuIndexError,	"Menu index out of range"
+	Consts_SMenuReinserted,	"Menu inserted twice"
+	Consts_SMenuNotFound,	"Sub-menu is not in menu"
+	Consts_SNotPrinting,	"Printer is not currently printing"
+	Consts_SPrinting,	"Printing in progress"
+	Consts_SPrinterIndexError,	"Printer index out of range"
+	Consts_SInvalidPrinter,	"Printer selected is not valid"
+	Consts_SDeviceOnPort,	"%s on %s"
+	Consts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
+	Consts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
+	Consts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
+	Consts_SOKButton,	"OK"
+	Consts_SCancelButton,	"Cancel"
+	Consts_SYesButton,	"&Yes"
+	Consts_SNoButton,	"&No"
+	Consts_SHelpButton,	"&Help"
+	Consts_SNoCanvasHandle,	"Canvas does not allow drawing"
 	Consts_SInvalidImageSize,	"Invalid image size"
 	Consts_SInvalidImageList,	"Invalid ImageList"
+	Consts_SReplaceImage,	"Unable to Replace Image"
 	Consts_SImageIndexError,	"Invalid ImageList Index"
 	Consts_SImageReadFail,	"Failed to read ImageList data from stream"
 	Consts_SImageWriteFail,	"Failed to write ImageList data to stream"
@@ -237,33 +1433,24 @@ BEGIN
 	Consts_SMDIChildNotVisible,	"Cannot hide an MDI Child Form"
 	Consts_SVisibleChanged,	"Cannot change Visible in OnShow or OnHide"
 	Consts_SCannotShowModal,	"Cannot make a visible window modal"
-	Consts_SMenuIndexError,	"Menu index out of range"
-	Consts_SMenuReinserted,	"Menu inserted twice"
-	Consts_SMenuNotFound,	"Sub-menu is not in menu"
-	Consts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
-	Consts_SDuplicateString,	"String list does not allow duplicates"
-	Consts_SDuplicateName,	"A component named %s already exists"
-	Consts_SInvalidName,	"''%s'' is not a valid component name"
-	Consts_SDuplicateClass,	"A class named %s already exists"
-	Consts_SInvalidPropertyValue,	"Invalid property value"
+	Consts_SScrollBarRange,	"Scrollbar property out of range"
+	Consts_SPropertyOutOfRange,	"%s property out of range"
 	Consts_SInvalidPropertyPath,	"Invalid property path"
+	Consts_SInvalidPropertyType,	"Invalid property type: %s"
 	Consts_SUnknownProperty,	"Property does not exist"
 	Consts_SReadOnlyProperty,	"Property is read-only"
 	Consts_SPropertyException,	"Error reading %s%s%s: %s"
 	Consts_SAncestorNotFound,	"Ancestor for '%s' not found"
 	Consts_SInvalidBitmap,	"Bitmap image is not valid"
 	Consts_SInvalidIcon,	"Icon image is not valid"
+	Consts_SInvalidMetafile,	"Metafile is not valid"
+	Consts_SInvalidPixelFormat,	"Invalid pixel format"
+	Consts_SScanLine,	"Scan line index out of range"
 	Consts_SChangeIconSize,	"Cannot change the size of an icon"
+	Consts_SOleGraphic,	"Invalid operation on TOleGraphic"
+	Consts_SUnknownExtension,	"Unknown picture file extension (.%s)"
 	Consts_SUnknownClipboardFormat,	"Unsupported clipboard format"
 	Consts_SOutOfResources,	"Out of system resources"
-	Consts_SNoCanvasHandle,	"Canvas does not allow drawing"
-	SysConst_SLongDayNameFri,	"Friday"
-	SysConst_SLongDayNameSat,	"Saturday"
-	Consts_SAssignError,	"Cannot assign a %s to a %s"
-	Consts_SFCreateError,	"Cannot create file %s"
-	Consts_SFOpenError,	"Cannot open file %s"
-	Consts_SReadError,	"Stream read error"
-	Consts_SWriteError,	"Stream write error"
 	Consts_SMemoryStreamError,	"Out of memory while expanding memory stream"
 	Consts_SCantWriteResourceStreamError,	"Can't write to a read-only resource stream"
 	Consts_SClassNotFound,	"Class %s not found"
@@ -273,13 +1460,13 @@ BEGIN
 	Consts_SListCapacityError,	"List capacity out of bounds (%d)"
 	Consts_SListCountError,	"List count out of bounds (%d)"
 	Consts_SSortedListError,	"Operation not allowed on sorted string list"
-	SysConst_SLongMonthNameSep,	"September"
-	SysConst_SLongMonthNameOct,	"October"
-	SysConst_SLongMonthNameNov,	"November"
-	SysConst_SLongMonthNameDec,	"December"
-	SysConst_SShortDayNameSun,	"Sun"
-	SysConst_SShortDayNameMon,	"Mon"
-	SysConst_SShortDayNameTue,	"Tue"
+	Consts_SDuplicateString,	"String list does not allow duplicates"
+	Consts_SInvalidTabPosition,	"Tab position incompatible with current tab style"
+	Consts_SInvalidTabStyle,	"Tab style incompatible with current tab position"
+	Consts_SDuplicateName,	"A component named %s already exists"
+	Consts_SInvalidName,	"''%s'' is not a valid component name"
+	Consts_SDuplicateClass,	"A class named %s already exists"
+	Consts_SInvalidPropertyValue,	"Invalid property value"
 	SysConst_SShortDayNameWed,	"Wed"
 	SysConst_SShortDayNameThu,	"Thu"
 	SysConst_SShortDayNameFri,	"Fri"
@@ -289,13 +1476,13 @@ BEGIN
 	SysConst_SLongDayNameTue,	"Tuesday"
 	SysConst_SLongDayNameWed,	"Wednesday"
 	SysConst_SLongDayNameThu,	"Thursday"
-	SysConst_SShortMonthNameMay,	"May"
-	SysConst_SShortMonthNameJun,	"Jun"
-	SysConst_SShortMonthNameJul,	"Jul"
-	SysConst_SShortMonthNameAug,	"Aug"
-	SysConst_SShortMonthNameSep,	"Sep"
-	SysConst_SShortMonthNameOct,	"Oct"
-	SysConst_SShortMonthNameNov,	"Nov"
+	SysConst_SLongDayNameFri,	"Friday"
+	SysConst_SLongDayNameSat,	"Saturday"
+	Consts_SAssignError,	"Cannot assign a %s to a %s"
+	Consts_SFCreateError,	"Cannot create file %s"
+	Consts_SFOpenError,	"Cannot open file %s"
+	Consts_SReadError,	"Stream read error"
+	Consts_SWriteError,	"Stream write error"
 	SysConst_SShortMonthNameDec,	"Dec"
 	SysConst_SLongMonthNameJan,	"January"
 	SysConst_SLongMonthNameFeb,	"February"
@@ -305,6 +1492,37 @@ BEGIN
 	SysConst_SLongMonthNameJun,	"June"
 	SysConst_SLongMonthNameJul,	"July"
 	SysConst_SLongMonthNameAug,	"August"
+	SysConst_SLongMonthNameSep,	"September"
+	SysConst_SLongMonthNameOct,	"October"
+	SysConst_SLongMonthNameNov,	"November"
+	SysConst_SLongMonthNameDec,	"December"
+	SysConst_SShortDayNameSun,	"Sun"
+	SysConst_SShortDayNameMon,	"Mon"
+	SysConst_SShortDayNameTue,	"Tue"
+	SysConst_SAbstractError,	"Abstract Error"
+	SysConst_SModuleAccessViolation,	"Access violation at address %p in module '%s'. %s of address %p"
+	SysConst_SWin32Error,	"Win32 Error.  Code: %d.\n%s"
+	SysConst_SUnkWin32Error,	"A Win32 API function failed"
+	SysConst_SNL,	"Application is not licensed to use this feature"
+	SysConst_SShortMonthNameJan,	"Jan"
+	SysConst_SShortMonthNameFeb,	"Feb"
+	SysConst_SShortMonthNameMar,	"Mar"
+	SysConst_SShortMonthNameApr,	"Apr"
+	SysConst_SShortMonthNameMay,	"May"
+	SysConst_SShortMonthNameJun,	"Jun"
+	SysConst_SShortMonthNameJul,	"Jul"
+	SysConst_SShortMonthNameAug,	"Aug"
+	SysConst_SShortMonthNameSep,	"Sep"
+	SysConst_SShortMonthNameOct,	"Oct"
+	SysConst_SShortMonthNameNov,	"Nov"
+	SysConst_SInvalidFormat,	"Format '%s' invalid or incompatible with argument"
+	SysConst_SArgumentMissing,	"No argument for format '%s'"
+	SysConst_SInvalidVarCast,	"Invalid variant type conversion"
+	SysConst_SInvalidVarOp,	"Invalid variant operation"
+	SysConst_SDispatchError,	"Variant method calls not supported"
+	SysConst_SReadAccess,	"Read"
+	SysConst_SWriteAccess,	"Write"
+	SysConst_SFormatTooLong,	"Format string too long"
 	SysConst_SVarArrayCreate,	"Error creating variant array"
 	SysConst_SVarNotArray,	"Variant is not an array"
 	SysConst_SVarArrayBounds,	"Variant array index out of bounds"
@@ -313,14 +1531,12 @@ BEGIN
 	SysConst_SIntfCastError,	"Interface not supported"
 	SysConst_SSafecallException,	"Exception in safecall method"
 	SysConst_SAssertError,	"%s (%s, line %d)"
-	SysConst_SAbstractError,	"Abstract Error"
-	SysConst_SModuleAccessViolation,	"Access violation at address %p in module '%s'. %s of address %p"
-	SysConst_SWin32Error,	"Win32 Error.  Code: %d.\n%s"
-	SysConst_SUnkWin32Error,	"A Win32 API function failed"
-	SysConst_SShortMonthNameJan,	"Jan"
-	SysConst_SShortMonthNameFeb,	"Feb"
-	SysConst_SShortMonthNameMar,	"Mar"
-	SysConst_SShortMonthNameApr,	"Apr"
+	SysConst_SDivByZero,	"Division by zero"
+	SysConst_SRangeError,	"Range check error"
+	SysConst_SIntOverflow,	"Integer overflow"
+	SysConst_SInvalidOp,	"Invalid floating point operation"
+	SysConst_SZeroDivide,	"Floating point division by zero"
+	SysConst_SOverflow,	"Floating point overflow"
 	SysConst_SUnderflow,	"Floating point underflow"
 	SysConst_SInvalidPointer,	"Invalid pointer operation"
 	SysConst_SInvalidCast,	"Invalid class typecast"
@@ -328,16 +1544,16 @@ BEGIN
 	SysConst_SStackOverflow,	"Stack overflow"
 	SysConst_SControlC,	"Control-C hit"
 	SysConst_SPrivilege,	"Privileged instruction"
+	SysConst_SOperationAborted,	"Operation aborted"
 	SysConst_SException,	"Exception %s in module %s at %p.\n%s%s"
 	SysConst_SExceptTitle,	"Application Error"
-	SysConst_SInvalidFormat,	"Format '%s' invalid or incompatible with argument"
-	SysConst_SArgumentMissing,	"No argument for format '%s'"
-	SysConst_SInvalidVarCast,	"Invalid variant type conversion"
-	SysConst_SInvalidVarOp,	"Invalid variant operation"
-	SysConst_SDispatchError,	"Variant method calls not supported"
-	SysConst_SReadAccess,	"Read"
-	SysConst_SWriteAccess,	"Write"
 	SysConst_SInvalidInteger,	"'%s' is not a valid integer value"
+	SysConst_SInvalidFloat,	"'%s' is not a valid floating point value"
+	SysConst_SInvalidDate,	"'%s' is not a valid date"
+	SysConst_SInvalidTime,	"'%s' is not a valid time"
+	SysConst_SInvalidDateTime,	"'%s' is not a valid date and time"
+	SysConst_STimeEncodeError,	"Invalid argument to time encode"
+	SysConst_SDateEncodeError,	"Invalid argument to date encode"
 	SysConst_SOutOfMemory,	"Out of memory"
 	SysConst_SInOutError,	"I/O error %d"
 	SysConst_SFileNotFound,	"File not found"
@@ -347,11 +1563,5 @@ BEGIN
 	SysConst_SEndOfFile,	"Read beyond end of file"
 	SysConst_SDiskFull,	"Disk full"
 	SysConst_SInvalidInput,	"Invalid numeric input"
-	SysConst_SDivByZero,	"Division by zero"
-	SysConst_SRangeError,	"Range check error"
-	SysConst_SIntOverflow,	"Integer overflow"
-	SysConst_SInvalidOp,	"Invalid floating point operation"
-	SysConst_SZeroDivide,	"Floating point division by zero"
-	SysConst_SOverflow,	"Floating point overflow"
 END
 

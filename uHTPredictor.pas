@@ -11,7 +11,7 @@ function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
 implementation
 
 uses
-  SysUtils, IniFiles, Forms, uBibExcel, uBibConv, Dialogs, Windows;
+  SysUtils, IniFiles, Forms, uBibExcel, uBibConv, Dialogs, Windows, FormKiesTabSheet;
 
 {-----------------------------------------------------------------------------
   Procedure: AllPlayerFieldsMapped
@@ -111,6 +111,7 @@ function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):integer;
 var
   vExcel: TExcelFunctions;
   vSheets, i: integer;
+  vChosenSheet: String;
 begin
   if not(aPlayerDataSet.Active) then
   begin
@@ -127,13 +128,18 @@ begin
         Open(aXLSFile);
         try
           vSheets := ExcelApp.ActiveWorkbook.Worksheets.Count;
-          for i := 1 to vSheets do
+
+          vChosenSheet := FormKiesTabSheet.KiesTabsheet(vExcel);
+
+          if (vChosenSheet <> '') then
           begin
-            ExcelApp.ActiveWorkbook.Worksheets[i].Activate;
-            if (MessageBox(Screen.ActiveForm.Handle,PChar(String(vExcel.ExcelApp.ActiveSheet.Name)+' inlezen?'),
-              PChar('HT Predictor'),MB_ICONQUESTION + MB_YESNO) = ID_YES) then
+            for i := 1 to vSheets do
             begin
-              result := result + SavePlayersToMemDataSet(vExcel, aPlayerDataSet);
+              ExcelApp.ActiveWorkbook.Worksheets[i].Activate;
+              if vExcel.ExcelApp.ActiveSheet.Name = vChosenSheet then
+              begin
+                result := result + SavePlayersToMemDataSet(vExcel, aPlayerDataSet);
+              end;
             end;
           end;
         finally
