@@ -128,9 +128,9 @@ begin
         Next;
       end;
     finally
-      EnableControls;
       GotoBookmark(vBookMark);
       FreeBookmark(vBookMark);
+      EnableControls;
     end;
   end;
 end;
