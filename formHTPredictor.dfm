@@ -1,6 +1,6 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 558
-  Top = 224
+  Left = 518
+  Top = 166
   Width = 1018
   Height = 673
   Caption = 'HT Predictor'
@@ -20,7 +20,7 @@ object frmHTPredictor: TfrmHTPredictor
     Top = 0
     Width = 1002
     Height = 635
-    ActivePage = cxtbTegenstander
+    ActivePage = cxtbEigenTeam
     Align = alClient
     TabOrder = 0
     ClientRectBottom = 635

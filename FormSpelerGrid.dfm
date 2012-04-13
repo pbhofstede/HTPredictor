@@ -1,6 +1,7 @@
 object frmSpelerGrid: TfrmSpelerGrid
   Left = 463
   Top = 264
+  ActiveControl = cxGridSpelers
   BorderStyle = bsNone
   Caption = 'frmSpelerGrid'
   ClientHeight = 525
@@ -11,7 +12,10 @@ object frmSpelerGrid: TfrmSpelerGrid
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
@@ -35,6 +39,7 @@ object frmSpelerGrid: TfrmSpelerGrid
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
+        OptionsBehavior.FocusCellOnTab = True
         OptionsData.CancelOnExit = False
         OptionsData.Deleting = False
         OptionsData.DeletingConfirmation = False
@@ -43,6 +48,7 @@ object frmSpelerGrid: TfrmSpelerGrid
         object cxGridSpelersViewLAND: TcxGridDBColumn
           Caption = 'Land'
           DataBinding.FieldName = 'LAND'
+          Visible = False
         end
         object cxGridSpelersViewRecId: TcxGridDBColumn
           DataBinding.FieldName = 'RecId'
@@ -53,20 +59,23 @@ object frmSpelerGrid: TfrmSpelerGrid
           Caption = 'Naam'
           DataBinding.FieldName = 'NAAM'
           PropertiesClassName = 'TcxTextEditProperties'
+          Properties.ReadOnly = True
           Width = 253
         end
         object cxGridSpelersViewSPECIALITEIT: TcxGridDBColumn
           Caption = 'Specialiteit'
           DataBinding.FieldName = 'SPECIALITEIT'
           PropertiesClassName = 'TcxTextEditProperties'
+          Properties.ReadOnly = True
           Width = 120
         end
         object cxGridSpelersViewVORM: TcxGridDBColumn
           Caption = 'Vorm'
           DataBinding.FieldName = 'VORM'
           PropertiesClassName = 'TcxSpinEditProperties'
+          Properties.AssignedValues.MinValue = True
           Properties.Increment = 0.1
-          Properties.MinValue = 8
+          Properties.MaxValue = 8
           Properties.ValueType = vtFloat
           Width = 63
         end
@@ -129,6 +138,7 @@ object frmSpelerGrid: TfrmSpelerGrid
           DataBinding.FieldName = 'SCOREN'
           PropertiesClassName = 'TcxSpinEditProperties'
           Properties.Increment = 0.1
+          Properties.MaxValue = 30
           Properties.ValueType = vtFloat
           Width = 61
         end
@@ -210,6 +220,11 @@ object frmSpelerGrid: TfrmSpelerGrid
           UserPaintStyle = psCaptionGlyph
           Visible = True
           ItemName = 'btnLoadPlayers'
+        end
+        item
+          BeginGroup = True
+          Visible = True
+          ItemName = 'btnOpslaan'
         end>
       OneOnRow = True
       Row = 0
@@ -225,15 +240,26 @@ object frmSpelerGrid: TfrmSpelerGrid
       ImageIndex = 25
       OnClick = btnLoadPlayersClick
     end
+    object btnOpslaan: TdxBarButton
+      Caption = 'Opslaan'
+      Category = 0
+      Enabled = False
+      Hint = 'Opslaan'
+      Visible = ivAlways
+      ImageIndex = 27
+      OnClick = btnOpslaanClick
+    end
   end
   object dsSpelers: TDataSource
     DataSet = mdSpelers
+    OnStateChange = dsSpelersStateChange
     Left = 264
     Top = 176
   end
   object mdSpelers: TdxMemData
     Indexes = <>
     SortOptions = []
+    AfterPost = mdSpelersAfterPost
     Left = 264
     Top = 256
     object mdSpelersNAAM: TStringField

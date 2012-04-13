@@ -6,7 +6,9 @@ uses
   uHTPredictor in 'uHTPredictor.pas',
   FormFieldMapping in 'FormFieldMapping.pas' {frmFieldMapping},
   FormSpelerGrid in 'FormSpelerGrid.pas' {frmSpelerGrid},
-  FormKiesTabSheet in 'FormKiesTabSheet.pas' {frmKiesTabsheet};
+  FormKiesTabSheet in 'FormKiesTabSheet.pas' {frmKiesTabsheet},
+  uSelectie in 'uSelectie.pas',
+  uPlayer in 'uPlayer.pas';
 
 {$R *.RES}
 

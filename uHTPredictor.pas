@@ -5,7 +5,7 @@ interface
 uses
   dxmdaset;
 
-function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):integer;
+function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
 
 implementation
@@ -107,18 +107,18 @@ end;
   Arguments: aXLSFile:String
   Result:    integer
 -----------------------------------------------------------------------------}
-function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):integer;
+function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 var
   vExcel: TExcelFunctions;
   vSheets, i: integer;
-  vChosenSheet: String;
 begin
+  result := '';
+  
   if not(aPlayerDataSet.Active) then
   begin
     aPlayerDataSet.Open;
   end;
 
-  result := 0;
   aPlayerDataSet.DisableControls;
   try
     vExcel := uBibExcel.TExcelFunctions.Create(FALSE);
@@ -129,16 +129,16 @@ begin
         try
           vSheets := ExcelApp.ActiveWorkbook.Worksheets.Count;
 
-          vChosenSheet := FormKiesTabSheet.KiesTabsheet(vExcel);
+          result := FormKiesTabSheet.KiesTabsheet(vExcel);
 
-          if (vChosenSheet <> '') then
+          if (result <> '') then
           begin
             for i := 1 to vSheets do
             begin
               ExcelApp.ActiveWorkbook.Worksheets[i].Activate;
-              if vExcel.ExcelApp.ActiveSheet.Name = vChosenSheet then
+              if vExcel.ExcelApp.ActiveSheet.Name = result then
               begin
-                result := result + SavePlayersToMemDataSet(vExcel, aPlayerDataSet);
+                SavePlayersToMemDataSet(vExcel, aPlayerDataSet);
               end;
             end;
           end;

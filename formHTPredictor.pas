@@ -4,9 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel,
+  cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel, uSelectie,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls;
+  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls;
 
 type
   TfrmHTPredictor = class(TForm)
@@ -30,10 +30,14 @@ type
     cxGrid1: TcxGrid;
     procedure FormCreate(Sender: TObject);
   private
+    FSelectie_Eigen: TSelectie;
+    FSelectie_Tegen: TSelectie;
     { Private declarations }
   public
     { Public declarations }
-    procedure ToonSpelersGrids(aPanel: TPanel);
+    function ToonSpelersGrids(aPanel: TPanel; aTabSheet: TcxTabSheet):TSelectie;
+    property Selectie_Eigen: TSelectie read FSelectie_Eigen write FSelectie_Eigen;
+    property Selectie_Tegen: TSelectie read FSelectie_Tegen write FSelectie_Tegen;
   end;
 
 var
@@ -42,25 +46,41 @@ var
 implementation
 
 uses
-  FormSpelerGrid;
+  FormSpelerGrid, uPlayer;
 
 {$R *.DFM}
 
-procedure TfrmHTPredictor.ToonSpelersGrids(aPanel: TPanel);
+{-----------------------------------------------------------------------------
+  Procedure: ToonSpelersGrids
+  Author:    Harry
+  Date:      13-apr-2012
+  Arguments: aPanel: TPanel
+  Result:    TSelectie
+-----------------------------------------------------------------------------}
+function TfrmHTPredictor.ToonSpelersGrids(aPanel: TPanel; aTabSheet: TcxTabSheet):TSelectie;
 begin
   with TfrmSpelerGrid.Create(Self) do
   begin
     Parent := aPanel;
     Visible := TRUE;
     Align := alClient;
+    TabSheet := aTabsheet;
+    result := Selectie;
   end;
 end;
 
+{-----------------------------------------------------------------------------
+  Procedure: FormCreate
+  Author:    Harry
+  Date:      13-apr-2012
+  Arguments: Sender: TObject
+  Result:    None
+-----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.FormCreate(Sender: TObject);
 begin
   cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
-  ToonSpelersGrids(pnlSpelersGrid1);
-  ToonSpelersGrids(pnlSpelersGrid2);
+  FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
+  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
 end;
 
 end.
