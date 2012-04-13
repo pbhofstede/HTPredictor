@@ -49,7 +49,7 @@ begin
         result := ChosenSheet;
       end;
     finally
-      Release;
+      Free;
     end;
   end;
 end;
