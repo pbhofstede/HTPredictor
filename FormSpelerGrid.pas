@@ -121,7 +121,7 @@ begin
       MapDataSet := mdSpelers;
       ShowModal;
     finally
-      Release;
+      Free;
     end;
   end;
 end;
