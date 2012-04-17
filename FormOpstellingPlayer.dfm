@@ -4,7 +4,7 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'frmOpstellingPlayer'
-  ClientHeight = 44
+  ClientHeight = 48
   ClientWidth = 134
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,16 +15,38 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object pnlPlayer: TPanel
     Left = 0
     Top = 0
     Width = 134
-    Height = 44
+    Height = 48
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 2
     BorderStyle = bsSingle
-    Caption = 'Panel1'
     TabOrder = 0
+    object cbPlayer: TcxImageComboBox
+      Left = 4
+      Top = 2
+      Properties.Images = frmHTPredictor.imgListHTPredictor
+      Properties.ImmediatePost = True
+      Properties.ImmediateUpdateText = True
+      Properties.Items = <>
+      Properties.OnChange = cbPlayerPropertiesChange
+      Properties.OnInitPopup = cbPlayerPropertiesPopup
+      Properties.OnValidate = cbPlayerPropertiesValidate
+      TabOrder = 0
+      Width = 121
+    end
+    object cbOrder: TcxImageComboBox
+      Left = 4
+      Top = 23
+      Properties.ImmediatePost = True
+      Properties.ImmediateUpdateText = True
+      Properties.Items = <>
+      Properties.OnValidate = cbOrderPropertiesValidate
+      TabOrder = 1
+      Width = 121
+    end
   end
 end

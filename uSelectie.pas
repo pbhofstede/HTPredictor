@@ -10,8 +10,8 @@ type
   private
     FNaam: String;
     FPlayers: TObjectList;
+  public                                   
     function GetPlayer(aID:integer):TPlayer;
-  public
     procedure LoadFromMemDataSet(aDataSet: TdxMemData; aRefresh: boolean);
     property Players:TObjectList read FPlayers write FPlayers;
     property Naam:String read FNaam write FNaam;
@@ -75,14 +75,6 @@ begin
       inc(i);
     end;
   end;
-
-  if (result = nil) then
-  begin
-    result := TPlayer.Create;
-    Result.ID := aID;
-
-    Players.Add(result);
-  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -111,6 +103,14 @@ begin
       while not EOF do
       begin
         vPlayer := GetPlayer(FieldByName('RecID').asInteger);
+
+        if (vPlayer = nil) then
+        begin
+          vPlayer := TPlayer.Create;
+          vPlayer.ID := FieldByName('RecID').asInteger;
+
+          Players.Add(vPlayer);
+        end;
 
         vPlayer.Naam := FieldByName('NAAM').asString;
         vPlayer.Spec := FieldByName('SPECIALITEIT').asString;

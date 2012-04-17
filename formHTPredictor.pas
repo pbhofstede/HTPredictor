@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel, uSelectie,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView,
-  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls;
+  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner;
 
 type
   TfrmHTPredictor = class(TForm)
@@ -82,7 +82,7 @@ begin
   FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
 
-  FormOpstelling.ToonOpstelling(cxTabSheet1);
+  FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen);
 end;
 
 end.

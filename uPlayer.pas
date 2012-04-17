@@ -1,6 +1,8 @@
 unit uPlayer;
 
 interface
+uses
+  uHTPredictor;
 
 type
   TPlayer = class
@@ -32,8 +34,25 @@ type
     property SCO: double read FSCO write FSCO;
     property SP: double read FSP write FSP;
     property XP: double read FXP write FXP;
+
+    function GetPositionRating(aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
   end;
 
 implementation
+
+{ TPlayer }
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     17-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TPlayer.GetPositionRating(aPosition: TPlayerPosition;
+  aOrder: TPlayerOrder): double;
+begin
+  Result := Random * 10;
+end;
 
 end.

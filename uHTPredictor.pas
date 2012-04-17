@@ -6,10 +6,12 @@ uses
   dxmdaset;
 
 type
-  TPosition = (pOnbekend, pKP, pRB, pRCV, PCV, PLCV, pLB, pRW, pRCM, pCM, pLCM, pLW, pRCA, pCA, pLCA);
+  TPlayerPosition = (pOnbekend, pKP, pRB, pRCV, pCV, pLCV, pLB, pRW, pRCM, pCM, pLCM, pLW, pRCA, pCA, pLCA);
+  TPlayerOrder = (oNormaal, oVerdedigend, oAanvallend, oNaarVleugel, oNaarMidden);
 
 function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
+function OrderToString(aOrder: TPlayerOrder): String;
 
 implementation
 
@@ -157,4 +159,23 @@ begin
   end;
 end;
 
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     17-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function OrderToString(aOrder: TPlayerOrder): String;
+begin
+  case aOrder of
+    oNormaal:     Result := 'Normaal';
+    oVerdedigend: Result := 'Verdedigend';
+    oAanvallend:  Result := 'Aanvallend';
+    oNaarVleugel: Result := 'Naar de vleugel';
+    oNaarMidden:  Result := 'Naar het midden';
+    else
+      Result := 'Order onbekend';
+  end;
+end;
 end.

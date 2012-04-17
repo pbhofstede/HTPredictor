@@ -10,7 +10,8 @@ uses
   uSelectie in 'uSelectie.pas',
   uPlayer in 'uPlayer.pas',
   FormOpstelling in 'FormOpstelling.pas' {frmOpstelling},
-  FormOpstellingPlayer in 'FormOpstellingPlayer.pas' {frmOpstellingPlayer};
+  FormOpstellingPlayer in 'FormOpstellingPlayer.pas' {frmOpstellingPlayer},
+  uOpstelling in 'uOpstelling.pas';
 
 {$R *.RES}
 
