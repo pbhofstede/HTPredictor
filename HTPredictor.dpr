@@ -8,7 +8,9 @@ uses
   FormSpelerGrid in 'FormSpelerGrid.pas' {frmSpelerGrid},
   FormKiesTabSheet in 'FormKiesTabSheet.pas' {frmKiesTabsheet},
   uSelectie in 'uSelectie.pas',
-  uPlayer in 'uPlayer.pas';
+  uPlayer in 'uPlayer.pas',
+  FormOpstelling in 'FormOpstelling.pas' {frmOpstelling},
+  FormOpstellingPlayer in 'FormOpstellingPlayer.pas' {frmOpstellingPlayer};
 
 {$R *.RES}
 

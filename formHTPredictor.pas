@@ -46,7 +46,7 @@ var
 implementation
 
 uses
-  FormSpelerGrid, uPlayer;
+  FormSpelerGrid, uPlayer, FormOpstelling;
 
 {$R *.DFM}
 
@@ -81,6 +81,8 @@ begin
   cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
   FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
+
+  FormOpstelling.ToonOpstelling(cxTabSheet1);
 end;
 
 end.

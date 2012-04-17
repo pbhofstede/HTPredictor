@@ -5,6 +5,9 @@ interface
 uses
   dxmdaset;
 
+type
+  TPosition = (pOnbekend, pKP, pRB, pRCV, PCV, PLCV, pLB, pRW, pRCM, pCM, pLCM, pLW, pRCA, pCA, pLCA);
+
 function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
 
