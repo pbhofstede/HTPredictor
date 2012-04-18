@@ -313,7 +313,14 @@ begin
 
       FOpstelling.ZetPlayerIDOpPositie(cbPlayer.EditValue, Position, vPlayerOrder);
 
-      vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
+      if (vPlayer = nil) then
+      begin
+        vText := '';
+      end
+      else
+      begin
+        vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
+      end;
 
       if aSender = cbPlayer then
       begin
