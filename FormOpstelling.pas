@@ -15,14 +15,19 @@ type
   private
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
-    FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;
+    FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;    
+    FOpstellingAanvoerder: TfrmOpstellingPlayer;                     
+    FOpstellingSpelhervatter: TfrmOpstellingPlayer;
     procedure SetSelectie(const Value: TSelectie);
+    procedure FreeObjecten;
     { Private declarations }
   public
     { Public declarations }
     property Selectie: TSelectie read FSelectie write SetSelectie;
 
-    procedure EnableDisableOpstellingPlayer;
+    procedure EnableDisableOpstellingPlayer;    
+    procedure UpdateAanvoerder;
+    procedure UpdateSpelhervatter;
   end;
 
 
@@ -87,6 +92,8 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmOpstelling.SetSelectie(const Value: TSelectie);
 begin
+  FreeObjecten;
+
   FSelectie := Value;
 
   FOpstelling := TOpstelling.Create(Self);
@@ -106,6 +113,10 @@ begin
   FOpstellingPlayerArray[12] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pRCA);
   FOpstellingPlayerArray[13] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pCA);
   FOpstellingPlayerArray[14] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pLCA);
+
+
+  FOpstellingAanvoerder := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, TRUE);
+  FOpstellingSpelhervatter := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, FALSE);
 end;
 
 {-----------------------------------------------------------------------------
@@ -116,16 +127,100 @@ end;
   <eventuele fixes>
 -----------------------------------------------------------------------------}
 procedure TfrmOpstelling.FormDestroy(Sender: TObject);
+begin
+  FreeObjecten;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     18-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.UpdateAanvoerder;
+begin
+  if (FOpstellingAanvoerder <> nil) then
+  begin
+    if (FOpstelling.Aanvoerder = nil) then
+    begin
+      FOpstellingAanvoerder.cbPlayer.ItemIndex := -1;
+    end
+    else
+    begin
+      if (FOpstellingAanvoerder.cbPlayer.ItemIndex <> FOpstelling.Aanvoerder.ID) then
+      begin
+        FOpstellingAanvoerder.cbPlayer.ItemIndex := FOpstelling.Aanvoerder.ID;
+      end;
+    end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     18-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.UpdateSpelhervatter;
+begin
+  if (FOpstellingSpelhervatter <> nil) then
+  begin
+    if (FOpstelling.Spelhervatter = nil) then
+    begin
+      FOpstellingSpelhervatter.cbPlayer.ItemIndex := -1;
+    end
+    else
+    begin
+      if FOpstellingSpelhervatter.cbPlayer.ItemIndex <> FOpstelling.Spelhervatter.ID then
+      begin
+        FOpstellingSpelhervatter.cbPlayer.ItemIndex := FOpstelling.Spelhervatter.ID;
+      end;
+    end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     18-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.FreeObjecten;
 var
   vCount: integer;
 begin
   for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
   begin
-    FOpstellingPlayerArray[vCount].Close;
-    FOpstellingPlayerArray[vCount].Release;
+    if (FOpstellingPlayerArray[vCount] <> nil) then
+    begin
+      FOpstellingPlayerArray[vCount].Close;
+      FOpstellingPlayerArray[vCount].Release;
+      FOpstellingPlayerArray[vCount] := nil;
+    end;
   end;
 
-  FOpstelling.Free;
+  if (FOpstellingAanvoerder <> nil) then
+  begin
+    FOpstellingAanvoerder.Close;
+    FOpstellingAanvoerder.Release;
+    FOpstellingAanvoerder := nil;
+  end;
+
+  if (FOpstellingSpelhervatter <> nil) then
+  begin
+    FOpstellingSpelhervatter.Close;
+    FOpstellingSpelhervatter.Release;
+    FOpstellingSpelhervatter := nil;
+  end;
+
+  if (FOpstelling <> nil) then
+  begin
+    FOpstelling.Free;
+    FOpstelling := nil;
+  end;
 end;
 
 end.

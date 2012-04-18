@@ -25,6 +25,13 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
     BorderWidth = 2
     BorderStyle = bsSingle
     TabOrder = 0
+    object lblCaption: TLabel
+      Left = 7
+      Top = 5
+      Width = 46
+      Height = 13
+      Caption = 'lblCaption'
+    end
     object cbPlayer: TcxImageComboBox
       Left = 4
       Top = 2

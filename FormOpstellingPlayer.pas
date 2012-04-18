@@ -5,13 +5,14 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ExtCtrls, uHTPredictor, cxControls, cxContainer, cxEdit, cxTextEdit,
-  cxMaskEdit, cxDropDownEdit, cxImageComboBox, uOpstelling;
+  cxMaskEdit, cxDropDownEdit, cxImageComboBox, uOpstelling, StdCtrls;
 
 type
   TfrmOpstellingPlayer = class(TForm)
     pnlPlayer: TPanel;
     cbPlayer: TcxImageComboBox;
     cbOrder: TcxImageComboBox;
+    lblCaption: TLabel;
     procedure cbPlayerPropertiesPopup(Sender: TObject);
     procedure cbPlayerPropertiesChange(Sender: TObject);
     procedure cbPlayerPropertiesValidate(Sender: TObject;
@@ -23,17 +24,21 @@ type
   private
     FPosition: TPlayerPosition;
     FOpstelling: TOpstelling;
+    FAanvoerder: Boolean;
     procedure SetPosition(const Value: TPlayerPosition);
     procedure VulCBOrder;
     procedure ChangeOpstelling(aSender: TObject; var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure SetAanvoerder(const Value: Boolean);
     { Private declarations }
   public
     { Public declarations }
     property Opstelling: TOpstelling read FOpstelling write FOpstelling;
     property Position: TPlayerPosition read FPosition write SetPosition;
+    property Aanvoerder: Boolean read FAanvoerder write SetAanvoerder;
   end;
 
-function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aPosition: TPlayerPosition): TfrmOpstellingPlayer;
+function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aPosition: TPlayerPosition): TfrmOpstellingPlayer; overload;
+function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aAanvoerder: Boolean): TfrmOpstellingPlayer; overload;
 
 implementation
 uses
@@ -41,7 +46,13 @@ uses
 
 {$R *.DFM}
 
-
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     18-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
 function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aPosition: TPlayerPosition): TfrmOpstellingPlayer;
 begin
   Result := TfrmOpstellingPlayer.Create(nil);
@@ -51,6 +62,31 @@ begin
   Result.Position := aPosition;
 
   Result.Align := alNone;
+
+  Result.Show;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     18-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aAanvoerder: Boolean): TfrmOpstellingPlayer;
+begin
+  Result := TfrmOpstellingPlayer.Create(nil);
+
+  Result.Parent := aParent;
+  Result.Opstelling := aOpstelling;
+  Result.Position := pOnbekend;
+
+  Result.Align := alNone;
+
+  Result.Aanvoerder := aAanvoerder;
+
+  Result.cbOrder.Visible := FALSE;
+  Result.cbPlayer.Top := Result.cbOrder.Top;
 
   Result.Show;
 end;
@@ -68,6 +104,7 @@ var
   vCount: integer;
   vPlayerPosition: TPlayerPosition;
   vPlayer: TPlayer;
+  vToevoegen: Boolean;
 begin
   if (FOpstelling <> nil) and
      (FOpstelling.Selectie <> nil) then
@@ -82,22 +119,42 @@ begin
 
     for vCount := 0 to FOpstelling.Selectie.Players.Count - 1 do
     begin
-      vPlayer := TPlayer(FOpstelling.Selectie.Players[vCount]);
-
-      vItem := cbPlayer.Properties.Items.Add;
-      vItem.Value := vPlayer.ID;
-      vItem.Description := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, TPlayerOrder(cbOrder.EditValue))]);
-
+      vPlayer := TPlayer(FOpstelling.Selectie.Players[vCount]); 
       vPlayerPosition := FOpstelling.GetPositionOfPlayer(vPlayer);
 
-      if (vPlayerPosition = pOnbekend) or
-         (vPlayerPosition = Position) then
+      if (Position = pOnbekend) then
       begin
-        vItem.ImageIndex := -1;
+        if Aanvoerder then
+        begin
+          vToevoegen := (Ord(vPlayerPosition) >= Ord(pKP));
+        end
+        else
+        begin
+          //let op: groter dan KP omdat keeper geen SH-er mag zijn
+          vToevoegen := (Ord(vPlayerPosition) > Ord(pKP));
+        end;
       end
       else
       begin
-        vItem.ImageIndex := 202;
+        vToevoegen := TRUE;
+      end;
+
+      if (vToevoegen) then
+      begin
+        vItem := cbPlayer.Properties.Items.Add;
+        vItem.Value := vPlayer.ID;
+        vItem.Description := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, TPlayerOrder(cbOrder.EditValue))]);
+
+        if (Position = pOnbekend) or
+           (vPlayerPosition = pOnbekend) or
+           (vPlayerPosition = Position) then
+        begin
+          vItem.ImageIndex := -1;
+        end
+        else
+        begin
+          vItem.ImageIndex := 202;
+        end;
       end;
     end;
   end;
@@ -278,7 +335,10 @@ end;
 procedure TfrmOpstellingPlayer.cbOrderPropertiesValidate(Sender: TObject; var DisplayValue: Variant;
   var ErrorText: TCaption; var Error: Boolean);
 begin
-  ChangeOpstelling(Sender, DisplayValue, ErrorText, Error);
+  if (cbPlayer.EditValue <> Null) then
+  begin
+    ChangeOpstelling(Sender, DisplayValue, ErrorText, Error);
+  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -291,6 +351,7 @@ end;
 procedure TfrmOpstellingPlayer.ChangeOpstelling(aSender: TObject; var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
 var
   vPlayer: TPlayer;
+  vPlayerID: integer;
   vPlayerOrder: TPlayerOrder;
   vText: String;
 begin
@@ -304,38 +365,85 @@ begin
     begin
       vPlayer := nil;
     end;
-
-    if (vPlayer = nil) or
-       (FOpstelling.GetPositionOfPlayer(vPlayer) in [pOnbekend, Position]) then
+    
+    if (Position = pOnbekend) then
     begin
-      vPlayerOrder := TPlayerOrder(cbOrder.EditValue);
-      Error := FALSE;
-
-      FOpstelling.ZetPlayerIDOpPositie(cbPlayer.EditValue, Position, vPlayerOrder);
-
-      if (vPlayer = nil) then
+      if (Aanvoerder) then
       begin
-        vText := '';
+        FOpstelling.Aanvoerder := vPlayer;
       end
       else
       begin
-        vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
-      end;
-
-      if aSender = cbPlayer then
-      begin
-        DisplayValue := vText;
-      end
-      else
-      begin
-        cbPlayer.Properties.Items[cbPlayer.SelectedItem].Description := vText;
+        FOpstelling.Spelhervatter := vPlayer;
       end;
     end
     else
     begin
-      Error := TRUE;
-      ErrorText := 'Deze speler is reeds op een andere positie geselecteerd. Kies een andere speler.';
+      if (vPlayer = nil) or
+         (FOpstelling.GetPositionOfPlayer(vPlayer) in [pOnbekend, Position]) then
+      begin
+        vPlayerOrder := TPlayerOrder(cbOrder.EditValue);
+        Error := FALSE;
+
+        if (cbPlayer.EditValue <> Null) then
+        begin
+          vPlayerID := cbPlayer.EditValue;
+        end
+        else
+        begin
+          vPlayerID := 0;
+        end;
+        FOpstelling.ZetPlayerIDOpPositie(vPlayerID, Position, vPlayerOrder);
+
+        if (vPlayer = nil) then
+        begin
+          vText := '';
+        end
+        else
+        begin
+          vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
+        end;
+
+        if aSender = cbPlayer then
+        begin
+          DisplayValue := vText;
+        end
+        else
+        begin
+          cbPlayer.Properties.Items[cbPlayer.SelectedItem].Description := vText;
+        end;
+      end
+      else
+      begin
+        Error := TRUE;
+        ErrorText := 'Deze speler is reeds op een andere positie geselecteerd. Kies een andere speler.';
+      end;
     end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     18-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstellingPlayer.SetAanvoerder(const Value: Boolean);
+begin
+  FAanvoerder := Value;
+  
+  if (FAanvoerder) then
+  begin
+    Left := 20;
+    Top := 210;
+    lblCaption.Caption := 'Aanvoerder';
+  end
+  else
+  begin
+    Left := 170;
+    Top := 210;
+    lblCaption.Caption := 'Spelhervatter';
   end;
 end;
 
