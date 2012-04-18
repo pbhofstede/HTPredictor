@@ -12,6 +12,7 @@ type
 function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
 function OrderToString(aOrder: TPlayerOrder): String;
+function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
 
 implementation
 
@@ -178,4 +179,77 @@ begin
       Result := 'Order onbekend';
   end;
 end;
+
+{-----------------------------------------------------------------------------
+  Procedure: PlayerPosToRatingPos
+  Author:    Harry
+  Date:      18-apr-2012
+  Arguments: aPosition:TPlayerPosition; aOrder: TPlayerOrder
+  Result:    String
+-----------------------------------------------------------------------------}
+function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
+begin
+  //  TPlayerPosition = (pOnbekend, pKP, pRB, pRCV, pCV, pLCV, pLB, pRW, pRCM, pCM, pLCM, pLW, pRCA, pCA, pLCA);
+  //TPlayerOrder = (oNormaal, oVerdedigend, oAanvallend, oNaarVleugel, oNaarMidden);
+  result := '';
+
+  case aPosition of
+    pKP: result := 'K';
+    pRB, pLB:
+    begin
+      case aOrder of
+        oNormaal : result := 'NWB';
+        oVerdedigend : result := 'DWB';
+        oAanvallend : result := 'OWB';
+        oNaarMidden : result := 'WBTM';
+      end;
+    end;
+    pRCV, pCV, pLCV:
+    begin
+      case aOrder of
+        oNormaal: result := 'CD';
+        oAanvallend : result := 'OCD';
+        oNaarVleugel : result := 'CDTW';
+      end;
+    end;
+    pRCM, pCM, pLCM:
+    begin
+      case aOrder of
+        oNormaal: result := 'IM';
+        oAanvallend : result := 'OIM';
+        oVerdedigend: result := 'DIM';
+        oNaarVleugel : result := 'IMTW';
+      end;
+    end;
+    pRW, pLW:
+    begin
+      case aOrder of
+        oNormaal : result := 'NW';
+        oAanvallend: result := 'OW';
+        oVerdedigend: result := 'DW';
+        oNaarMidden : result := 'WTM';
+      end;
+    end;
+    pRCA, pLCA, pCA:
+    begin
+      case aOrder of
+        oNormaal: result := 'FW';
+        oVerdedigend:
+        begin
+          if (aSpec = 'T') then
+          begin
+            result := 'TDFW';
+          end
+          else
+          begin
+            result := 'DFW';
+          end;
+        end;
+        oNaarVleugel: result := 'FTW';
+      end;
+    end;
+  end;
+end;
+
+
 end.

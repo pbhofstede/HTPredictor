@@ -143,7 +143,8 @@ begin
       begin
         vItem := cbPlayer.Properties.Items.Add;
         vItem.Value := vPlayer.ID;
-        vItem.Description := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, TPlayerOrder(cbOrder.EditValue))]);
+        vItem.Description := Format('%s %.2f', [vPlayer.Naam,
+          vPlayer.GetPositionRating(Position, TPlayerOrder(cbOrder.EditValue))]);
 
         if (Position = pOnbekend) or
            (vPlayerPosition = pOnbekend) or

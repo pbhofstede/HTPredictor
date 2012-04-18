@@ -3,18 +3,20 @@ unit uSelectie;
 interface
 
 uses
-  dxmdaset, Contnrs, uPlayer;
+  dxmdaset, Contnrs, uPlayer, uRatingBijdrages;
 
 type
   TSelectie = class
   private
     FNaam: String;
     FPlayers: TObjectList;
+    FRatingBijdrages: TRatingBijdrages;
   public                                   
     function GetPlayer(aID:integer):TPlayer;
     procedure LoadFromMemDataSet(aDataSet: TdxMemData; aRefresh: boolean);
     property Players:TObjectList read FPlayers write FPlayers;
     property Naam:String read FNaam write FNaam;
+    property RatingBijdrages: TRatingBijdrages read FRatingBijdrages write FRatingBijdrages;
     constructor Create;
     destructor Destroy;override;
   end;
@@ -108,6 +110,7 @@ begin
         begin
           vPlayer := TPlayer.Create;
           vPlayer.ID := FieldByName('RecID').asInteger;
+          vPlayer.Selectie := Self;
 
           Players.Add(vPlayer);
         end;

@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel, uSelectie,
-  cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridCustomView, cxGridCustomTableView, cxGridTableView, uRatingBijdrages,
   cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner;
 
 type
@@ -32,10 +32,12 @@ type
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
+    FRatingBijdrages: TRatingBijdrages;
     { Private declarations }
   public
     { Public declarations }
     function ToonSpelersGrids(aPanel: TPanel; aTabSheet: TcxTabSheet):TSelectie;
+    property RatingBijdrages:TRatingBijdrages read FRatingBijdrages write FRatingBijdrages;
     property Selectie_Eigen: TSelectie read FSelectie_Eigen write FSelectie_Eigen;
     property Selectie_Tegen: TSelectie read FSelectie_Tegen write FSelectie_Tegen;
   end;
@@ -79,8 +81,13 @@ end;
 procedure TfrmHTPredictor.FormCreate(Sender: TObject);
 begin
   cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
+
+  FRatingBijdrages := TRatingBijdrages.Create;
+
   FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
+  FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
+  FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
 
   FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen);
 end;

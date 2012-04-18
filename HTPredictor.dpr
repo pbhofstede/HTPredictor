@@ -11,7 +11,9 @@ uses
   uPlayer in 'uPlayer.pas',
   FormOpstelling in 'FormOpstelling.pas' {frmOpstelling},
   FormOpstellingPlayer in 'FormOpstellingPlayer.pas' {frmOpstellingPlayer},
-  uOpstelling in 'uOpstelling.pas';
+  uOpstelling in 'uOpstelling.pas',
+  uRatingBijdrages in 'uRatingBijdrages.pas',
+  uRatingBijdrage in 'uRatingBijdrage.pas';
 
 {$R *.RES}
 
