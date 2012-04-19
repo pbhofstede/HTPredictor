@@ -16,6 +16,16 @@ type
     lblRechterVerdediging: TLabel;
     Label1: TLabel;
     lblCV: TLabel;
+    lblRA: TLabel;
+    lblLinkerAanval: TLabel;
+    lblLA: TLabel;
+    lblRechterAanval: TLabel;
+    lblCentraleAanval: TLabel;
+    lblCA: TLabel;
+    lblMiddenveld: TLabel;
+    lblIM: TLabel;
+    lblHatStatsCaption: TLabel;
+    lblHatStats: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -43,7 +53,7 @@ function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie): TfrmOpstell
 
 implementation
 uses
-  uHTPredictor;
+  uHTPredictor, Math;
 
 {$R *.DFM}
 
@@ -104,7 +114,7 @@ begin
 
   FSelectie := Value;
 
-  FOpstelling := TOpstelling.Create(Self);
+  FOpstelling := TOpstelling.Create(Self, zWonderbaarlijk, wThuis, 8.3);
   FOpstelling.Selectie := Selectie;
 
   FOpstellingPlayerArray[1] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pKP);
@@ -233,9 +243,21 @@ end;
 
 procedure TfrmOpstelling.UpdateRatings;
 begin
-  lblRV.Caption := Format('%.2f', [FOpstelling.RV / 4]); 
+  lblIM.Caption := Format('%.2f', [FOpstelling.MID / 4]);
+  lblRV.Caption := Format('%.2f', [FOpstelling.RV / 4]);
   lblCV.Caption := Format('%.2f', [FOpstelling.CV / 4]);
   lblLV.Caption := Format('%.2f', [FOpstelling.LV / 4]);
+  lblRA.Caption := Format('%.2f', [FOpstelling.RA / 4]);
+  lblCA.Caption := Format('%.2f', [FOpstelling.CA / 4]);
+  lblLA.Caption := Format('%.2f', [FOpstelling.LA / 4]);
+
+  lblHatStats.Caption := Format('%d', [Ceil((FOpstelling.MID * 3)
+                                             + FOpstelling.RV
+                                             + FOpstelling.CV
+                                             + FOpstelling.LV
+                                             + FOpstelling.RA
+                                             + FOpstelling.CA
+                                             + FOpstelling.LA)]);
 end;
 
 end.

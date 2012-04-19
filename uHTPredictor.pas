@@ -8,6 +8,11 @@ uses
 type
   TPlayerPosition = (pOnbekend, pKP, pRB, pRCV, pCV, pLCV, pLB, pRW, pRCM, pCM, pLCM, pLW, pRCA, pCA, pLCA);
   TPlayerOrder = (oNormaal, oVerdedigend, oAanvallend, oNaarVleugel, oNaarMidden);
+  TTeamZelfvertrouwen = (zNietBestaand, zRampzalig, zWaardeloos, zSlecht, zBehoorlijk, zSterk, zWonderbaarlijk, zLichtelijkOverdreven, zOverdreven, zCompleetOverdreven);
+  TOpstellingMotivatie = (mNormaal, mPIC, mMOTS);
+  TOpstellingTactiek = (tNormaal, tPressie, tCounter, tCentrumAanval, tVleugelAanval, tCreatiefSpel, tAfstandsSchoten);
+  TOpstellingCoach = (cNeutraal, cVerdedigend, cAanvallend);
+  TWedstrijdPlaats = (wThuis, wDerby, wUit);
 
 function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
@@ -248,6 +253,11 @@ begin
         oNaarVleugel: result := 'FTW';
       end;
     end;
+  end;
+
+  if (Result = '') then
+  begin
+    ShowMessage('geen result bij PlayerPosToRatingPos!');
   end;
 end;
 

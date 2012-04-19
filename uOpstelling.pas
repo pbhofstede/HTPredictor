@@ -14,16 +14,37 @@ type
     FOpstellingOrderArray: array[1..14] of TPlayerOrder;
     FSpelhervatter: TPlayer;
     FAanvoerder: TPlayer;
+    FZelfvertrouwen: TTeamZelfvertrouwen;
+    FMotivatie: TOpstellingMotivatie;
+    FTactiek: TOpstellingTactiek;
+    FCoach: TOpstellingCoach;
+    FWedstrijdPlaats: TWedstrijdPlaats;
+    FTS: double;
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
     procedure UpdateRatings;
+    procedure SetZelfvertrouwen(const Value: TTeamZelfvertrouwen);
+    procedure SetMotivatie(const Value: TOpstellingMotivatie);
+    procedure SetTactiek(const Value: TOpstellingTactiek);
+    procedure SetCoach(const Value: TOpstellingCoach);
+    function VerrekenTypeCoach(aRating: double; aVerdediging: boolean): double;
+    procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
+    procedure SetTS(const Value: double);
+    function VerwerkTS(aRating: double): double;
   public
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
     property Aanvoerder: TPlayer read FAanvoerder write SetAanvoerder;
+    property Zelfvertrouwen: TTeamZelfvertrouwen read FZelfvertrouwen write SetZelfvertrouwen;
+    property WedstrijdPlaats: TWedstrijdPlaats read FWedstrijdPlaats write SetWedstrijdPlaats;
+    property Motivatie: TOpstellingMotivatie read FMotivatie write SetMotivatie;
+    property Tactiek: TOpstellingTactiek read FTactiek write SetTactiek;
+    property Coach: TOpstellingCoach read FCoach write SetCoach;
+    property TS: double read FTS write SetTS;
     
-    constructor Create(aFormOpstelling: TForm);
+    constructor Create(aFormOpstelling: TForm; aZelfvertrouwen: TTeamZelfvertrouwen; aWedstrijdPlaats: TWedstrijdPlaats;
+      aTS: double);
     destructor Destroy; override;
 
     function GetPositionOfPlayer(aPlayer: TPlayer): TPlayerPosition;
@@ -31,13 +52,18 @@ type
     function AantalPositiesBezet: integer;
     function RV: double;          
     function CV: double;             
-    function LV: double;
+    function LV: double;  
+    function RA: double;
+    function CA: double;
+    function LA: double;    
+    function MID: double;
+    function TeamZelfvertrouwen: double;
   end;
 
 
 implementation
 uses
-  FormOpstelling, uRatingBijdrage;
+  FormOpstelling, uRatingBijdrage, Math;
 
 
 { TOpstelling }
@@ -70,9 +96,85 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-constructor TOpstelling.Create(aFormOpstelling: TForm);
+function TOpstelling.CA: double;
+var
+  vCount,
+  vCentraalCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      //verminderde centrale bijdrage van de aanvallers
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCA)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCA)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCA)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.94);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.865);
+          else   Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+        end;
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        //verminderde centrale aanval bijdrage van de mids
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.92);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.82);
+          else   Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+        end;
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+      end;
+    end;
+  end;
+
+  Result := VerrekenTypeCoach(Result, FALSE);
+end;
+
+constructor TOpstelling.Create(aFormOpstelling: TForm; aZelfvertrouwen: TTeamZelfvertrouwen;
+  aWedstrijdPlaats: TWedstrijdPlaats; aTS: double);
 begin
   FFormOpstelling := aFormOpstelling;
+  FMotivatie := mNormaal;
+  FTactiek := tNormaal;
+  FZelfvertrouwen := aZelfvertrouwen;
+  FWedstrijdPlaats := aWedstrijdPlaats;
+  FCoach := cNeutraal;
+  FTS := aTS;
 end;
 
 {-----------------------------------------------------------------------------
@@ -84,7 +186,8 @@ end;
 -----------------------------------------------------------------------------}
 function TOpstelling.CV: double;
 var
-  vCount: integer;
+  vCount,
+  vCentraalCount: integer;
 begin
   Result := 0;
 
@@ -92,9 +195,62 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+      //verminderde centrale verdediging bijdrage van de verdedigers
+      if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCV)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCV)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCV)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.96);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.91);
+          else   Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+        end;
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        //verminderde centrale verdediging bijdrage van de mids
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.92);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.82);
+          else   Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+        end;
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+      end;
     end;
   end;
+
+  Result := VerrekenTypeCoach(Result, TRUE);
 end;
 
 destructor TOpstelling.Destroy;
@@ -136,6 +292,24 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+function TOpstelling.LA: double;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage;
+    end;
+  end;
+
+  
+  Result := VerrekenTypeCoach(Result, FALSE);
+end;
+
 function TOpstelling.LV: double;
 var
   vCount: integer;
@@ -149,6 +323,132 @@ begin
       Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
     end;
   end;
+
+  Result := VerrekenTypeCoach(Result, TRUE);
+end;
+
+function TOpstelling.MID: double;
+var
+  vCount,
+  vCentraalCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin     
+      //verminderde middenveld bijdrage van de mids
+      if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.92);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.82);
+          else   Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+        end;
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        //verminderde middenveld bijdrage van de verdedigers
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCV)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCV)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCV)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.96);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.91);
+          else   Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+        end;
+      end
+      else if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        //verminderde middenveldbijdrage van de aanvallers
+        vCentraalCount := 0;
+
+        if (FOpstellingPlayerArray[Ord(pRCA)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pCA)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+        if (FOpstellingPlayerArray[Ord(pLCA)] <> nil) then
+        begin
+          Inc(vCentraalCount);
+        end;
+
+        case vCentraalCount of
+          2:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.94);
+          3:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.865);
+          else   Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+        end;
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+      end;
+    end;
+  end;
+
+  Result := VerwerkTS(Result);
+
+  case WedstrijdPlaats of
+    wThuis: Result := Result * 1.199529;
+    wDerby: Result := Result * 1.113699;
+    wUit:   Result := Result * 1;
+  end;
+
+  case Motivatie of
+    mPIC:     Result := Result * 0.839949;
+    mMOTS:    Result := Result * 1.10965;
+    mNormaal: Result := Result * 1;
+  end;
+end;
+
+function TOpstelling.RA: double;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage;
+    end;
+  end;
+
+  Result := Result * TeamZelfvertrouwen;
+
+  Result := VerrekenTypeCoach(Result, FALSE);
 end;
 
 function TOpstelling.RV: double;
@@ -164,6 +464,8 @@ begin
       Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
     end;
   end;
+
+  Result := VerrekenTypeCoach(Result, TRUE);
 end;
 
 procedure TOpstelling.SetAanvoerder(const Value: TPlayer);
@@ -185,6 +487,24 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+procedure TOpstelling.SetCoach(const Value: TOpstellingCoach);
+begin
+  if (FCoach <> Value) then
+  begin
+    FCoach := Value;
+    UpdateRatings;
+  end;
+end;
+
+procedure TOpstelling.SetMotivatie(const Value: TOpstellingMotivatie);
+begin
+  if (FMotivatie <> Value) then
+  begin
+    FMotivatie := Value;
+    UpdateRatings;
+  end;
+end;
+
 procedure TOpstelling.SetSelectie(const Value: TSelectie);
 begin
   FSelectie := Value;
@@ -216,9 +536,87 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+procedure TOpstelling.SetTactiek(const Value: TOpstellingTactiek);
+begin
+  if (FTactiek <> Value) then
+  begin
+    FTactiek := Value;
+    UpdateRatings;
+  end;
+end;
+
+procedure TOpstelling.SetTS(const Value: double);
+begin
+  if (FTS <> Value) then
+  begin
+    FTS := Value;
+    UpdateRatings;
+  end;
+end;
+
+procedure TOpstelling.SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
+begin
+  if (FWedstrijdPlaats <> Value) then
+  begin
+    FWedstrijdPlaats := Value;
+    UpdateRatings;
+  end;
+end;
+
+procedure TOpstelling.SetZelfvertrouwen(const Value: TTeamZelfvertrouwen);
+begin
+  if (FZelfvertrouwen <> Value) then
+  begin
+    FZelfvertrouwen := Value;
+    UpdateRatings;
+  end;
+end;
+
+function TOpstelling.TeamZelfvertrouwen: double;
+begin
+  Result := 1 + (Ord(FZelfvertrouwen) * 0.05);
+end;
+
 procedure TOpstelling.UpdateRatings;
 begin
-  TfrmOpstelling(FFormOpstelling).UpdateRatings;
+  if (FFormOpstelling <> nil) then
+  begin
+    TfrmOpstelling(FFormOpstelling).UpdateRatings;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     19-04-2012
+  Doel:
+
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TOpstelling.VerrekenTypeCoach(aRating: double; aVerdediging: boolean): double;
+begin
+  Result := aRating;
+
+  if aVerdediging then
+  begin
+    case Coach of
+      cVerdedigend: Result := aRating * ((2 * 1.197332) + 1.196307) / 3;
+      cNeutraal:    Result := aRating * 0.94;
+      cAanvallend:  Result := aRating * 0.94;
+    end;
+  end
+  else
+  begin
+    case Coach of
+      cVerdedigend: Result := aRating * 0.928;
+      cNeutraal:    Result := aRating * 1.05;
+      cAanvallend:  Result := aRating * ((2 * 1.133359) + 1.135257) / 3;
+    end;
+  end;
+end;
+
+function TOpstelling.VerwerkTS(aRating: double): double;
+begin
+  Result := aRating * Power((FTS - 0.5) * 0.2, 0.417779);
 end;
 
 procedure TOpstelling.ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
@@ -261,19 +659,10 @@ begin
     vRating := Selectie.RatingBijdrages.GetRatingBijdrageByPositie(vPos);
     if (vRating <> nil) then
     begin
-      // Rating berekenen
-  //    result :=
-  //      (vRating.MID_PM * vPlayer.PM) +
-  //      (vRating.CD_GK * vPlayer.GK) +
-  //      (vRating.CD_DEF * vPlayer.DEF) +
-  //      (vRating.WB_GK * vPlayer.GK) +
-  //      (vRating.WB_DEF * vPlayer.DEF) +
-  //      (vRating.CA_PASS * vPlayer.PAS) +
-  //      (vRating.CA_SC * vPlayer.SCO) +
-  //      (vRating.WING_PASS * vPlayer.PAS) +
-  //      (vRating.WING_WING * vPlayer.WNG) +
-  //      (vRating.WING_SC * vPlayer.SCO) +
-  //      (vRating.WING_SC_OTHER * vPlayer.SCO);
+      //MID_Bijdrage
+      vPlayer.MID_Bijdrage :=
+        ((vRating.MID_PM * vPlayer.PM))
+        * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 
       //DEF_R_Bijdrage
       if (aPositie in [pCV, pCM]) then
@@ -320,6 +709,68 @@ begin
         ((vRating.CD_DEF * vPlayer.DEF) +
          (vRating.CD_GK * vPlayer.GK))
         * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+
+      //AANV_R_Bijdrage
+      if (aPositie in [pCM]) then
+      begin
+        vPlayer.AANV_R_Bijdrage :=
+          (((vRating.WA_PASS * vPlayer.PAS) / 2) +
+            (vRating.WA_WING * vPlayer.WNG) +
+            (vRating.WA_SC * vPlayer.SCO))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end
+      else if (aPositie in [pLW, pLCM, pLB]) then
+      begin
+        vPlayer.AANV_R_Bijdrage := 0;
+      end
+      else if (aPositie = pLCA) and (aPlayerOrder = oNaarVleugel) then
+      begin
+        vPlayer.AANV_R_Bijdrage :=
+          (vRating.WA_SC_OTHER * vPlayer.SCO)
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end
+      else
+      begin
+        vPlayer.AANV_R_Bijdrage :=
+          ((vRating.WA_PASS * vPlayer.PAS) +
+           (vRating.WA_WING * vPlayer.WNG) +
+           (vRating.WA_SC * vPlayer.SCO))
+         * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end;
+
+      //AANV_L_Bijdrage
+      if (aPositie in [pCM]) then
+      begin
+        vPlayer.AANV_L_Bijdrage :=
+          (((vRating.WA_PASS * vPlayer.PAS) / 2) +
+            (vRating.WA_WING * vPlayer.WNG) +
+            (vRating.WA_SC * vPlayer.SCO))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end
+      else if (aPositie in [pRW, pRCM, pRB]) then
+      begin
+        vPlayer.AANV_L_Bijdrage := 0;
+      end
+      else if (aPositie = pRCA) and (aPlayerOrder = oNaarVleugel) then
+      begin
+        vPlayer.AANV_L_Bijdrage :=
+          (vRating.WA_SC_OTHER * vPlayer.SCO)
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end
+      else
+      begin
+        vPlayer.AANV_L_Bijdrage :=
+          ((vRating.WA_PASS * vPlayer.PAS) +
+           (vRating.WA_WING * vPlayer.WNG) +
+           (vRating.WA_SC * vPlayer.SCO))
+         * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end;
+
+      //AANV_C_Bijdrage
+      vPlayer.AANV_C_Bijdrage :=
+          ((vRating.CA_PASS * vPlayer.PAS) +
+           (vRating.CA_SC * vPlayer.SCO))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
     end;
   end;
 

@@ -16,7 +16,7 @@ type
     function CalcBijdrage(aPlayer: TPlayer; aPosition: TPlayerPosition;
       aOrder: TPlayerOrder):double;
     procedure LoadFlatterManRatings;
-    function GetRatingBijdrageByPositie(aPositie:String):TRatingBijdrage;
+    function GetRatingBijdrageByPositie(aPositie: String; aGiveWarning: Boolean = TRUE):TRatingBijdrage;
     property Count: integer read GetCount;
     property RatingBijdrage[aIndex:integer]:TRatingBijdrage read GetRatingBijdrage;
     constructor Create;
@@ -26,7 +26,7 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils, Dialogs;
 
 { TRatingBijdrages }
 
@@ -88,8 +88,7 @@ end;
   Arguments: aPositie: String
   Result:    TRatingBijdrage
 -----------------------------------------------------------------------------}
-function TRatingBijdrages.GetRatingBijdrageByPositie(
-  aPositie: String): TRatingBijdrage;
+function TRatingBijdrages.GetRatingBijdrageByPositie(aPositie: String; aGiveWarning: Boolean = TRUE): TRatingBijdrage;
 var
   i:integer;
 begin
@@ -106,6 +105,12 @@ begin
       inc(i);
     end;
   end;
+
+  if (Result = nil) and
+     (aGiveWarning) then
+  begin
+    ShowMessage('Geen result bij GetRatingBijdrageByPositie!');
+  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -115,10 +120,9 @@ end;
   Arguments: aPositie: String
   Result:    TRatingBijdrage
 -----------------------------------------------------------------------------}
-function TRatingBijdrages.AddRatingBijdrage(
-  aPositie: String): TRatingBijdrage;
+function TRatingBijdrages.AddRatingBijdrage(aPositie: String): TRatingBijdrage;
 begin
-  result := GetRatingBijdrageByPositie(aPositie);
+  result := GetRatingBijdrageByPositie(aPositie, FALSE);
   if (result = nil) then
   begin
     result := TRatingBijdrage.Create;
@@ -163,35 +167,35 @@ begin
   vRating.MID_PM := 0.088027;
   vRating.CD_DEF := 0.468513;
   vRating.WB_DEF := 0.656592;
-  vRating.WING_WING := 0.213672;
+  vRating.WA_WING := 0.213672;
 
   // Normale vleugelverdediger
   vRating := AddRatingBijdrage('NWB');
   vRating.MID_PM := 0.078229;
   vRating.CD_DEF := 0.280401;
   vRating.WB_DEF := 0.921337;
-  vRating.WING_WING := 0.399755;
+  vRating.WA_WING := 0.399755;
 
   // Offensieve vleugelverdediger
   vRating := AddRatingBijdrage('OWB');
   vRating.MID_PM := 0.107886;
   vRating.CD_DEF := 0.238437;
   vRating.WB_DEF := 0.69943;
-  vRating.WING_WING := 0.487884;
+  vRating.WA_WING := 0.487884;
 
   // Defensieve vleugelverdediger
   vRating := AddRatingBijdrage('DWB');
   vRating.MID_PM := 0.030981;
   vRating.CD_DEF := 0.314461;
   vRating.WB_DEF := 1.002422;
-  vRating.WING_WING := 0.255317;
+  vRating.WA_WING := 0.255317;
 
   // Vleugelverdediger 'Naar het Midden'
   vRating := AddRatingBijdrage('WBTM');
   vRating.MID_PM := 0.078229;
   vRating.CD_DEF := 0.426132;
   vRating.WB_DEF := 0.688952;
-  vRating.WING_WING := 0.255317;
+  vRating.WA_WING := 0.255317;
 
   // Centrale middenvelder
   vRating := AddRatingBijdrage('IM');
@@ -199,7 +203,7 @@ begin
   vRating.CD_DEF := 0.24966;
   vRating.WB_DEF := 0.189319;
   vRating.CA_PASS := 0.193137;
-  vRating.WING_PASS := 0.189444;
+  vRating.WA_PASS := 0.189444;
 
   // Aanvallende centrale middenvelder
   vRating := AddRatingBijdrage('OIM');
@@ -207,7 +211,7 @@ begin
   vRating.CD_DEF := 0.134608;
   vRating.WB_DEF := 0.102543;
   vRating.CA_PASS := 0.287063;
-  vRating.WING_PASS := 0.187746;
+  vRating.WA_PASS := 0.187746;
 
   // Verdedigende centrale middenvelder
   vRating := AddRatingBijdrage('DIM');
@@ -215,7 +219,7 @@ begin
   vRating.CD_DEF := 0.3705;
   vRating.WB_DEF := 0.27115;
   vRating.CA_PASS := 0.130214;
-  vRating.WING_PASS := 0.121811;
+  vRating.WA_PASS := 0.121811;
 
   // Centrale middenvelder 'Naar de Vleugel'
   vRating := AddRatingBijdrage('IMTW');
@@ -223,8 +227,8 @@ begin
   vRating.CD_DEF := 0.217029;
   vRating.WB_DEF := 0.249179;
   vRating.CA_PASS := 0.134745;
-  vRating.WING_PASS := 0.235698;
-  vRating.WING_WING := 0.428863;
+  vRating.WA_PASS := 0.235698;
+  vRating.WA_WING := 0.428863;
 
   // Vleugelspeler
   vRating := AddRatingBijdrage('NW');
@@ -232,8 +236,8 @@ begin
   vRating.CD_DEF := 0.125486;
   vRating.WB_DEF := 0.349951;
   vRating.CA_PASS := 0.061538;
-  vRating.WING_PASS := 0.182107;
-  vRating.WING_WING := 0.674398;
+  vRating.WA_PASS := 0.182107;
+  vRating.WA_WING := 0.674398;
 
   // Aanvallende vleugelspeler
   vRating := AddRatingBijdrage('OW');
@@ -241,8 +245,8 @@ begin
   vRating.CD_DEF := 0.050401;
   vRating.WB_DEF := 0.172133;
   vRating.CA_PASS := 0.080314;
-  vRating.WING_PASS := 0.213452;
-  vRating.WING_WING := 0.789342;
+  vRating.WA_PASS := 0.213452;
+  vRating.WA_WING := 0.789342;
 
   // Verdedigende vleugelspeler
   vRating := AddRatingBijdrage('DW');
@@ -250,8 +254,8 @@ begin
   vRating.CD_DEF := 0.156868;
   vRating.WB_DEF := 0.463477;
   vRating.CA_PASS := 0.031035;
-  vRating.WING_PASS := 0.15016;
-  vRating.WING_WING := 0.571036;
+  vRating.WA_PASS := 0.15016;
+  vRating.WA_WING := 0.571036;
 
   // Vleugelspeler 'Naar het Midden'
   vRating := AddRatingBijdrage('WTM');
@@ -259,43 +263,43 @@ begin
   vRating.CD_DEF := 0.152469;
   vRating.WB_DEF := 0.284824;
   vRating.CA_PASS := 0.08768;
-  vRating.WING_PASS := 0.115254;
-  vRating.WING_WING := 0.445048;
+  vRating.WA_PASS := 0.115254;
+  vRating.WA_WING := 0.445048;
 
   // Aanvaller
   vRating := AddRatingBijdrage('FW');
   vRating.CA_PASS := 0.207589;
   vRating.CA_SC := 0.563149;
-  vRating.WING_PASS := 0.10029;
-  vRating.WING_WING := 0.142456;
-  vRating.WING_SC := 0.184292;
+  vRating.WA_PASS := 0.10029;
+  vRating.WA_WING := 0.142456;
+  vRating.WA_SC := 0.184292;
 
   // Verdedigende aanvaller
   vRating := AddRatingBijdrage('DFW');
   vRating.MID_PM := 0.217011;
   vRating.CA_PASS := 0.322422;
   vRating.CA_SC := 0.346607;
-  vRating.WING_PASS := 0.186512;
-  vRating.WING_WING := 0.097975;
-  vRating.WING_SC := 0.095023;
+  vRating.WA_PASS := 0.186512;
+  vRating.WA_WING := 0.097975;
+  vRating.WA_SC := 0.095023;
 
   // Technische verdedigende aanvaller
   vRating := AddRatingBijdrage('TDFW');
   vRating.MID_PM := 0.21701;
   vRating.CA_PASS := 0.470666;
   vRating.CA_SC := 0.346607;
-  vRating.WING_PASS := 0.220424;
-  vRating.WING_WING := 0.097975;
-  vRating.WING_SC := 0.095023;
+  vRating.WA_PASS := 0.220424;
+  vRating.WA_WING := 0.097975;
+  vRating.WA_SC := 0.095023;
 
   // Aanvaller 'Naar de vleugel'
   vRating := AddRatingBijdrage('FTW');
   vRating.CA_PASS := 0.146863;
   vRating.CA_SC := 0.342343;
-  vRating.WING_PASS := 0.148148;
-  vRating.WING_WING := 0.392185;
-  vRating.WING_SC := 0.371022;
-  vRating.WING_SC_OTHER := 0.151325;
+  vRating.WA_PASS := 0.148148;
+  vRating.WA_WING := 0.392185;
+  vRating.WA_SC := 0.371022;
+  vRating.WA_SC_OTHER := 0.151325;
   {TODO: vRating.WING_WG_OTHER ook implementeren??} 
 end;
 
@@ -328,10 +332,10 @@ begin
       (vRating.WB_DEF * aPlayer.DEF) +
       (vRating.CA_PASS * aPlayer.PAS) +
       (vRating.CA_SC * aPlayer.SCO) +
-      (vRating.WING_PASS * aPlayer.PAS) +
-      (vRating.WING_WING * aPlayer.WNG) +
-      (vRating.WING_SC * aPlayer.SCO) +
-      (vRating.WING_SC_OTHER * aPlayer.SCO);
+      (vRating.WA_PASS * aPlayer.PAS) +
+      (vRating.WA_WING * aPlayer.WNG) +
+      (vRating.WA_SC * aPlayer.SCO) +
+      (vRating.WA_SC_OTHER * aPlayer.SCO);
 
     Result := Result * aPlayer.GetConditieFactor * aPlayer.GetFormFactor * aPlayer.GetXPFactor;
   end;

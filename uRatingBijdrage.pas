@@ -13,10 +13,10 @@ type
     FWB_DEF: double;
     FCA_PASS: double;
     FCA_SC: double;
-    FWING_PASS: double;
-    FWING_SC_OTHER: double;
-    FWING_WING: double;
-    FWING_SC: double;
+    FWA_PASS: double;
+    FWA_SC_OTHER: double;
+    FWA_WING: double;
+    FWA_SC: double;
     procedure SetPositie(const Value: String);
     function GetCount: integer;
   public
@@ -28,10 +28,10 @@ type
     property WB_DEF: double read FWB_DEF write FWB_DEF;
     property CA_PASS: double read FCA_PASS write FCA_PASS;
     property CA_SC: double read FCA_SC write FCA_SC;
-    property WING_PASS: double read FWING_PASS write FWING_PASS;
-    property WING_WING: double read FWING_WING write FWING_WING;
-    property WING_SC: double read FWING_SC write FWING_SC;
-    property WING_SC_OTHER: double read FWING_SC_OTHER write FWING_SC_OTHER;
+    property WA_PASS: double read FWA_PASS write FWA_PASS;
+    property WA_WING: double read FWA_WING write FWA_WING;
+    property WA_SC: double read FWA_SC write FWA_SC;
+    property WA_SC_OTHER: double read FWA_SC_OTHER write FWA_SC_OTHER;
     property Positie:String read FPositie write SetPositie;
   end;
 
@@ -85,16 +85,16 @@ begin
   if (CA_SC > 0) then
     inc(result);
 
-  if (WING_PASS > 0) then
+  if (WA_PASS > 0) then
     inc(result);
 
-  if (WING_WING > 0) then
+  if (WA_WING > 0) then
     inc(result);
 
-  if (WING_SC > 0) then
+  if (WA_SC > 0) then
     inc(result);
 
-  if (WING_SC_OTHER > 0) then
+  if (WA_SC_OTHER > 0) then
     inc(result);
 end;
 

@@ -25,7 +25,6 @@ object frmOpstelling: TfrmOpstelling
     Height = 525
     Align = alRight
     BevelOuter = bvNone
-    Caption = 'pnlRatings'
     TabOrder = 0
     object lblRV: TLabel
       Left = 136
@@ -65,6 +64,76 @@ object frmOpstelling: TfrmOpstelling
     object lblCV: TLabel
       Left = 136
       Top = 70
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblRA: TLabel
+      Left = 136
+      Top = 106
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblLinkerAanval: TLabel
+      Left = 20
+      Top = 142
+      Width = 64
+      Height = 13
+      Caption = 'Linker aanval'
+    end
+    object lblLA: TLabel
+      Left = 136
+      Top = 142
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblRechterAanval: TLabel
+      Left = 20
+      Top = 106
+      Width = 73
+      Height = 13
+      Caption = 'Rechter aanval'
+    end
+    object lblCentraleAanval: TLabel
+      Left = 20
+      Top = 124
+      Width = 74
+      Height = 13
+      Caption = 'Centrale aanval'
+    end
+    object lblCA: TLabel
+      Left = 136
+      Top = 124
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblMiddenveld: TLabel
+      Left = 20
+      Top = 34
+      Width = 55
+      Height = 13
+      Caption = 'Middenveld'
+    end
+    object lblIM: TLabel
+      Left = 136
+      Top = 34
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblHatStatsCaption: TLabel
+      Left = 20
+      Top = 162
+      Width = 41
+      Height = 13
+      Caption = 'HatStats'
+    end
+    object lblHatStats: TLabel
+      Left = 136
+      Top = 162
       Width = 40
       Height = 13
       AutoSize = False
