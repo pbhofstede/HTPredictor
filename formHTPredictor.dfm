@@ -1,6 +1,6 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 365
-  Top = 92
+  Left = 480
+  Top = 257
   Width = 1018
   Height = 673
   Caption = 'HT Predictor'
@@ -10,6 +10,7 @@ object frmHTPredictor: TfrmHTPredictor
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
@@ -19,11 +20,11 @@ object frmHTPredictor: TfrmHTPredictor
     Left = 0
     Top = 0
     Width = 1002
-    Height = 635
+    Height = 615
     ActivePage = cxtbEigenTeam
     Align = alClient
     TabOrder = 0
-    ClientRectBottom = 635
+    ClientRectBottom = 615
     ClientRectRight = 1002
     ClientRectTop = 24
     object cxtbTegenstander: TcxTabSheet
@@ -75,7 +76,7 @@ object frmHTPredictor: TfrmHTPredictor
         Left = 0
         Top = 317
         Width = 1002
-        Height = 294
+        Height = 274
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Scherm voor opstelling'
@@ -92,11 +93,11 @@ object frmHTPredictor: TfrmHTPredictor
           Left = 0
           Top = 3
           Width = 1002
-          Height = 291
+          Height = 271
           ActivePage = cxTabSheet1
           Align = alClient
           TabOrder = 0
-          ClientRectBottom = 291
+          ClientRectBottom = 271
           ClientRectRight = 1002
           ClientRectTop = 24
           object cxTabSheet1: TcxTabSheet
@@ -7953,5 +7954,22 @@ object frmHTPredictor: TfrmHTPredictor
       C00F800100000001FF9F800100000003FFBF800100000E03FFFF80010000FF07
       FFFFE00F0000FFCFFFFFFFFF0000FFFF00000000000000000000000000000000
       000000000000}
+  end
+  object MainMenu1: TMainMenu
+    Left = 184
+    Top = 80
+    object Bestand1: TMenuItem
+      Caption = 'Bestand'
+      object Afsluiten1: TMenuItem
+        Caption = 'Afsluiten'
+      end
+    end
+    object Instellingen1: TMenuItem
+      Caption = 'Instellingen'
+      object Ratingbijdrages1: TMenuItem
+        Caption = 'Ratingbijdrages'
+        OnClick = Ratingbijdrages1Click
+      end
+    end
   end
 end

@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel, uSelectie,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, uRatingBijdrages,
-  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner;
+  cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner,
+  Menus;
 
 type
   TfrmHTPredictor = class(TForm)
@@ -28,11 +29,18 @@ type
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
     cxGrid1: TcxGrid;
+    MainMenu1: TMainMenu;
+    Bestand1: TMenuItem;
+    Afsluiten1: TMenuItem;
+    Instellingen1: TMenuItem;
+    Ratingbijdrages1: TMenuItem;
     procedure FormCreate(Sender: TObject);
+    procedure Ratingbijdrages1Click(Sender: TObject);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
     FRatingBijdrages: TRatingBijdrages;
+    procedure ToonRatingbijdrages;
     { Private declarations }
   public
     { Public declarations }
@@ -48,7 +56,7 @@ var
 implementation
 
 uses
-  FormSpelerGrid, uPlayer, FormOpstelling;
+  FormSpelerGrid, uPlayer, FormOpstelling, FormRatingBijdrages;
 
 {$R *.DFM}
 
@@ -72,6 +80,22 @@ begin
 end;
 
 {-----------------------------------------------------------------------------
+  Procedure: ToonRatingbijdrages
+  Author:    Harry
+  Date:      19-apr-2012
+  Arguments: None
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.ToonRatingbijdrages;
+begin
+  if FormRatingBijdrages.ToonRatingbijdrages(FRatingBijdrages) then
+  begin
+    FSelectie_Eigen.UpdateOpstellingen;
+    FSelectie_Tegen.UpdateOpstellingen;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
   Procedure: FormCreate
   Author:    Harry
   Date:      13-apr-2012
@@ -90,6 +114,11 @@ begin
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
 
   FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen);
+end;
+
+procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);
+begin
+  ToonRatingbijdrages;
 end;
 
 end.

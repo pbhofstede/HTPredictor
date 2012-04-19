@@ -13,7 +13,8 @@ uses
   FormOpstellingPlayer in 'FormOpstellingPlayer.pas' {frmOpstellingPlayer},
   uOpstelling in 'uOpstelling.pas',
   uRatingBijdrages in 'uRatingBijdrages.pas',
-  uRatingBijdrage in 'uRatingBijdrage.pas';
+  uRatingBijdrage in 'uRatingBijdrage.pas',
+  FormRatingbijdrages in 'FormRatingbijdrages.pas' {frmRatingBijdrages};
 
 {$R *.RES}
 

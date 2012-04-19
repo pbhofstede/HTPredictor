@@ -11,7 +11,8 @@ type
     FNaam: String;
     FPlayers: TObjectList;
     FRatingBijdrages: TRatingBijdrages;
-  public                                   
+  public
+    procedure UpdateOpstellingen;                           
     function GetPlayer(aID:integer):TPlayer;
     procedure LoadFromMemDataSet(aDataSet: TdxMemData; aRefresh: boolean);
     property Players:TObjectList read FPlayers write FPlayers;
@@ -24,7 +25,7 @@ type
 implementation
 
 uses
-  db;
+  db, Dialogs;
 
 { TSelectie }
 {-----------------------------------------------------------------------------
@@ -136,6 +137,19 @@ begin
       EnableControls;
     end;
   end;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: UpdateOpstellingen
+  Author:    Harry
+  Date:      19-apr-2012
+  Arguments: None
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TSelectie.UpdateOpstellingen;
+begin
+  // Todo!!!!
+  ShowMessage('Opstellingen doorrekenen!!');
 end;
 
 end.

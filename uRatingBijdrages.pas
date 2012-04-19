@@ -3,7 +3,7 @@ unit uRatingBijdrages;
 interface
 
 uses
-  uRatingBijdrage, ContNrs, uPlayer, uHTPredictor;
+  uRatingBijdrage, ContNrs, uPlayer, uHTPredictor, dxmdaset;
 
 type
   TRatingBijdrages = class
@@ -13,6 +13,8 @@ type
     function GetCount: integer;
     function AddRatingBijdrage(aPositie: String): TRatingBijdrage;
   public
+    procedure LoadFromMemData(aMemDataSet: TdxMemData);
+    procedure SaveToMemData(aMemDataSet:TdxMemData);
     function CalcBijdrage(aPlayer: TPlayer; aPosition: TPlayerPosition;
       aOrder: TPlayerOrder):double;
     procedure LoadFlatterManRatings;
@@ -26,7 +28,7 @@ type
 implementation
 
 uses
-  SysUtils, Dialogs;
+  SysUtils, Dialogs, db;
 
 { TRatingBijdrages }
 
@@ -338,6 +340,106 @@ begin
       (vRating.WA_SC_OTHER * aPlayer.SCO);
 
     Result := Result * aPlayer.GetConditieFactor * aPlayer.GetFormFactor * aPlayer.GetXPFactor;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: LoadFromMemData
+  Author:    Harry
+  Date:      19-apr-2012
+  Arguments: aMemDataSet: TdxMemData
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TRatingBijdrages.LoadFromMemData(aMemDataSet: TdxMemData);
+var
+  vRating: TRatingBijdrage;
+  vBookMark: TBookMark;
+begin
+  vBookMark := aMemDataSet.GetBookmark;
+  
+  aMemDataSet.DisableControls;
+  try
+    aMemDataSet.First;
+    while not aMemDataSet.Eof do
+    begin
+      vRating := GetRatingBijdrageByPositie(aMemDataSet.FieldByName('POSITIE').asString);
+      if (vRating <> nil) then
+      begin
+        vRating.MID_PM := aMemDataSet.FieldByName('MID_PM').asFloat;
+        vRating.CD_GK := aMemDataSet.FieldByName('CD_GK').asFloat;
+        vRating.CD_DEF := aMemDataSet.FieldByName('CD_DEF').asFloat;
+        vRating.WB_GK := aMemDataSet.FieldByName('WB_GK').asFloat;
+        vRating.CA_PASS := aMemDataSet.FieldByName('CA_PASS').asFloat;
+        vRating.CA_SC := aMemDataSet.FieldByName('CA_SC').asFloat;
+        vRating.WA_PASS := aMemDataSet.FieldByName('WA_PASS').asFloat;
+        vRating.WA_WING := aMemDataSet.FieldByName('WA_WING').asFloat;
+        vRating.WA_SC := aMemDataSet.FieldByName('WA_SC').asFloat;
+        vRating.WA_SC_OTHER := aMemDataSet.FieldByName('WA_SC_OTHER').asFloat;
+      end;
+
+      aMemDataSet.Next;
+    end;
+  finally
+    aMemDataSet.GotoBookmark(vBookMark);
+    aMemDataSet.EnableControls;
+    aMemDataSet.FreeBookmark(vBookMark);
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: SaveToMemData
+  Author:    Harry
+  Date:      19-apr-2012
+  Arguments: aMemDataSet: TdxMemData
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TRatingBijdrages.SaveToMemData(aMemDataSet: TdxMemData);
+var
+  i: integer;
+  vRating: TRatingBijdrage;
+begin
+  if aMemDataSet.Active then
+    aMemDataSet.Close;
+
+  aMemDataSet.Open;
+
+  for i:=0 to Count - 1 do
+  begin
+    vRating := GetRatingBijdrage(i);
+
+    aMemDataSet.Append;
+    aMemDataSet.FieldByName('POSITIE').asString := vRating.Positie;
+    if (vRating.MID_PM > 0) then
+      aMemDataSet.FieldByName('MID_PM').asFloat := vRating.MID_PM;
+
+    if (vRating.CD_GK > 0) then
+      aMemDataSet.FieldByName('CD_GK').asFloat := vRating.CD_GK;
+
+    if (vRating.CD_DEF > 0) then
+      aMemDataSet.FieldByName('CD_DEF').asFloat := vRating.CD_DEF;
+
+    if (vRating.WB_GK > 0) then
+      aMemDataSet.FieldByName('WB_GK').asFloat := vRating.WB_GK;
+
+    if (vRating.CA_PASS > 0) then
+      aMemDataSet.FieldByName('CA_PASS').asFloat := vRating.CA_PASS;
+
+    if (vRating.CA_SC > 0) then
+      aMemDataSet.FieldByName('CA_SC').asFloat := vRating.CA_SC;
+
+    if (vRating.WA_PASS > 0) then
+      aMemDataSet.FieldByName('WA_PASS').asFloat := vRating.WA_PASS;
+
+    if (vRating.WA_WING > 0) then
+      aMemDataSet.FieldByName('WA_WING').asFloat := vRating.WA_WING;
+
+    if (vRating.WA_SC > 0) then
+      aMemDataSet.FieldByName('WA_SC').asFloat := vRating.WA_SC;
+
+    if (vRating.WA_SC_OTHER > 0) then
+      aMemDataSet.FieldByName('WA_SC_OTHER').asFloat := vRating.WA_SC_OTHER;
+
+    aMemDataSet.Post;
   end;
 end;
 
