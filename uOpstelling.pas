@@ -100,12 +100,14 @@ function TOpstelling.CA: double;
 var
   vCount,
   vCentraalCount: integer;
+  vPlayer: TPlayer;
 begin
   Result := 0;
 
   for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    vPlayer := FOpstellingPlayerArray[vCount];
+    if vPlayer <> nil then
     begin
       //verminderde centrale bijdrage van de aanvallers
       if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
@@ -126,9 +128,9 @@ begin
         end;
 
         case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.94);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.865);
-          else   Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+          2:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.94);
+          3:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.865);
+          else   Result := Result + vPlayer.AANV_C_Bijdrage;
         end;
       end
       else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
@@ -150,17 +152,19 @@ begin
         end;
 
         case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.92);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * 0.82);
-          else   Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+          2:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.92);
+          3:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.82);
+          else   Result := Result + vPlayer.AANV_C_Bijdrage;
         end;
       end
       else
       begin
-        Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+        Result := Result + vPlayer.AANV_C_Bijdrage;
       end;
     end;
   end;
+  
+  Result := Result * TeamZelfvertrouwen;
 
   Result := VerrekenTypeCoach(Result, FALSE);
 end;
@@ -306,6 +310,7 @@ begin
     end;
   end;
 
+  Result := Result * TeamZelfvertrouwen;
   
   Result := VerrekenTypeCoach(Result, FALSE);
 end;
@@ -574,7 +579,7 @@ end;
 
 function TOpstelling.TeamZelfvertrouwen: double;
 begin
-  Result := 1 + (Ord(FZelfvertrouwen) * 0.05);
+  Result := 1 + (Ord(FZelfvertrouwen) * 0.0525);
 end;
 
 procedure TOpstelling.UpdateRatings;
@@ -600,7 +605,7 @@ begin
   begin
     case Coach of
       cVerdedigend: Result := aRating * ((2 * 1.197332) + 1.196307) / 3;
-      cNeutraal:    Result := aRating * 0.94;
+      cNeutraal:    Result := aRating * 1.05;
       cAanvallend:  Result := aRating * 0.94;
     end;
   end
