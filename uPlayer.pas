@@ -78,7 +78,7 @@ uses
 function TPlayer.GetConditieFactor: double;
 begin
   //Result := Power((FConditie - 1 + 6 ) / 14, 0.6);
-  Result := Power(Min(FConditie + 6.5, 15.25) / 14, 0.6);
+  Result := Power(Min(FConditie + 5, 15.25) / 14, 0.6);
 end;
 
 {-----------------------------------------------------------------------------
