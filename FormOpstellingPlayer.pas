@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, uHTPredictor, cxControls, cxContainer, cxEdit, cxTextEdit,
+  ExtCtrls, uHTPredictor, cxControls, cxContainer, cxEdit, cxTextEdit, formHTPredictor,
   cxMaskEdit, cxDropDownEdit, cxImageComboBox, uOpstelling, StdCtrls;
 
 type
@@ -13,6 +13,7 @@ type
     cbPlayer: TcxImageComboBox;
     cbOrder: TcxImageComboBox;
     lblCaption: TLabel;
+    vTempCB: TcxImageComboBox;
     procedure cbPlayerPropertiesPopup(Sender: TObject);
     procedure cbPlayerPropertiesChange(Sender: TObject);
     procedure cbPlayerPropertiesValidate(Sender: TObject;
@@ -42,7 +43,7 @@ function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aA
 
 implementation
 uses
-  uPlayer, formHTPredictor;
+  uPlayer;
 
 {$R *.DFM}
 
@@ -105,60 +106,109 @@ var
   vPlayerPosition: TPlayerPosition;
   vPlayer: TPlayer;
   vToevoegen: Boolean;
+  vRating: double;
+  vSortSL: TStringList;
+  vString: String;
 begin
   if (FOpstelling <> nil) and
      (FOpstelling.Selectie <> nil) then
   begin
     cbPlayer.Properties.Items.Clear;
+    vTempCB.Properties.Items.Clear;
+    
+    vSortSL := TStringList.Create;
+    try
+      //leeg item toevoegen
+      vItem := cbPlayer.Properties.Items.Add;
+      vItem.Value := -1;
+      vItem.Description := '';
+      vItem.ImageIndex := -1;
 
-    //leeg item toevoegen
-    vItem := cbPlayer.Properties.Items.Add;
-    vItem.Value := -1;
-    vItem.Description := '';
-    vItem.ImageIndex := -1;
-
-    for vCount := 0 to FOpstelling.Selectie.Players.Count - 1 do
-    begin
-      vPlayer := TPlayer(FOpstelling.Selectie.Players[vCount]); 
-      vPlayerPosition := FOpstelling.GetPositionOfPlayer(vPlayer);
-
-      if (Position = pOnbekend) then
+      for vCount := 0 to FOpstelling.Selectie.Players.Count - 1 do
       begin
-        if Aanvoerder then
+        vPlayer := TPlayer(FOpstelling.Selectie.Players[vCount]);
+        vPlayerPosition := FOpstelling.GetPositionOfPlayer(vPlayer);
+
+        if (Position = pOnbekend) then
         begin
-          vToevoegen := (Ord(vPlayerPosition) >= Ord(pKP));
+          if Aanvoerder then
+          begin
+            vToevoegen := (Ord(vPlayerPosition) >= Ord(pKP));
+          end
+          else
+          begin
+            //let op: groter dan KP omdat keeper geen SH-er mag zijn
+            vToevoegen := (Ord(vPlayerPosition) > Ord(pKP));
+          end;
         end
         else
         begin
-          //let op: groter dan KP omdat keeper geen SH-er mag zijn
-          vToevoegen := (Ord(vPlayerPosition) > Ord(pKP));
+          vToevoegen := TRUE;
         end;
-      end
-      else
-      begin
-        vToevoegen := TRUE;
+
+        if (vToevoegen) then
+        begin
+          vItem := vTempCB.Properties.Items.Add;
+          vItem.Value := vPlayer.ID;
+
+          if (Position = pOnbekend) then
+          begin
+            if Aanvoerder then
+            begin
+              vRating := vPlayer.XP;
+            end
+            else
+            begin
+              vRating := vPlayer.SP;
+            end;
+          end
+          else
+          begin
+            vRating := vPlayer.GetPositionRating(Position, TPlayerOrder(cbOrder.EditValue));
+          end;
+
+          vItem.Description := Format('%s %.2f', [vPlayer.Naam, vRating]);
+
+          if (Position = pOnbekend) or
+             (vPlayerPosition = pOnbekend) or
+             (vPlayerPosition = Position) then
+          begin
+            vItem.ImageIndex := -1;
+          end
+          else
+          begin
+            vItem.ImageIndex := 202;
+          end;
+
+          if (vRating < 10) then
+          begin
+            vString := '0';
+          end
+          else
+          begin
+            vString := '';
+          end;
+
+          vString := vString + Format('%.2f', [vRating]);
+          vSortSL.AddObject(vString, vItem);
+        end;
       end;
 
-      if (vToevoegen) then
+      vSortSL.Sort;
+
+      for vCount := vSortSL.Count - 1 downto 0 do
       begin
         vItem := cbPlayer.Properties.Items.Add;
-        vItem.Value := vPlayer.ID;
-        vItem.Description := Format('%s %.2f', [vPlayer.Naam,
-          vPlayer.GetPositionRating(Position, TPlayerOrder(cbOrder.EditValue))]);
-
-        if (Position = pOnbekend) or
-           (vPlayerPosition = pOnbekend) or
-           (vPlayerPosition = Position) then
-        begin
-          vItem.ImageIndex := -1;
-        end
-        else
-        begin
-          vItem.ImageIndex := 202;
-        end;
+        vItem.Value := TcxImageComboBoxItem(vSortSL.Objects[vCount]).Value;
+        vItem.Description := TcxImageComboBoxItem(vSortSL.Objects[vCount]).Description;
+        vItem.ImageIndex := TcxImageComboBoxItem(vSortSL.Objects[vCount]).ImageIndex;
       end;
+
+      vTempCB.Properties.Items.Clear;
+    finally
+      vSortSL.Free;
     end;
-  end;
+  end;        
 end;
 
 {-----------------------------------------------------------------------------

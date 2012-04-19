@@ -22,11 +22,11 @@ type
     FNaam: String;
     FSpec: String;
     FDEF_R_Bijdrage: double;
-    FWING_R_Bijdrage: double;
-    FPOS_Bijdrage: double;
-    FSC_Bijdrage: double;
+    FAANV_R_Bijdrage: double;
+    FMID_Bijdrage: double;
+    FAANV_C_Bijdrage: double;
     FDEF_L_Bijdrage: double;
-    FWING_L_Bijdrage: double;
+    FAANV_L_Bijdrage: double;
     FDEF_C_Bijdrage: double;
     FSelectie: TObject;
   public
@@ -48,18 +48,23 @@ type
     property DEF_R_Bijdrage: double read FDEF_R_Bijdrage write FDEF_R_Bijdrage;
     property DEF_C_Bijdrage: double read FDEF_C_Bijdrage write FDEF_C_Bijdrage;
     property DEF_L_Bijdrage: double read FDEF_L_Bijdrage write FDEF_L_Bijdrage;
-    property WING_R_Bijdrage: double read FWING_R_Bijdrage write FWING_R_Bijdrage;
-    property WING_L_Bijdrage: double read FWING_L_Bijdrage write FWING_L_Bijdrage;
-    property POS_Bijdrage: double read FPOS_Bijdrage write FPOS_Bijdrage;
-    property SC_Bijdrage: double read FSC_Bijdrage write FSC_Bijdrage;
+    property AANV_R_Bijdrage: double read FAANV_R_Bijdrage write FAANV_R_Bijdrage;
+    property AANV_L_Bijdrage: double read FAANV_L_Bijdrage write FAANV_L_Bijdrage;
+    property MID_Bijdrage: double read FMID_Bijdrage write FMID_Bijdrage;
+    property AANV_C_Bijdrage: double read FAANV_C_Bijdrage write FAANV_C_Bijdrage;
 
     function GetPositionRating(aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
+    function GetFormFactor: double;
+    function GetConditieFactor: double;
+    function GetXPFactor: double;
+
+    procedure ClearBijdrages;
   end;
 
 implementation
 
 uses
-  uSelectie;
+  uSelectie, Math;
 
 { TPlayer }
 
@@ -70,11 +75,56 @@ uses
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-function TPlayer.GetPositionRating(
-  aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
+function TPlayer.GetConditieFactor: double;
 begin
-  result := TSelectie(FSelectie).RatingBijdrages.CalcBijdrage(Self,
-    aPosition, aOrder);
+  Result := Power((FConditie - 1 + 6 ) / 14, 0.6);
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     19-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TPlayer.GetXPFactor: double;
+begin
+  Result := (0.0716 * Power(FXP - 1, 0.5)) + 1;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     19-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TPlayer.GetFormFactor: double;
+begin
+  Result := Power(Max(FVorm - 1, 0) / 7, 0.45); 
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     19-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TPlayer.GetPositionRating(aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
+begin
+  result := TSelectie(FSelectie).RatingBijdrages.CalcBijdrage(Self, aPosition, aOrder);
+end;
+
+procedure TPlayer.ClearBijdrages;
+begin
+  DEF_R_Bijdrage := 0;
+  DEF_C_Bijdrage := 0;
+  DEF_L_Bijdrage := 0;
+  AANV_R_Bijdrage := 0;
+  AANV_C_Bijdrage := 0;
+  AANV_L_Bijdrage := 0;
+  MID_Bijdrage := 0;
 end;
 
 end.

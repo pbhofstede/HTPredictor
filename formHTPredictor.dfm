@@ -1,6 +1,6 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 495
-  Top = 145
+  Left = 365
+  Top = 92
   Width = 1018
   Height = 673
   Caption = 'HT Predictor'
@@ -65,7 +65,7 @@ object frmHTPredictor: TfrmHTPredictor
         Left = 0
         Top = 0
         Width = 1002
-        Height = 313
+        Height = 317
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Scherm voor spelersgrid'
@@ -73,9 +73,9 @@ object frmHTPredictor: TfrmHTPredictor
       end
       object Panel4: TPanel
         Left = 0
-        Top = 313
+        Top = 317
         Width = 1002
-        Height = 298
+        Height = 294
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Scherm voor opstelling'
@@ -92,11 +92,11 @@ object frmHTPredictor: TfrmHTPredictor
           Left = 0
           Top = 3
           Width = 1002
-          Height = 295
+          Height = 291
           ActivePage = cxTabSheet1
           Align = alClient
           TabOrder = 0
-          ClientRectBottom = 295
+          ClientRectBottom = 291
           ClientRectRight = 1002
           ClientRectTop = 24
           object cxTabSheet1: TcxTabSheet

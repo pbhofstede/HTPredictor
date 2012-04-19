@@ -4,12 +4,18 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer;
+  ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls;
 
 type
   TfrmOpstelling = class(TForm)
     pnlRatings: TPanel;
     pnlOpstelling: TPanel;
+    lblRV: TLabel;
+    lblLinkerVerdediging: TLabel;
+    lblLV: TLabel;
+    lblRechterVerdediging: TLabel;
+    Label1: TLabel;
+    lblCV: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private
@@ -25,9 +31,11 @@ type
     { Public declarations }
     property Selectie: TSelectie read FSelectie write SetSelectie;
 
-    procedure EnableDisableOpstellingPlayer;    
+    procedure EnableDisableOpstellingPlayer;
     procedure UpdateAanvoerder;
     procedure UpdateSpelhervatter;
+
+    procedure UpdateRatings;
   end;
 
 
@@ -221,6 +229,13 @@ begin
     FOpstelling.Free;
     FOpstelling := nil;
   end;
+end;
+
+procedure TfrmOpstelling.UpdateRatings;
+begin
+  lblRV.Caption := Format('%.2f', [FOpstelling.RV / 4]); 
+  lblCV.Caption := Format('%.2f', [FOpstelling.CV / 4]);
+  lblLV.Caption := Format('%.2f', [FOpstelling.LV / 4]);
 end;
 
 end.

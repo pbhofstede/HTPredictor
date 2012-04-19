@@ -55,5 +55,15 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
       TabOrder = 1
       Width = 121
     end
+    object vTempCB: TcxImageComboBox
+      Left = 124
+      Top = 38
+      Properties.ImmediatePost = True
+      Properties.ImmediateUpdateText = True
+      Properties.Items = <>
+      TabOrder = 2
+      Visible = False
+      Width = 121
+    end
   end
 end

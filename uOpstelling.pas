@@ -17,6 +17,7 @@ type
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
+    procedure UpdateRatings;
   public
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
@@ -28,12 +29,15 @@ type
     function GetPositionOfPlayer(aPlayer: TPlayer): TPlayerPosition;
     procedure ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
     function AantalPositiesBezet: integer;
+    function RV: double;          
+    function CV: double;             
+    function LV: double;
   end;
 
 
 implementation
 uses
-  FormOpstelling;
+  FormOpstelling, uRatingBijdrage;
 
 
 { TOpstelling }
@@ -78,6 +82,21 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+function TOpstelling.CV: double;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+    end;
+  end;
+end;
+
 destructor TOpstelling.Destroy;
 begin
   inherited;
@@ -117,6 +136,36 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+function TOpstelling.LV: double;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
+    end;
+  end;
+end;
+
+function TOpstelling.RV: double;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
+    end;
+  end;
+end;
+
 procedure TOpstelling.SetAanvoerder(const Value: TPlayer);
 begin
   if (FAanvoerder <> Value) then
@@ -167,10 +216,17 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+procedure TOpstelling.UpdateRatings;
+begin
+  TfrmOpstelling(FFormOpstelling).UpdateRatings;
+end;
+
 procedure TOpstelling.ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
 var
   vPlayer,
   vOldPlayer: TPlayer;
+  vRating: TRatingBijdrage;
+  vPos: String;
 begin
   vPlayer := Selectie.GetPlayer(aPlayerID);
 
@@ -190,12 +246,84 @@ begin
     begin
       Aanvoerder := nil;
     end;
+    vOldPlayer.ClearBijdrages;
   end;
 
   if (FFormOpstelling <> nil) then
   begin
     (FFormOpstelling as TfrmOpstelling).EnableDisableOpstellingPlayer;
   end;
+
+  if (vPlayer <> nil) then
+  begin
+    vPos := uHTPredictor.PlayerPosToRatingPos(aPositie, aPlayerOrder, vPlayer.Spec);
+
+    vRating := Selectie.RatingBijdrages.GetRatingBijdrageByPositie(vPos);
+    if (vRating <> nil) then
+    begin
+      // Rating berekenen
+  //    result :=
+  //      (vRating.MID_PM * vPlayer.PM) +
+  //      (vRating.CD_GK * vPlayer.GK) +
+  //      (vRating.CD_DEF * vPlayer.DEF) +
+  //      (vRating.WB_GK * vPlayer.GK) +
+  //      (vRating.WB_DEF * vPlayer.DEF) +
+  //      (vRating.CA_PASS * vPlayer.PAS) +
+  //      (vRating.CA_SC * vPlayer.SCO) +
+  //      (vRating.WING_PASS * vPlayer.PAS) +
+  //      (vRating.WING_WING * vPlayer.WNG) +
+  //      (vRating.WING_SC * vPlayer.SCO) +
+  //      (vRating.WING_SC_OTHER * vPlayer.SCO);
+
+      //DEF_R_Bijdrage
+      if (aPositie in [pCV, pCM]) then
+      begin
+        vPlayer.DEF_R_Bijdrage :=
+          ((vRating.WB_DEF * vPlayer.DEF / 2) +
+           (vRating.WB_GK * vPlayer.GK))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end
+      else if (aPositie in [pLB, pLCV, pLW, pLCM]) then
+      begin
+        vPlayer.DEF_R_Bijdrage := 0;
+      end
+      else
+      begin
+        vPlayer.DEF_R_Bijdrage := 
+          ((vRating.WB_DEF * vPlayer.DEF) +
+           (vRating.WB_GK * vPlayer.GK))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end;
+
+      //DEF_L_Bijdrage
+      if (aPositie in [pCV, pCM]) then
+      begin
+        vPlayer.DEF_L_Bijdrage :=
+          ((vRating.WB_DEF * vPlayer.DEF / 2) +
+           (vRating.WB_GK * vPlayer.GK))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end
+      else if (aPositie in [pRB, pRCV, pRW, pRCM]) then
+      begin
+        vPlayer.DEF_L_Bijdrage := 0;
+      end
+      else
+      begin
+        vPlayer.DEF_L_Bijdrage := 
+          ((vRating.WB_DEF * vPlayer.DEF) +
+           (vRating.WB_GK * vPlayer.GK))
+          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      end;
+
+      //DEF_C_Bijdrage
+      vPlayer.DEF_C_Bijdrage :=
+        ((vRating.CD_DEF * vPlayer.DEF) +
+         (vRating.CD_GK * vPlayer.GK))
+        * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+    end;
+  end;
+
+  UpdateRatings;
 end;
 
 end.

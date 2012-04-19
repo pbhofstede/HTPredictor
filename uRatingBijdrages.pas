@@ -158,6 +158,27 @@ begin
   vRating.CD_DEF := 0.43655;
   vRating.WB_DEF := 0.365733;
 
+  // Centrale verdediger naar de vleugel
+  vRating := AddRatingBijdrage('CDTW');
+  vRating.MID_PM := 0.088027;
+  vRating.CD_DEF := 0.468513;
+  vRating.WB_DEF := 0.656592;
+  vRating.WING_WING := 0.213672;
+
+  // Normale vleugelverdediger
+  vRating := AddRatingBijdrage('NWB');
+  vRating.MID_PM := 0.078229;
+  vRating.CD_DEF := 0.280401;
+  vRating.WB_DEF := 0.921337;
+  vRating.WING_WING := 0.399755;
+
+  // Offensieve vleugelverdediger
+  vRating := AddRatingBijdrage('OWB');
+  vRating.MID_PM := 0.107886;
+  vRating.CD_DEF := 0.238437;
+  vRating.WB_DEF := 0.69943;
+  vRating.WING_WING := 0.487884;
+
   // Defensieve vleugelverdediger
   vRating := AddRatingBijdrage('DWB');
   vRating.MID_PM := 0.030981;
@@ -275,6 +296,7 @@ begin
   vRating.WING_WING := 0.392185;
   vRating.WING_SC := 0.371022;
   vRating.WING_SC_OTHER := 0.151325;
+  {TODO: vRating.WING_WG_OTHER ook implementeren??} 
 end;
 
 {-----------------------------------------------------------------------------
@@ -285,8 +307,7 @@ end;
     aOrder: TPlayerOrder
   Result:    None
 -----------------------------------------------------------------------------}
-function TRatingBijdrages.CalcBijdrage(aPlayer: TPlayer; aPosition: TPlayerPosition;
-  aOrder: TPlayerOrder):double;
+function TRatingBijdrages.CalcBijdrage(aPlayer: TPlayer; aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
 var
   vRating: TRatingBijdrage;
   vPos : String;
@@ -299,7 +320,20 @@ begin
   if (vRating <> nil) then
   begin
     // Rating berekenen
-    result := Random(50) / vRating.Count;
+    result :=
+      (vRating.MID_PM * aPlayer.PM) +
+      (vRating.CD_GK * aPlayer.GK) +
+      (vRating.CD_DEF * aPlayer.DEF) +
+      (vRating.WB_GK * aPlayer.GK) +
+      (vRating.WB_DEF * aPlayer.DEF) +
+      (vRating.CA_PASS * aPlayer.PAS) +
+      (vRating.CA_SC * aPlayer.SCO) +
+      (vRating.WING_PASS * aPlayer.PAS) +
+      (vRating.WING_WING * aPlayer.WNG) +
+      (vRating.WING_SC * aPlayer.SCO) +
+      (vRating.WING_SC_OTHER * aPlayer.SCO);
+
+    Result := Result * aPlayer.GetConditieFactor * aPlayer.GetFormFactor * aPlayer.GetXPFactor;
   end;
 end;
 

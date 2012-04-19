@@ -27,6 +27,48 @@ object frmOpstelling: TfrmOpstelling
     BevelOuter = bvNone
     Caption = 'pnlRatings'
     TabOrder = 0
+    object lblRV: TLabel
+      Left = 136
+      Top = 52
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblLinkerVerdediging: TLabel
+      Left = 20
+      Top = 88
+      Width = 87
+      Height = 13
+      Caption = 'Linker verdediging'
+    end
+    object lblLV: TLabel
+      Left = 136
+      Top = 88
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
+    object lblRechterVerdediging: TLabel
+      Left = 20
+      Top = 52
+      Width = 96
+      Height = 13
+      Caption = 'Rechter verdediging'
+    end
+    object Label1: TLabel
+      Left = 20
+      Top = 70
+      Width = 97
+      Height = 13
+      Caption = 'Centrale verdediging'
+    end
+    object lblCV: TLabel
+      Left = 136
+      Top = 70
+      Width = 40
+      Height = 13
+      AutoSize = False
+    end
   end
   object pnlOpstelling: TPanel
     Left = 0
