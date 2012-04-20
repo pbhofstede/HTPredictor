@@ -9,6 +9,7 @@ type
   TPlayerPosition = (pOnbekend, pKP, pRB, pRCV, pCV, pLCV, pLB, pRW, pRCM, pCM, pLCM, pLW, pRCA, pCA, pLCA);
   TPlayerOrder = (oNormaal, oVerdedigend, oAanvallend, oNaarVleugel, oNaarMidden);
   TTeamZelfvertrouwen = (zNietBestaand, zRampzalig, zWaardeloos, zSlecht, zBehoorlijk, zSterk, zWonderbaarlijk, zLichtelijkOverdreven, zOverdreven, zCompleetOverdreven);
+  TTeamSpirit = (sKoudeOorlog, sMoorddadig, sWoedend, sGeirriteerd, sBedaard, sKalm, sContent, sTevreden, sDolgelukkig, sInDeWolken, sParadijsOpAarde);
   TOpstellingMotivatie = (mNormaal, mPIC, mMOTS);
   TOpstellingTactiek = (tNormaal, tPressie, tCounter, tCentrumAanval, tVleugelAanval, tCreatiefSpel, tAfstandsSchoten);
   TOpstellingCoach = (cNeutraal, cVerdedigend, cAanvallend);
@@ -17,6 +18,9 @@ type
 function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
 function OrderToString(aOrder: TPlayerOrder): String;
+function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
+function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;    
+function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
 
 implementation
@@ -182,6 +186,56 @@ begin
     oNaarMidden:  Result := 'Naar het midden';
     else
       Result := 'Order onbekend';
+  end;
+end;
+
+
+function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
+begin
+  case aWedstrijdPlaats of
+    wThuis:     Result := 'Thuis';
+    wDerby:     Result := 'Derby';
+    wUit:       Result := 'Uit';
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     20-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;
+begin
+  case aTeamZelfvertrouwen of
+    zNietBestaand:          Result := 'niet bestaand';
+    zRampzalig:             Result := 'rampzalig';
+    zWaardeloos:            Result := 'waardeloos';
+    zSlecht:                Result := 'slecht';
+    zBehoorlijk:            Result := 'behoorlijk';
+    zSterk:                 Result := 'sterk';
+    zWonderbaarlijk:        Result := 'wonderbaarlijk';
+    zLichtelijkOverdreven:  Result := 'lichtelijk overdreven';
+    zOverdreven:            Result := 'overdreven';
+    zCompleetOverdreven:    Result := 'compleet overdreven';
+  end;
+end;
+
+function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
+begin
+  case aTeamSpirit of
+    sKoudeOorlog:       Result := 'als in de Koude Oorlog';
+    sMoorddadig:        Result := 'moorddadig';
+    sWoedend:           Result := 'woedend';
+    sGeirriteerd:       Result := 'geïrriteerd';
+    sBedaard:           Result := 'bedaard';
+    sKalm:              Result := 'kalm';
+    sContent:           Result := 'content';
+    sTevreden:          Result := 'tevreden';
+    sDolgelukkig:       Result := 'dolgelukkig';
+    sInDeWolken:        Result := 'in de wolken';
+    sParadijsOpAarde:   Result := 'paradijs op aarde!';
   end;
 end;
 

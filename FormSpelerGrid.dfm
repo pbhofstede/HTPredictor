@@ -45,6 +45,7 @@ object frmSpelerGrid: TfrmSpelerGrid
         OptionsData.DeletingConfirmation = False
         OptionsData.Inserting = False
         OptionsView.ColumnAutoWidth = True
+        OptionsView.GroupByBox = False
         object cxGridSpelersViewLAND: TcxGridDBColumn
           Caption = 'Land'
           DataBinding.FieldName = 'LAND'

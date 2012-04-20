@@ -14,7 +14,7 @@ type
     FOpstellingOrderArray: array[1..14] of TPlayerOrder;
     FSpelhervatter: TPlayer;
     FAanvoerder: TPlayer;
-    FZelfvertrouwen: TTeamZelfvertrouwen;
+    FZelfvertrouwen: double;
     FMotivatie: TOpstellingMotivatie;
     FTactiek: TOpstellingTactiek;
     FCoach: TOpstellingCoach;
@@ -24,7 +24,7 @@ type
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
     procedure UpdateRatings;
-    procedure SetZelfvertrouwen(const Value: TTeamZelfvertrouwen);
+    procedure SetZelfvertrouwen(const Value: double);
     procedure SetMotivatie(const Value: TOpstellingMotivatie);
     procedure SetTactiek(const Value: TOpstellingTactiek);
     procedure SetCoach(const Value: TOpstellingCoach);
@@ -36,15 +36,14 @@ type
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
     property Aanvoerder: TPlayer read FAanvoerder write SetAanvoerder;
-    property Zelfvertrouwen: TTeamZelfvertrouwen read FZelfvertrouwen write SetZelfvertrouwen;
+    property Zelfvertrouwen: double read FZelfvertrouwen write SetZelfvertrouwen;
     property WedstrijdPlaats: TWedstrijdPlaats read FWedstrijdPlaats write SetWedstrijdPlaats;
     property Motivatie: TOpstellingMotivatie read FMotivatie write SetMotivatie;
     property Tactiek: TOpstellingTactiek read FTactiek write SetTactiek;
     property Coach: TOpstellingCoach read FCoach write SetCoach;
     property TS: double read FTS write SetTS;
     
-    constructor Create(aFormOpstelling: TForm; aZelfvertrouwen: TTeamZelfvertrouwen; aWedstrijdPlaats: TWedstrijdPlaats;
-      aTS: double);
+    constructor Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
     destructor Destroy; override;
 
     function GetPositionOfPlayer(aPlayer: TPlayer): TPlayerPosition;
@@ -169,8 +168,7 @@ begin
   Result := VerrekenTypeCoach(Result, FALSE);
 end;
 
-constructor TOpstelling.Create(aFormOpstelling: TForm; aZelfvertrouwen: TTeamZelfvertrouwen;
-  aWedstrijdPlaats: TWedstrijdPlaats; aTS: double);
+constructor TOpstelling.Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
 begin
   FFormOpstelling := aFormOpstelling;
   FMotivatie := mNormaal;
@@ -568,7 +566,7 @@ begin
   end;
 end;
 
-procedure TOpstelling.SetZelfvertrouwen(const Value: TTeamZelfvertrouwen);
+procedure TOpstelling.SetZelfvertrouwen(const Value: double);
 begin
   if (FZelfvertrouwen <> Value) then
   begin
@@ -579,7 +577,7 @@ end;
 
 function TOpstelling.TeamZelfvertrouwen: double;
 begin
-  Result := 1 + (Ord(FZelfvertrouwen) * 0.0525);
+  Result := 1 + (FZelfvertrouwen * 0.0525);
 end;
 
 procedure TOpstelling.UpdateRatings;

@@ -7,7 +7,8 @@ uses
   cxPC, cxControls, dxBar, ImgList, cxClasses, cxGridLevel, uSelectie,
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, uRatingBijdrages,
   cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner,
-  Menus;
+  Menus, dxEditor, dxExEdtr, dxEdLib, dxDBELib, cxContainer, cxEdit,
+  cxTextEdit, cxCurrencyEdit, cxGroupBox, cxRadioGroup;
 
 type
   TfrmHTPredictor = class(TForm)
@@ -34,8 +35,20 @@ type
     Afsluiten1: TMenuItem;
     Instellingen1: TMenuItem;
     Ratingbijdrages1: TMenuItem;
+    pnlTop: TPanel;
+    btnOk: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    ceZelfvertrouwen: TcxCurrencyEdit;
+    ceTeamgeest: TcxCurrencyEdit;
+    lblZVOmschrijving: TLabel;
+    lblTSOmschrijving: TLabel;
+    rgWedstrijdplaats: TcxRadioGroup;
     procedure FormCreate(Sender: TObject);
     procedure Ratingbijdrages1Click(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
+    procedure ceZelfvertrouwenPropertiesChange(Sender: TObject);
+    procedure ceTeamgeestPropertiesChange(Sender: TObject);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
@@ -56,7 +69,7 @@ var
 implementation
 
 uses
-  FormSpelerGrid, uPlayer, FormOpstelling, FormRatingBijdrages;
+  FormSpelerGrid, uPlayer, FormOpstelling, FormRatingBijdrages, uHTPredictor, Math;
 
 {$R *.DFM}
 
@@ -103,8 +116,20 @@ end;
   Result:    None
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.FormCreate(Sender: TObject);
+var
+  vCount: integer;
+  vItem: TcxRadioGroupItem;
 begin
   cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
+
+  for vCount := Ord(Low(TWedstrijdPlaats)) to Ord(High(TWedstrijdPlaats)) do
+  begin
+    vItem := rgWedstrijdplaats.Properties.Items.Add;
+
+    vItem.Caption := (uHTPredictor.WedstrijdPlaatsToString(TWedstrijdPlaats(vCount)));
+    vItem.Value := vCount;
+  end;
+  rgWedstrijdplaats.ItemIndex := 0;
 
   FRatingBijdrages := TRatingBijdrages.Create;
 
@@ -112,13 +137,38 @@ begin
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
   FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
-
-  FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen);
 end;
 
 procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);
 begin
   ToonRatingbijdrages;
+end;
+
+procedure TfrmHTPredictor.btnOkClick(Sender: TObject);
+begin
+  btnOk.Visible := FALSE;
+
+  FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
+    ceZelfvertrouwen.Value, ceTeamgeest.Value);
+
+  pnlTop.Enabled := FALSE;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     20-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.ceZelfvertrouwenPropertiesChange(Sender: TObject);
+begin
+  lblZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceZelfvertrouwen.Value)));
+end;
+
+procedure TfrmHTPredictor.ceTeamgeestPropertiesChange(Sender: TObject);
+begin
+  lblTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTeamgeest.Value)));
 end;
 
 end.

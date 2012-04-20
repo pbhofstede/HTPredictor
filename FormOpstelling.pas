@@ -3,7 +3,7 @@ unit FormOpstelling;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uHTPredictor,
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls;
 
 type
@@ -34,6 +34,9 @@ type
     FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;    
     FOpstellingAanvoerder: TfrmOpstellingPlayer;                     
     FOpstellingSpelhervatter: TfrmOpstellingPlayer;
+    FWedstrijdPlaats: TWedstrijdPlaats;
+    FZelfVertrouwen: double;
+    FTeamgeest: double;
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
     { Private declarations }
@@ -49,21 +52,26 @@ type
   end;
 
 
-function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie): TfrmOpstelling;
+function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
+  aTeamgeest: double): TfrmOpstelling;
 
 implementation
 uses
-  uHTPredictor, Math;
+  Math;
 
 {$R *.DFM}
 
 
-function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie): TfrmOpstelling;
+function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
+  aTeamgeest: double): TfrmOpstelling;
 begin
   
   Result := TfrmOpstelling.Create(nil);
 
   Result.Parent := aParent;
+  Result.FWedstrijdPlaats := aWedstrijdPlaats;    
+  Result.FZelfvertrouwen := aZelfvertrouwen;
+  Result.FTeamgeest := aTeamgeest;
   Result.Selectie := aSelectie;
 
   Result.Align := alClient;
@@ -114,7 +122,7 @@ begin
 
   FSelectie := Value;
 
-  FOpstelling := TOpstelling.Create(Self, zWonderbaarlijk, wThuis, 8.3);
+  FOpstelling := TOpstelling.Create(Self, FWedstrijdPlaats, FZelfvertrouwen, FTeamgeest);
   FOpstelling.Selectie := Selectie;
 
   FOpstellingPlayerArray[1] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pKP);
