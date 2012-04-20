@@ -327,7 +327,8 @@ begin
   begin
     // Rating berekenen
     result :=
-      (vRating.MID_PM * aPlayer.PM) +
+      //middenveldrating iets opwaarderen zodat de getoonde comboboxlijstjes representabeler zijn
+      (vRating.MID_PM * aPlayer.PM * 1.4) +
       (vRating.CD_GK * aPlayer.GK) +
       (vRating.CD_DEF * aPlayer.DEF) +
       (vRating.WB_GK * aPlayer.GK) +

@@ -73,7 +73,9 @@ var
 begin
   result := 0;
   aExcelSheet.ExcelApp.ActiveSheet.Range['A1'].Select;
-  vCount := aExcelSheet.ExcelApp.ActiveSheet.UsedRange.Rows.Count;
+
+  //fix nav. niet importeren van de onderste 2 spelers.
+  vCount := aExcelSheet.ExcelApp.ActiveSheet.UsedRange.Rows.Count + 1;
 
   if (vCount > 0) then
   begin
@@ -82,7 +84,7 @@ begin
       vStaminaColumn := vIni.ReadString('PLAYER_MAPPING','CONDITIE','');
       if (vStaminaColumn <> '') then
       begin
-        for i:=1 to vCount - 1 do
+        for i:=1 to vCount do
         begin
           try
             vStamina := aExcelSheet.GetCellRange(Format('%s%d', [vStaminaColumn, i]));
