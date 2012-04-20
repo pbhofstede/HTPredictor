@@ -28,13 +28,20 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
     object lblCaption: TLabel
       Left = 7
       Top = 5
-      Width = 46
+      Width = 47
       Height = 13
       Caption = 'lblCaption'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
     end
     object cbPlayer: TcxImageComboBox
       Left = 4
       Top = 2
+      ParentFont = False
       Properties.Images = frmHTPredictor.imgListHTPredictor
       Properties.ImmediatePost = True
       Properties.ImmediateUpdateText = True
@@ -42,16 +49,29 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
       Properties.OnChange = cbPlayerPropertiesChange
       Properties.OnInitPopup = cbPlayerPropertiesPopup
       Properties.OnValidate = cbPlayerPropertiesValidate
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -11
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
       TabOrder = 0
       Width = 121
     end
     object cbOrder: TcxImageComboBox
       Left = 4
       Top = 23
+      ParentFont = False
       Properties.ImmediatePost = True
       Properties.ImmediateUpdateText = True
       Properties.Items = <>
       Properties.OnValidate = cbOrderPropertiesValidate
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -11
+      Style.Font.Name = 'Tahoma'
+      Style.Font.Style = []
+      Style.IsFontAssigned = True
       TabOrder = 1
       Width = 121
     end

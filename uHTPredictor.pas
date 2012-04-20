@@ -22,11 +22,12 @@ function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
 function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;    
 function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
+function FormatRating(aRating: double): String;
 
 implementation
 
 uses
-  SysUtils, IniFiles, Forms, uBibExcel, uBibConv, Dialogs, Windows, FormKiesTabSheet;
+  SysUtils, IniFiles, Forms, uBibExcel, uBibConv, Dialogs, Windows, FormKiesTabSheet, Math;
 
 {-----------------------------------------------------------------------------
   Procedure: AllPlayerFieldsMapped
@@ -317,5 +318,61 @@ begin
   end;
 end;
 
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     20-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function FormatRating(aRating: double): String;
+var
+  vIntRating: integer;
+  vResultStr: String;
+begin
+  vIntRating := Floor(aRating);
 
+  case vIntRating div 4 of
+    0: vResultStr := 'niet-bestaand';
+    1: vResultStr := 'rampzalig';
+    2: vResultStr := 'waardeloos';
+    3: vResultStr := 'slecht';
+    4: vResultStr := 'zwak';
+    5: vResultStr := 'matig';
+    6: vResultStr := 'redelijk';
+    7: vResultStr := 'goed';
+    8: vResultStr := 'uitstekend';  
+    9: vResultStr := 'formidabel';
+    10: vResultStr := 'uitmuntend';
+    11: vResultStr := 'briljant';
+    12: vResultStr := 'wonderbaarlijk';
+    13: vResultStr := 'wereldklasse';
+    14: vResultStr := 'bovennatuurlijk';
+    15: vResultStr := 'reusachtig';
+    16: vResultStr := 'buitenaards';
+    17: vResultStr := 'mythisch';
+    18: vResultStr := 'magisch';
+    19: vResultStr := 'utopisch';
+    20: vResultStr := 'goddelijk';
+    21: vResultStr := 'goddelijk+';
+    22: vResultStr := 'goddelijk++';
+    23: vResultStr := 'goddelijk+++';
+    24: vResultStr := 'goddelijk++++';
+  end;
+
+  case vIntRating mod 4 of
+    0: vResultStr := vResultStr + ' (zeer laag)';
+    1: vResultStr := vResultStr + ' (laag)';
+    2: vResultStr := vResultStr + ' (hoog)';
+    3: vResultStr := vResultStr + ' (zeer hoog)';
+  end;
+
+  Result := Format('%.2f', [aRating]);
+  if (aRating < 10) then
+  begin
+    Result := '0' + Result;
+  end;
+
+  Result := Result + ' ' + vResultStr;
+end;
 end.

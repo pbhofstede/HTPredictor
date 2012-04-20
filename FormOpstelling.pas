@@ -251,13 +251,13 @@ end;
 
 procedure TfrmOpstelling.UpdateRatings;
 begin
-  lblIM.Caption := Format('%.2f', [FOpstelling.MID / 4]);
-  lblRV.Caption := Format('%.2f', [FOpstelling.RV / 4]);
-  lblCV.Caption := Format('%.2f', [FOpstelling.CV / 4]);
-  lblLV.Caption := Format('%.2f', [FOpstelling.LV / 4]);
-  lblRA.Caption := Format('%.2f', [FOpstelling.RA / 4]);
-  lblCA.Caption := Format('%.2f', [FOpstelling.CA / 4]);
-  lblLA.Caption := Format('%.2f', [FOpstelling.LA / 4]);
+  lblIM.Caption := uHTPredictor.FormatRating(FOpstelling.MID);
+  lblRV.Caption := uHTPredictor.FormatRating(FOpstelling.RV);
+  lblCV.Caption := uHTPredictor.FormatRating(FOpstelling.CV);
+  lblLV.Caption := uHTPredictor.FormatRating(FOpstelling.LV);
+  lblRA.Caption := uHTPredictor.FormatRating(FOpstelling.RA);
+  lblCA.Caption := uHTPredictor.FormatRating(FOpstelling.CA);
+  lblLA.Caption := uHTPredictor.FormatRating(FOpstelling.LA);
 
   lblHatStats.Caption := Format('%d', [Ceil((FOpstelling.MID * 3)
                                              + FOpstelling.RV

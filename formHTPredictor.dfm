@@ -1,7 +1,7 @@
 object frmHTPredictor: TfrmHTPredictor
   Left = 353
   Top = 54
-  Width = 1018
+  Width = 1129
   Height = 734
   Caption = 'HT Predictor'
   Color = clBtnFace
@@ -19,13 +19,13 @@ object frmHTPredictor: TfrmHTPredictor
   object cxpgctrlHTPredictor: TcxPageControl
     Left = 0
     Top = 60
-    Width = 1002
+    Width = 1113
     Height = 616
     ActivePage = cxtbEigenTeam
     Align = alClient
     TabOrder = 0
     ClientRectBottom = 616
-    ClientRectRight = 1002
+    ClientRectRight = 1113
     ClientRectTop = 24
     object cxtbTegenstander: TcxTabSheet
       Caption = 'Tegenstander'
@@ -65,7 +65,7 @@ object frmHTPredictor: TfrmHTPredictor
       object pnlSpelersGrid2: TPanel
         Left = 0
         Top = 0
-        Width = 1002
+        Width = 1113
         Height = 284
         Align = alTop
         BevelOuter = bvNone
@@ -75,7 +75,7 @@ object frmHTPredictor: TfrmHTPredictor
       object Panel4: TPanel
         Left = 0
         Top = 284
-        Width = 1002
+        Width = 1113
         Height = 308
         Align = alClient
         BevelOuter = bvNone
@@ -84,7 +84,7 @@ object frmHTPredictor: TfrmHTPredictor
         object Splitter2: TSplitter
           Left = 0
           Top = 0
-          Width = 1002
+          Width = 1113
           Height = 3
           Cursor = crVSplit
           Align = alTop
@@ -92,13 +92,13 @@ object frmHTPredictor: TfrmHTPredictor
         object cxPageControl1: TcxPageControl
           Left = 0
           Top = 3
-          Width = 1002
+          Width = 1113
           Height = 305
           ActivePage = cxTabSheet1
           Align = alClient
           TabOrder = 0
           ClientRectBottom = 305
-          ClientRectRight = 1002
+          ClientRectRight = 1113
           ClientRectTop = 24
           object cxTabSheet1: TcxTabSheet
             Caption = 'Opstelling 1'
@@ -136,7 +136,7 @@ object frmHTPredictor: TfrmHTPredictor
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 1002
+    Width = 1113
     Height = 60
     Align = alTop
     BevelOuter = bvNone
@@ -170,10 +170,11 @@ object frmHTPredictor: TfrmHTPredictor
       AutoSize = False
     end
     object btnOk: TButton
-      Left = 920
+      Left = 1024
       Top = 24
       Width = 75
       Height = 25
+      Anchors = [akRight, akBottom]
       Caption = 'Ok'
       TabOrder = 0
       OnClick = btnOkClick
