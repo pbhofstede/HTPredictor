@@ -99,7 +99,9 @@ end;
 -----------------------------------------------------------------------------}
 function TPlayer.GetXPFactor: double;
 begin
-  Result := (0.0716 * Power(FXP - 0.5, 0.5)) + 1;
+//formule MMM / HAG  Result := (0.0716 * Power(FXP - 0.5, 0.5)) + 1;
+//formule Schumi     Result := (Max(Power(FXP - 0.5, 0.43), 0) + 14) / 14;
+    Result := (Max(Power(FXP - 0.5, 0.43), 0) + 14) / 14;
 end;
 
 {-----------------------------------------------------------------------------

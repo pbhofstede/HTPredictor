@@ -14,6 +14,7 @@ type
     cbOrder: TcxImageComboBox;
     lblCaption: TLabel;
     vTempCB: TcxImageComboBox;
+    tiHint: TTimer;
     procedure cbPlayerPropertiesPopup(Sender: TObject);
     procedure cbPlayerPropertiesChange(Sender: TObject);
     procedure cbPlayerPropertiesValidate(Sender: TObject;
@@ -22,10 +23,16 @@ type
     procedure cbOrderPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
+    
+     procedure CMMouseEnter(var Msg: TMessage); message CM_MouseEnter;
+     procedure CMMouseLeave(var Msg: TMessage); message CM_MouseLeave;
+    procedure tiHintTimer(Sender: TObject);
   private
     FPosition: TPlayerPosition;
     FOpstelling: TOpstelling;
     FAanvoerder: Boolean;
+    FHintWindow: THintWindow;
+    FMyHint: String;
     procedure SetPosition(const Value: TPlayerPosition);
     procedure VulCBOrder;
     procedure ChangeOpstelling(aSender: TObject; var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
@@ -449,10 +456,17 @@ begin
         if (vPlayer = nil) then
         begin
           vText := '';
+          FMyHint := '';
         end
         else
         begin
           vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
+          FMyHint := Format('IM: %.2f'+#13#10+
+                            'LV: %.2f CV: %.2f LV: %.2f'+#13#10+
+                            'LA: %.2f CA: %.2f LA: %.2f',
+                            [vPlayer.MID_Bijdrage,
+                             vPlayer.DEF_R_Bijdrage, vPlayer.DEF_C_Bijdrage, vPlayer.DEF_L_Bijdrage,
+                             vPlayer.AANV_R_Bijdrage, vPlayer.AANV_C_Bijdrage, vPlayer.AANV_L_Bijdrage]);
         end;
 
         if aSender = cbPlayer then
@@ -495,6 +509,57 @@ begin
     Left := 170;
     Top := 210;
     lblCaption.Caption := 'Spelhervatter';
+  end;
+end;
+
+procedure TfrmOpstellingPlayer.CMMouseEnter(var Msg: TMessage);
+begin
+  if TControl(Msg.LParam) = pnlPlayer then
+  begin
+    if (FMyHint <> '') then
+    begin
+      tiHint.Enabled := TRUE;
+    end;
+  end;
+end;
+
+procedure TfrmOpstellingPlayer.CMMouseLeave(var Msg: TMessage);
+begin
+  if TControl(Msg.LParam) = pnlPlayer then
+  begin
+    if Assigned(FHintWindow) then
+    begin
+      FHintWindow.ReleaseHandle;
+      FHintWindow := nil;
+    end
+    else
+    begin
+      tiHint.Enabled := FALSE;
+    end;
+  end;
+end;
+
+procedure TfrmOpstellingPlayer.tiHintTimer(Sender: TObject);
+var
+  aRect: TRect;
+begin
+  tiHint.Enabled := FALSE;
+  
+  if (FMyHint <> '') then
+  begin
+    FHintWindow := THintWindow.Create(Self);
+    with FHintWindow do
+    begin
+      try
+        Font.Name := 'Tahoma';
+        Font.Style := Font.Style + [fsBold];
+        Color := clInfoBk;
+        aRect.TopLeft := Self.ClientToScreen(Point(cbPlayer.Left,cbPlayer.Top + 40));
+        aRect.BottomRight := Self.ClientToScreen(Point(cbPlayer.Left + 170,cbPlayer.Top + 90));
+      finally
+        ActivateHint(aRect, FMyHint);
+      end;
+    end;
   end;
 end;
 

@@ -13,6 +13,7 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  ShowHint = True
   PixelsPerInch = 96
   TextHeight = 13
   object pnlPlayer: TPanel
@@ -42,7 +43,6 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
       Left = 4
       Top = 2
       ParentFont = False
-      Properties.Images = frmHTPredictor.imgListHTPredictor
       Properties.ImmediatePost = True
       Properties.ImmediateUpdateText = True
       Properties.Items = <>
@@ -85,5 +85,11 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
       Visible = False
       Width = 121
     end
+  end
+  object tiHint: TTimer
+    Enabled = False
+    OnTimer = tiHintTimer
+    Left = 54
+    Top = 26
   end
 end
