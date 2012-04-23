@@ -128,6 +128,7 @@ begin
         vPlayer.SCO := FieldByName('SCOREN').asFloat;
         vPlayer.SP := FieldByname('SPELHERVATTEN').asFloat;
         vPlayer.XP := FieldByName('ERVARING').asFloat;
+        vPlayer.Loyaliteit := FieldByName('LOYALITEIT').AsFloat;
 
         Next;
       end;

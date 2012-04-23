@@ -29,20 +29,30 @@ type
     FAANV_L_Bijdrage: double;
     FDEF_C_Bijdrage: double;
     FSelectie: TObject;
+    FLoyaliteit: double;
+    function GetDef: double;
+    function GetGK: double;
+    function GetPAS: double;
+    function GetPM: double;
+    function GetSCO: double;
+    function GetSP: double;
+    function GetWNG: double;
+    function GetLoyaliteitFactor: double;
   public
     property ID: integer read FID write FID;
     property Naam: String read FNaam write FNaam;
     property Spec: String read FSpec write FSpec;
     property Vorm: double read FVorm write FVorm;
     property Conditie: double read FConditie write FConditie;
-    property GK: double read FGK write FGK;
-    property DEF: double read FDef write FDef;
-    property PM: double read FPM write FPM;
-    property WNG: double read FWNG write FWNG;
-    property PAS: double read FPAS write FPAS;
-    property SCO: double read FSCO write FSCO;
-    property SP: double read FSP write FSP;
+    property GK: double read GetGK write FGK;
+    property DEF: double read GetDef write FDef;
+    property PM: double read GetPM write FPM;
+    property WNG: double read GetWNG write FWNG;
+    property PAS: double read GetPAS write FPAS;
+    property SCO: double read GetSCO write FSCO;
+    property SP: double read GetSP write FSP;
     property XP: double read FXP write FXP;
+    property Loyaliteit: double read FLoyaliteit write FLoyaliteit;
     property Selectie: TObject read FSelectie write FSelectie;
 
     property DEF_R_Bijdrage: double read FDEF_R_Bijdrage write FDEF_R_Bijdrage;
@@ -77,8 +87,7 @@ uses
 -----------------------------------------------------------------------------}
 function TPlayer.GetConditieFactor: double;
 begin
-  //Result := Power((FConditie - 1 + 6 ) / 14, 0.6);
-  Result := Power(Min(FConditie + 5, 15.25) / 14, 0.6);
+  Result := Power(Min(FConditie + 5, 14) / 14, 0.6);
 end;
 
 {-----------------------------------------------------------------------------
@@ -126,6 +135,46 @@ begin
   AANV_C_Bijdrage := 0;
   AANV_L_Bijdrage := 0;
   MID_Bijdrage := 0;
+end;
+
+function TPlayer.GetLoyaliteitFactor: double;
+begin
+  Result := Loyaliteit / 20;
+end;
+
+function TPlayer.GetDef: double;
+begin
+  Result := FDef - 1 + GetLoyaliteitFactor;
+end;
+
+function TPlayer.GetGK: double;
+begin
+  Result := FGK - 1 + GetLoyaliteitFactor;
+end;
+
+function TPlayer.GetPAS: double;
+begin
+  Result := FPAS - 1 + GetLoyaliteitFactor;
+end;
+
+function TPlayer.GetPM: double;
+begin
+  Result := FPM - 1 + GetLoyaliteitFactor;
+end;
+
+function TPlayer.GetSCO: double;
+begin
+  Result := FSCO - 1 + GetLoyaliteitFactor;
+end;
+
+function TPlayer.GetSP: double;
+begin
+  Result := FSP - 1 + GetLoyaliteitFactor;
+end;
+
+function TPlayer.GetWNG: double;
+begin
+  Result := FWNG - 1 + GetLoyaliteitFactor;
 end;
 
 end.

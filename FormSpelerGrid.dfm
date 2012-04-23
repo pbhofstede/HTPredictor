@@ -161,6 +161,10 @@ object frmSpelerGrid: TfrmSpelerGrid
           Properties.ValueType = vtFloat
           Width = 63
         end
+        object cxGridSpelersViewLOYALITEIT: TcxGridDBColumn
+          Caption = 'Loyaliteit'
+          DataBinding.FieldName = 'LOYALITEIT'
+        end
       end
       object cxGridSpelersLevel1: TcxGridLevel
         GridView = cxGridSpelersView
@@ -314,6 +318,10 @@ object frmSpelerGrid: TfrmSpelerGrid
     end
     object mdSpelersLAND: TStringField
       FieldName = 'LAND'
+    end
+    object mdSpelersLOYALITEIT: TFloatField
+      FieldName = 'LOYALITEIT'
+      Required = True
     end
   end
 end

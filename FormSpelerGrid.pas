@@ -48,6 +48,8 @@ type
     mdSpelersERVARING: TFloatField;
     mdSpelersLAND: TStringField;
     btnOpslaan: TdxBarButton;
+    mdSpelersLOYALITEIT: TFloatField;
+    cxGridSpelersViewLOYALITEIT: TcxGridDBColumn;
     procedure btnLoadPlayersClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);

@@ -71,6 +71,7 @@ var
   i, j, vCount: integer;
   vStaminaColumn, vStamina: String;
   vIni: TIniFile;
+  vValue: Variant;
 begin
   result := 0;
   aExcelSheet.ExcelApp.ActiveSheet.Range['A1'].Select;
@@ -99,8 +100,21 @@ begin
               begin
                 if (aPlayerDataSet.Fields[j].Required) then
                 begin
-                  aPlayerDataSet.Fields[j].Value :=
-                    aExcelSheet.GetCellRange(Format('%s%d', [vIni.ReadString('PLAYER_MAPPING',aPlayerDataSet.Fields[j].FieldName,''), i]));
+                  vValue := aExcelSheet.GetCellRange(Format('%s%d', [vIni.ReadString('PLAYER_MAPPING',aPlayerDataSet.Fields[j].FieldName,''), i])).Value;
+
+                  if (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT') then
+                  begin
+                    if uBibConv.StringIsInteger(vValue) then
+                    begin
+                      vValue := uBibConv.AnyStrToInt(vValue);
+                    end
+                    else
+                    begin
+                      vValue := 0;
+                    end;
+                  end;
+
+                  aPlayerDataSet.Fields[j].Value := vValue;
                 end;
               end;
 
@@ -330,9 +344,12 @@ var
   vIntRating: integer;
   vResultStr: String;
 begin
-  vIntRating := Floor(aRating);
+  //Ceil, dus naar boven afronden.
+  //0 -> 0 -> niet-bestaand
+  //24,4 -> 6,1 -> 7 -> goed
+  vIntRating := Ceil(aRating / 4);
 
-  case vIntRating div 4 of
+  case vIntRating of
     0: vResultStr := 'niet-bestaand';
     1: vResultStr := 'rampzalig';
     2: vResultStr := 'waardeloos';
@@ -358,13 +375,18 @@ begin
     22: vResultStr := 'goddelijk++';
     23: vResultStr := 'goddelijk+++';
     24: vResultStr := 'goddelijk++++';
+    else
+      vResultStr := vResultStr + 'huh??';
   end;
 
+  vIntRating := Floor(aRating);
   case vIntRating mod 4 of
     0: vResultStr := vResultStr + ' (zeer laag)';
     1: vResultStr := vResultStr + ' (laag)';
     2: vResultStr := vResultStr + ' (hoog)';
     3: vResultStr := vResultStr + ' (zeer hoog)';
+    else
+      vResultStr := vResultStr + ' (huh??)';
   end;
 
   Result := Format('%.2f', [aRating]);
