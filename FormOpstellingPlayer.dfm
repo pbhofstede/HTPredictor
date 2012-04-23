@@ -14,6 +14,7 @@ object frmOpstellingPlayer: TfrmOpstellingPlayer
   Font.Style = []
   OldCreateOrder = False
   ShowHint = True
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object pnlPlayer: TPanel

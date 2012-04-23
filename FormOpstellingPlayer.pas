@@ -27,6 +27,7 @@ type
      procedure CMMouseEnter(var Msg: TMessage); message CM_MouseEnter;
      procedure CMMouseLeave(var Msg: TMessage); message CM_MouseLeave;
     procedure tiHintTimer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FPosition: TPlayerPosition;
     FOpstelling: TOpstelling;
@@ -462,8 +463,8 @@ begin
         begin
           vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
           FMyHint := Format('IM: %.2f'+#13#10+
-                            'LV: %.2f CV: %.2f LV: %.2f'+#13#10+
-                            'LA: %.2f CA: %.2f LA: %.2f',
+                            'RV: %.2f CV: %.2f LV: %.2f'+#13#10+
+                            'RA: %.2f CA: %.2f LA: %.2f',
                             [vPlayer.MID_Bijdrage,
                              vPlayer.DEF_R_Bijdrage, vPlayer.DEF_C_Bijdrage, vPlayer.DEF_L_Bijdrage,
                              vPlayer.AANV_R_Bijdrage, vPlayer.AANV_C_Bijdrage, vPlayer.AANV_L_Bijdrage]);
@@ -551,8 +552,10 @@ begin
     with FHintWindow do
     begin
       try
-        Font.Name := 'Tahoma';
-        Font.Style := Font.Style + [fsBold];
+        //Font.Name := 'Consolas';
+        //Canvas.Font.Name := 'Courier';
+        Canvas.Font.Name := 'Monaco';   //mooi aligned!
+        Canvas.Font.Size := 8;
         Color := clInfoBk;
         aRect.TopLeft := Self.ClientToScreen(Point(cbPlayer.Left,cbPlayer.Top + 40));
         aRect.BottomRight := Self.ClientToScreen(Point(cbPlayer.Left + 170,cbPlayer.Top + 90));
@@ -561,6 +564,11 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmOpstellingPlayer.FormCreate(Sender: TObject);
+begin
+  cbPlayer.Properties.Images := frmHTPredictor.imgListHTPredictor;
 end;
 
 end.
