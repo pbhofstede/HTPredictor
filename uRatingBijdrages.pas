@@ -147,161 +147,161 @@ var
 begin
   // Keeper
   vRating := AddRatingBijdrage('K');
-  vRating.CD_GK := 0.568918;
-  vRating.CD_DEF := 0.264934;
-  vRating.WB_GK := 0.629629;
-  vRating.WB_DEF := 0.276579;
+  vRating.CD_GK := 0.568918;  //0.541809523809524
+  vRating.CD_DEF := 0.264934; //0.2649
+  vRating.WB_GK := 0.629629;  //0.599619047619048
+  vRating.WB_DEF := 0.276579; //0.2765
 
   // Centrale verdediger
   vRating := AddRatingBijdrage('CD');
-  vRating.MID_PM := 0.12596;
-  vRating.CD_DEF := 0.602083;
-  vRating.WB_DEF := 0.499476;
+  vRating.MID_PM := 0.12596;  //0.114332444120847
+  vRating.CD_DEF := 0.602083; //0.623608017817372
+  vRating.WB_DEF := 0.499476; //0.51732532242192   //0.25866266121096
 
   // Aanvallende centrale verdediger
   vRating := AddRatingBijdrage('OCD');
-  vRating.MID_PM := 0.169827;
-  vRating.CD_DEF := 0.43655;
-  vRating.WB_DEF := 0.365733;
+  vRating.MID_PM := 0.169827; //0.154198959584748
+  vRating.CD_DEF := 0.43655;  //0.45216760760346
+  vRating.WB_DEF := 0.365733; //0.378826332418294 //0.189361371523282
 
   // Centrale verdediger naar de vleugel
   vRating := AddRatingBijdrage('CDTW');
-  vRating.MID_PM := 0.088027;
-  vRating.CD_DEF := 0.468513;
-  vRating.WB_DEF := 0.656592;
-  vRating.WA_WING := 0.213672;
+  vRating.MID_PM := 0.088027; //0.0799146551440389
+  vRating.CD_DEF := 0.468513; //0.485316206557207
+  vRating.WB_DEF := 0.656592; //0.715857079379445
+  vRating.WA_WING := 0.213672;//0.221266898016264
 
   // Normale vleugelverdediger
   vRating := AddRatingBijdrage('NWB');
-  vRating.MID_PM := 0.078229;
-  vRating.CD_DEF := 0.280401;
-  vRating.WB_DEF := 0.921337;
-  vRating.WA_WING := 0.399755;
+  vRating.MID_PM := 0.078229; //0.0782
+  vRating.CD_DEF := 0.280401; //0.2804
+  vRating.WB_DEF := 0.921337; //0.9213
+  vRating.WA_WING := 0.399755;//0.444111111111111
 
   // Offensieve vleugelverdediger
   vRating := AddRatingBijdrage('OWB');
-  vRating.MID_PM := 0.107886;
-  vRating.CD_DEF := 0.238437;
-  vRating.WB_DEF := 0.69943;
-  vRating.WA_WING := 0.487884;
+  vRating.MID_PM := 0.107886; //0.1078
+  vRating.CD_DEF := 0.238437; //0.2384
+  vRating.WB_DEF := 0.69943;  //0.6994
+  vRating.WA_WING := 0.487884;//0.542
 
   // Defensieve vleugelverdediger
   vRating := AddRatingBijdrage('DWB');
-  vRating.MID_PM := 0.030981;
-  vRating.CD_DEF := 0.314461;
-  vRating.WB_DEF := 1.002422;
-  vRating.WA_WING := 0.255317;
+  vRating.MID_PM := 0.030981;  //0.0309
+  vRating.CD_DEF := 0.314461;  //0.29868
+  vRating.WB_DEF := 1.002422;  //1.0024
+  vRating.WA_WING := 0.255317; //0.283666666666667
 
   // Vleugelverdediger 'Naar het Midden'
   vRating := AddRatingBijdrage('WBTM');
-  vRating.MID_PM := 0.078229;
-  vRating.CD_DEF := 0.426132;
-  vRating.WB_DEF := 0.688952;
-  vRating.WA_WING := 0.255317;
+  vRating.MID_PM := 0.078229; //0.0782
+  vRating.CD_DEF := 0.426132; //0.4261
+  vRating.WB_DEF := 0.688952; //0.6889
+  vRating.WA_WING := 0.255317;//0.242535
 
   // Centrale middenvelder
   vRating := AddRatingBijdrage('IM');
-  vRating.MID_PM := 0.468248;
-  vRating.CD_DEF := 0.24966;
-  vRating.WB_DEF := 0.189319;
-  vRating.CA_PASS := 0.193137;
-  vRating.WA_PASS := 0.189444;
+  vRating.MID_PM := 0.468248; //0.4682
+  vRating.CD_DEF := 0.24966; //0.2496
+  vRating.WB_DEF := 0.189319;  //0.1893  //0.0946
+  vRating.CA_PASS := 0.193137; //0.1931
+  vRating.WA_PASS := 0.189444; //0.1894  //0.0947
 
   // Aanvallende centrale middenvelder
   vRating := AddRatingBijdrage('OIM');
-  vRating.MID_PM := 0.442128;
-  vRating.CD_DEF := 0.134608;
-  vRating.WB_DEF := 0.102543;
-  vRating.CA_PASS := 0.287063;
-  vRating.WA_PASS := 0.187746;
+  vRating.MID_PM := 0.442128; //0.4421
+  vRating.CD_DEF := 0.134608; //0.1346
+  vRating.WB_DEF := 0.102543; //0.1025 //0.0512
+  vRating.CA_PASS := 0.287063; //0.287
+  vRating.WA_PASS := 0.187746; //0.1877  //0.0938
 
   // Verdedigende centrale middenvelder
   vRating := AddRatingBijdrage('DIM');
-  vRating.MID_PM := 0.442128;
-  vRating.CD_DEF := 0.3705;
-  vRating.WB_DEF := 0.27115;
-  vRating.CA_PASS := 0.130214;
-  vRating.WA_PASS := 0.121811;
+  vRating.MID_PM := 0.442128;//0.4421
+  vRating.CD_DEF := 0.3705;  //0.3705
+  vRating.WB_DEF := 0.27115; //0.2711 //0.1355
+  vRating.CA_PASS := 0.130214; //0.1302
+  vRating.WA_PASS := 0.121811; //0.1218 //0.0609
 
   // Centrale middenvelder 'Naar de Vleugel'
   vRating := AddRatingBijdrage('IMTW');
-  vRating.MID_PM := 0.412406;
-  vRating.CD_DEF := 0.217029;
-  vRating.WB_DEF := 0.249179;
-  vRating.CA_PASS := 0.134745;
-  vRating.WA_PASS := 0.235698;
-  vRating.WA_WING := 0.428863;
+  vRating.MID_PM := 0.412406; //0.4124
+  vRating.CD_DEF := 0.217029; //0.217
+  vRating.WB_DEF := 0.249179; //0.2491
+  vRating.CA_PASS := 0.134745;  //0.1347
+  vRating.WA_PASS := 0.235698;  //0.2356
+  vRating.WA_WING := 0.428863;  //0.4288
 
   // Vleugelspeler
   vRating := AddRatingBijdrage('NW');
-  vRating.MID_PM := 0.242848;
-  vRating.CD_DEF := 0.125486;
-  vRating.WB_DEF := 0.349951;
-  vRating.CA_PASS := 0.061538;
-  vRating.WA_PASS := 0.182107;
-  vRating.WA_WING := 0.674398;
+  vRating.MID_PM := 0.242848;  //0.212851757692645
+  vRating.CD_DEF := 0.125486;  //0.1254
+  vRating.WB_DEF := 0.349951;  //0.3499
+  vRating.CA_PASS := 0.061538; //0.0615
+  vRating.WA_PASS := 0.182107; //0.1821
+  vRating.WA_WING := 0.674398; //0.749222222222222
 
   // Aanvallende vleugelspeler
   vRating := AddRatingBijdrage('OW');
-  vRating.MID_PM := 0.203662;
-  vRating.CD_DEF := 0.050401;
-  vRating.WB_DEF := 0.172133;
-  vRating.CA_PASS := 0.080314;
-  vRating.WA_PASS := 0.213452;
-  vRating.WA_WING := 0.789342;
+  vRating.MID_PM := 0.203662;  //0.178486894012448
+  vRating.CD_DEF := 0.050401;  //0.0504
+  vRating.WB_DEF := 0.172133;  //0.181157894736842
+  vRating.CA_PASS := 0.080314; //0.0803
+  vRating.WA_PASS := 0.213452; //0.2134
+  vRating.WA_WING := 0.789342; //0.877
 
   // Verdedigende vleugelspeler
   vRating := AddRatingBijdrage('DW');
-  vRating.MID_PM := 0.203662;
-  vRating.CD_DEF := 0.156868;
-  vRating.WB_DEF := 0.463477;
-  vRating.CA_PASS := 0.031035;
-  vRating.WA_PASS := 0.15016;
-  vRating.WA_WING := 0.571036;
+  vRating.MID_PM := 0.203662; //0.178486894012448
+  vRating.CD_DEF := 0.156868; //0.1568
+  vRating.WB_DEF := 0.463477; //0.487789473684211
+  vRating.CA_PASS := 0.031035; //0.031
+  vRating.WA_PASS := 0.15016;  //0.1501
+  vRating.WA_WING := 0.571036; //0.634444444444444
 
   // Vleugelspeler 'Naar het Midden'
   vRating := AddRatingBijdrage('WTM');
-  vRating.MID_PM := 0.306594;
-  vRating.CD_DEF := 0.152469;
-  vRating.WB_DEF := 0.284824;
-  vRating.CA_PASS := 0.08768;
-  vRating.WA_PASS := 0.115254;
-  vRating.WA_WING := 0.445048;
+  vRating.MID_PM := 0.306594; //0.268694661172964
+  vRating.CD_DEF := 0.152469; //0.1524
+  vRating.WB_DEF := 0.284824; //0.2848
+  vRating.CA_PASS := 0.08768; //0.0876
+  vRating.WA_PASS := 0.115254;//0.1152
+  vRating.WA_WING := 0.445048;//0.494444444444444
 
   // Aanvaller
   vRating := AddRatingBijdrage('FW');
-  vRating.CA_PASS := 0.207589;
-  vRating.CA_SC := 0.563149;
-  vRating.WA_PASS := 0.10029;
-  vRating.WA_WING := 0.142456;
-  vRating.WA_SC := 0.184292;
+  vRating.CA_PASS := 0.207589;  //0.218876084491443
+  vRating.CA_SC := 0.563149;    //0.593971677962079
+  vRating.WA_PASS := 0.10029;   //0.105693415258036
+  vRating.WA_WING := 0.142456;  //0.158112641377712
+  vRating.WA_SC := 0.184292;    //0.194298673558187
 
   // Verdedigende aanvaller
   vRating := AddRatingBijdrage('DFW');
-  vRating.MID_PM := 0.217011;
-  vRating.CA_PASS := 0.322422;
-  vRating.CA_SC := 0.346607;
-  vRating.WA_PASS := 0.186512;
-  vRating.WA_WING := 0.097975;
-  vRating.WA_SC := 0.095023;
+  vRating.MID_PM := 0.217011;   //0.200663555076171
+  vRating.CA_PASS := 0.322422;  //0.350593216445366
+  vRating.CA_SC := 0.346607;    //0.365602172938477
+  vRating.WA_PASS := 0.186512;  //0.196724769916405
+  vRating.WA_WING := 0.097975;  //0.108702440947177
+  vRating.WA_SC := 0.095023;    //0.100208327839456
 
   // Technische verdedigende aanvaller
   vRating := AddRatingBijdrage('TDFW');
-  vRating.MID_PM := 0.21701;
-  vRating.CA_PASS := 0.470666;
-  vRating.CA_SC := 0.346607;
-  vRating.WA_PASS := 0.220424;
-  vRating.WA_WING := 0.097975;
-  vRating.WA_SC := 0.095023;
+  vRating.MID_PM := 0.21701;   //0.200663555076171
+  vRating.CA_PASS := 0.470666; //0.350593216445366
+  vRating.CA_SC := 0.346607;   //0.365602172938477
+  vRating.WA_PASS := 0.220424; //0.258314800652819
+  vRating.WA_WING := 0.097975; //0.108702440947177
+  vRating.WA_SC := 0.095023;   //0.100208327839456
 
   // Aanvaller 'Naar de vleugel'
   vRating := AddRatingBijdrage('FTW');
-  vRating.CA_PASS := 0.146863;
-  vRating.CA_SC := 0.342343;
-  vRating.WA_PASS := 0.148148;
-  vRating.WA_WING := 0.392185;
-  vRating.WA_SC := 0.371022;
-  vRating.WA_SC_OTHER := 0.151325;
+  vRating.CA_PASS := 0.146863;    //0.154848237124548
+  vRating.CA_SC := 0.342343;      //0.361066427573112
+  vRating.WA_PASS := 0.148148;    //0.156219508979194
+  vRating.WA_WING := 0.392185;    //0.459551875390065
+  vRating.WA_SC := 0.371022;      //0.391339890825664
+  vRating.WA_SC_OTHER := 0.151325;//0.159594947390628
   {TODO: vRating.WING_WG_OTHER ook implementeren??} 
 end;
 

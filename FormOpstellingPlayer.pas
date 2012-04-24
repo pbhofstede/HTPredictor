@@ -462,7 +462,7 @@ begin
         else
         begin
           vText := Format('%s %.2f', [vPlayer.Naam, vPlayer.GetPositionRating(Position, vPlayerOrder)]);
-          FMyHint := Format('IM: %.2f'+#13#10+
+          FMyHint := Format('MID: %.2f'+#13#10+
                             'RV: %.2f CV: %.2f LV: %.2f'+#13#10+
                             'RA: %.2f CA: %.2f LA: %.2f',
                             [vPlayer.MID_Bijdrage,
