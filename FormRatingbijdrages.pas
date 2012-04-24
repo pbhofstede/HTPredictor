@@ -75,12 +75,44 @@ type
     dsUser: TDataSource;
     cxStyleRepository1: TcxStyleRepository;
     cxStyle1: TcxStyle;
+    dsHO: TDataSource;
+    dxmdHO: TdxMemData;
+    StringField2: TStringField;
+    FloatField12: TFloatField;
+    FloatField13: TFloatField;
+    FloatField14: TFloatField;
+    FloatField15: TFloatField;
+    FloatField16: TFloatField;
+    FloatField17: TFloatField;
+    FloatField18: TFloatField;
+    FloatField19: TFloatField;
+    FloatField20: TFloatField;
+    FloatField21: TFloatField;
+    FloatField22: TFloatField;
+    cxtbHO: TcxTabSheet;
+    cxGrid1: TcxGrid;
+    cxGridDBTableView2: TcxGridDBTableView;
+    cxGridDBColumn14: TcxGridDBColumn;
+    cxGridDBColumn15: TcxGridDBColumn;
+    cxGridDBColumn16: TcxGridDBColumn;
+    cxGridDBColumn17: TcxGridDBColumn;
+    cxGridDBColumn18: TcxGridDBColumn;
+    cxGridDBColumn19: TcxGridDBColumn;
+    cxGridDBColumn20: TcxGridDBColumn;
+    cxGridDBColumn21: TcxGridDBColumn;
+    cxGridDBColumn22: TcxGridDBColumn;
+    cxGridDBColumn23: TcxGridDBColumn;
+    cxGridDBColumn24: TcxGridDBColumn;
+    cxGridDBColumn25: TcxGridDBColumn;
+    cxGridDBColumn26: TcxGridDBColumn;
+    cxGridLevel2: TcxGridLevel;
     procedure FormCreate(Sender: TObject);
     procedure dsUserStateChange(Sender: TObject);
   private
     FTRatingBijdrages: TRatingBijdrages;
     FRatingsChanged: boolean;
     procedure ShowFlatterMannRatings;
+    procedure ShowHORatings;
     procedure SetTRatingBijdrages(const Value: TRatingBijdrages);
     { Private declarations }
   public
@@ -126,8 +158,9 @@ end;
 
 procedure TfrmRatingBijdrages.FormCreate(Sender: TObject);
 begin
-  cxpgctlRatingBijdrages.ActivePage := cxtbFlattermann;
+  cxpgctlRatingBijdrages.ActivePage := cxtbCustom;
   ShowFlatterMannRatings;
+  ShowHORatings;
 end;
 
 procedure TfrmRatingBijdrages.ShowFlatterMannRatings;
@@ -136,6 +169,7 @@ var
 begin
   vRatings := TRatingBijdrages.Create;
   try
+    vRatings.LoadFlatterManRatings;
     vRatings.SaveToMemData(dxmdFlatterMann);
   finally
     vRatings.Free;
@@ -145,6 +179,18 @@ end;
 procedure TfrmRatingBijdrages.dsUserStateChange(Sender: TObject);
 begin
   RatingsChanged := RatingsChanged or (TDataSource(Sender).State in [dsEdit,dsInsert]);
+end;
+
+procedure TfrmRatingBijdrages.ShowHORatings;
+var
+  vRatings: TRatingBijdrages;
+begin
+  vRatings := TRatingBijdrages.Create;
+  try
+    vRatings.SaveToMemData(dxmdHO);
+  finally
+    vRatings.Free;
+  end;
 end;
 
 end.
