@@ -114,6 +114,30 @@ begin
                     end;
                   end;
 
+                  if (aPlayerDataSet.Fields[j].FieldName = 'VORM') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'CONDITIE') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'KEEPEN') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'VERDEDIGEN') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'POSITIESPEL') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'VLEUGELSPEL') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'PASSEN') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'SCOREN') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'SPELHERVATTEN') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'ERVARING') or
+                     (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT') then
+                  begin
+                    if uBibConv.AnyStrToInt(vValue) > 0 then
+                    begin
+                      if (Floor(vValue) = vValue) and
+                         ((vValue < 8) or
+                          (((aPlayerDataSet.Fields[j].FieldName = 'ERVARING') or
+                            (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT')) and
+                           (vValue < 20))) then
+                      begin
+                        vValue := vValue + 0.5;
+                      end;
+                    end;
+                  end;
                   aPlayerDataSet.Fields[j].Value := vValue;
                 end;
               end;

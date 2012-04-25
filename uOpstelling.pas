@@ -660,7 +660,8 @@ end;
 function TOpstelling.VerwerkTS(aRating: double): double;
 begin
   //Result := aRating * Power((FTS - 0.5) * 0.2, 0.417779);     //MMM
-  Result := aRating * Power((FTS - 0.5) * 0.147832, 0.417779);  //HO
+  //Result := aRating * Power((FTS - 0.5) * 0.147832, 0.417779);  //HO
+  Result := aRating * Power((FTS - 1) * 0.147832, 0.417779);  
 end;
 
 procedure TOpstelling.ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
