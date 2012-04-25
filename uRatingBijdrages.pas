@@ -13,6 +13,8 @@ type
     function GetCount: integer;
     function AddRatingBijdrage(aPositie: String): TRatingBijdrage;
   public
+    procedure SaveToXLS(aFileName: String);
+    procedure LoadFromXLS(aFileName: String);
     procedure LoadFromMemData(aMemDataSet: TdxMemData);
     procedure SaveToMemData(aMemDataSet:TdxMemData);
     function CalcBijdrage(aPlayer: TPlayer; aPosition: TPlayerPosition;
@@ -29,7 +31,7 @@ type
 implementation
 
 uses
-  SysUtils, Dialogs, db;
+  SysUtils, Dialogs, db, uBibExcel, ComObj, uBibMessageBox, Forms;
 
 { TRatingBijdrages }
 
@@ -43,7 +45,7 @@ uses
 constructor TRatingBijdrages.Create;
 begin
   FRatingBijdrages := TObjectList.Create(TRUE);
-  LoadHORatings;
+  LoadFromXLS(ExtractFilePath(Application.ExeName)+'ratings.xlsx');
 end;
 
 {-----------------------------------------------------------------------------
@@ -615,6 +617,97 @@ begin
   end;
 end;
 
+procedure TRatingBijdrages.SaveToXLS(aFileName: String);
+var
+  vExcelApp: Variant;
+  vRow, i: Integer;
+  vDoorgaan: boolean;
+begin
+  if (FileExists(aFileName)) then
+  begin
+    DeleteFile(aFileName);
+  end;
 
+  vExcelApp := CreateOleObject('Excel.Application');
+  try
+    vExcelApp.Workbooks.Add;
+    // Specifying name of worksheet:
+    vExcelApp.Worksheets[1].Name := 'Ratings';
+    vRow := 0;
+    for i:=0 to Count - 1 do
+    begin
+      TRatingBijdrage(FRatingBijdrages[i]).ExportToXLS(vExcelApp.Worksheets[1],vRow)
+    end;
+    vDoorgaan := TRUE;
+
+    while (vDoorgaan) do
+    begin
+      try
+        vExcelApp.ActiveWorkbook.SaveAs(aFileName);
+
+        vDoorgaan := FALSE;
+      except
+        uBibMessageBox.MessageBoxError(
+          Format('Kan het bestand %s niet opslaan!',[QuotedStr(aFileName)])+#13+
+          'Controleer of het bestand in gebruik is en probeer het nogmaals.','Export Mulderij');
+      end;
+    end;
+  finally
+    vExcelApp.Quit;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: LoadFromXLS
+  Author:    Harry
+  Date:      24-apr-2012
+  Arguments: aFileName: String
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TRatingBijdrages.LoadFromXLS(aFileName: String);
+var
+  vExcelApp: TExcelFunctions;
+  vPos: String;
+  vCount, i: integer;
+  vRating : TRatingBijdrage;
+begin
+  LoadHORatings;
+
+  if FileExists(aFileName) then
+  begin
+    vExcelApp := uBibExcel.TExcelFunctions.Create(FALSE);
+    with vExcelApp do
+    begin
+      try
+        Open(aFileName);
+        try
+          ExcelApp.ActiveWorkbook.Worksheets[1].Activate;
+          ExcelApp.ActiveSheet.Range['A1'].Select;
+
+          vCount := ExcelApp.ActiveSheet.UsedRange.Rows.Count + 1;
+      
+          for i:=2 to vCount do
+          begin
+            vPos := GetCellRange(Format('A%d', [i]));
+
+            if (vPos <> '') then
+            begin
+              vRating := GetRatingBijdrageByPositie(vPos);
+
+              if (vRating <> nil) then
+              begin
+                vRating.LoadFromXLS(ExcelApp.ActiveSheet, i);
+              end;
+            end;
+          end;
+        finally
+          CloseActiveWorkbook(FALSE);
+        end;
+      finally
+        Free;
+      end;
+    end;
+  end;
+end;
 
 end.

@@ -49,6 +49,7 @@ type
     procedure btnOkClick(Sender: TObject);
     procedure ceZelfvertrouwenPropertiesChange(Sender: TObject);
     procedure ceTeamgeestPropertiesChange(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
@@ -169,6 +170,11 @@ end;
 procedure TfrmHTPredictor.ceTeamgeestPropertiesChange(Sender: TObject);
 begin
   lblTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTeamgeest.Value)));
+end;
+
+procedure TfrmHTPredictor.FormDestroy(Sender: TObject);
+begin
+  FRatingBijdrages.SaveToXLS(ExtractFilePath(Application.ExeName)+'ratings.xlsx');
 end;
 
 end.
