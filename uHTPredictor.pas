@@ -22,7 +22,7 @@ function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
 function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;    
 function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
-function FormatRating(aRating: double): String;
+function FormatRating(aRating, aPrevRating: double): String;
 
 implementation
 
@@ -339,7 +339,7 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-function FormatRating(aRating: double): String;
+function FormatRating(aRating, aPrevRating: double): String;
 var
   vIntRating: integer;
   vResultStr: String;
@@ -395,6 +395,22 @@ begin
     Result := '0' + Result;
   end;
 
-  Result := Result + ' ' + vResultStr;
+  if (aRating <> aPrevRating) then
+  begin
+    if (aRating > aPrevRating) then
+    begin
+      Result := Format('%s (+%.2f)', [Result, aRating - aPrevRating]) + #9;
+    end
+    else
+    begin
+      Result := Format('%s (%.2f)', [Result, aRating - aPrevRating]) + #9;
+    end;
+  end
+  else
+  begin
+    Result := Result + #9#9;
+  end;
+
+  Result := Result + vResultStr;
 end;
 end.

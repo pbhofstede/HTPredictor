@@ -49,6 +49,7 @@ type
     constructor Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
     destructor Destroy; override;
 
+    function GetPlayerOnPosition(aPositie: TPlayerPosition): TPlayer;
     function GetPositionOfPlayer(aPlayer: TPlayer): TPlayerPosition;
     procedure ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
     function AantalPositiesBezet: integer;
@@ -251,6 +252,18 @@ end;
 {-----------------------------------------------------------------------------
   Author:    Pieter Bas
   Datum:     17-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TOpstelling.GetPlayerOnPosition(aPositie: TPlayerPosition): TPlayer;
+begin
+  Result := FOpstellingPlayerArray[Ord(aPositie)];
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     25-04-2012
   Doel:
   
   <eventuele fixes>

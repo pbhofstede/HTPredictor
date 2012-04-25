@@ -37,6 +37,13 @@ type
     FWedstrijdPlaats: TWedstrijdPlaats;
     FZelfVertrouwen: double;
     FTeamgeest: double;
+    FMID: double;
+    FRV: double;
+    FCV: double;
+    FLV: double;
+    FRA: double;
+    FCA: double;
+    FLA: double;
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
     { Private declarations }
@@ -92,14 +99,24 @@ var
   vCount: integer;
 begin
   vDisable := FOpstelling.AantalPositiesBezet = 11;
+
+  if (FOpstelling.AantalPositiesBezet = 10) and
+     (FOpstelling.GetPlayerOnPosition(pKP) = nil) then
+  begin
+    vDisable := TRUE;
+  end;
   
   for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
   begin
-    if (FOpstellingPlayerArray[vCount].cbPlayer.EditValue = Null) or
-       (FOpstellingPlayerArray[vCount].cbPlayer.EditValue = -1) then
+    //een keeper moet altijd opgesteld kunnen worden
+    if TPlayerPosition(vCount) <> pKP then
     begin
-      FOpstellingPlayerArray[vCount].cbPlayer.Enabled := not vDisable;
-      FOpstellingPlayerArray[vCount].cbOrder.Enabled := not vDisable;
+      if (FOpstellingPlayerArray[vCount].cbPlayer.EditValue = Null) or
+         (FOpstellingPlayerArray[vCount].cbPlayer.EditValue = -1) then
+      begin
+        FOpstellingPlayerArray[vCount].cbPlayer.Enabled := not vDisable;
+        FOpstellingPlayerArray[vCount].cbOrder.Enabled := not vDisable;
+      end;
     end;
   end;
 end;
@@ -267,13 +284,13 @@ begin
   vCA := FOpstelling.CA;
   vLA := FOpstelling.LA;
 
-  lblIM.Caption := uHTPredictor.FormatRating(vMID);
-  lblRV.Caption := uHTPredictor.FormatRating(vRV);
-  lblCV.Caption := uHTPredictor.FormatRating(vCV);
-  lblLV.Caption := uHTPredictor.FormatRating(vLV);
-  lblRA.Caption := uHTPredictor.FormatRating(vRA);
-  lblCA.Caption := uHTPredictor.FormatRating(vCA);
-  lblLA.Caption := uHTPredictor.FormatRating(vLA);
+  lblIM.Caption := uHTPredictor.FormatRating(vMID, FMid);
+  lblRV.Caption := uHTPredictor.FormatRating(vRV, FRV);
+  lblCV.Caption := uHTPredictor.FormatRating(vCV, FCV);
+  lblLV.Caption := uHTPredictor.FormatRating(vLV, FLV);
+  lblRA.Caption := uHTPredictor.FormatRating(vRA, FRA);
+  lblCA.Caption := uHTPredictor.FormatRating(vCA, FCA);
+  lblLA.Caption := uHTPredictor.FormatRating(vLA, FLA);
 
   lblHatStats.Caption := Format('%d', [Ceil((vMID * 3)
                                              + vRV
@@ -282,6 +299,13 @@ begin
                                              + vRA
                                              + vCA
                                              + vLA)]);
+  FMid := vMID;
+  FRV := vRV;
+  FCV := vCV;
+  FLV := vLV;
+  FRA := vRA;
+  FCA := vCA;
+  FLA := vLA;
 end;
 
 end.
