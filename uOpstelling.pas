@@ -32,6 +32,9 @@ type
     procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
     procedure SetTS(const Value: double);
     function VerwerkTS(aRating: double): double;
+    function OverCrowdingDef(aAantal: integer): double;
+    function OverCrowdingMid(aAantal: integer): double;
+    function OverCrowdingAan(aAantal: integer): double;
   public
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
@@ -126,11 +129,7 @@ begin
           Inc(vCentraalCount);
         end;
 
-        case vCentraalCount of
-          2:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.94);
-          3:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.865);
-          else   Result := Result + vPlayer.AANV_C_Bijdrage;
-        end;
+        Result := Result + (vPlayer.AANV_C_Bijdrage * OverCrowdingAan(vCentraalCount));
       end
       else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
       begin
@@ -150,11 +149,7 @@ begin
           Inc(vCentraalCount);
         end;
 
-        case vCentraalCount of
-          2:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.92);
-          3:     Result := Result + (vPlayer.AANV_C_Bijdrage * 0.82);
-          else   Result := Result + vPlayer.AANV_C_Bijdrage;
-        end;
+        Result := Result + (vPlayer.AANV_C_Bijdrage * OverCrowdingMid(vCentraalCount));
       end
       else
       begin
@@ -215,11 +210,7 @@ begin
           Inc(vCentraalCount);
         end;
 
-        case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.96);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.91);
-          else   Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
-        end;
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingDef(vCentraalCount));
       end
       else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
       begin
@@ -238,12 +229,8 @@ begin
         begin
           Inc(vCentraalCount);
         end;
-
-        case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.92);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * 0.82);
-          else   Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
-        end;
+        
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingMid(vCentraalCount));
       end
       else
       begin
@@ -359,11 +346,7 @@ begin
           Inc(vCentraalCount);
         end;
 
-        case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.92);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.82);
-          else   Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
-        end;
+        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingMid(vCentraalCount));
       end
       else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
       begin
@@ -383,11 +366,7 @@ begin
           Inc(vCentraalCount);
         end;
 
-        case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.96);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.91);
-          else   Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
-        end;
+        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingDef(vCentraalCount));
       end
       else if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
       begin
@@ -407,11 +386,7 @@ begin
           Inc(vCentraalCount);
         end;
 
-        case vCentraalCount of
-          2:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.94);
-          3:     Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * 0.865);
-          else   Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
-        end;
+        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingAan(vCentraalCount));
       end
       else
       begin
@@ -423,15 +398,63 @@ begin
   Result := VerwerkTS(Result);
 
   case WedstrijdPlaats of
-    wThuis: Result := Result * 1.199529;
-    wDerby: Result := Result * 1.113699;
+    wThuis: Result := Result * 1.199529;    //MMM + HO: 1.199529
+    wDerby: Result := Result * 1.113699;    //MMM + HO: 1.113699
     wUit:   Result := Result * 1;
   end;
 
   case Motivatie of
-    mPIC:     Result := Result * 0.839949;
-    mMOTS:    Result := Result * 1.10965;
+    mPIC:     Result := Result * 0.839949;   //MMM + HO: 0.839949
+    mMOTS:    Result := Result * 1.109650;   //MMM + HO: 1.109650
     mNormaal: Result := Result * 1;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     24-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TOpstelling.OverCrowdingAan(aAantal: integer): double;
+begin
+  case aAantal of
+    2:    Result := 0.9480;  //0.9480 = HO 0.94 = MMM
+    3:    Result := 0.8190;  //0.8190 = HO 0.865 = MMM
+    else  Result := 1;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     24-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TOpstelling.OverCrowdingDef(aAantal: integer): double;
+begin
+  case aAantal of
+    2:    Result := 0.9647;     //0.9647 = HO 0.96 = MMM
+    3:    Result := 0.8731;     //0.8731 = HO 0.91 = MMM
+    else  Result := 1;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     24-04-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TOpstelling.OverCrowdingMid(aAantal: integer): double;
+begin
+  case aAantal of
+    2:    Result := 0.9356;     //0.9356 = HO 0.92=MMM
+    3:    Result := 0.8268;     //0.8268 = HO 0.82=MMM
+    else  Result := 1;
   end;
 end;
 
@@ -602,24 +625,29 @@ begin
   if aVerdediging then
   begin
     case Coach of
-      cVerdedigend: Result := aRating * ((2 * 1.197332) + 1.196307) / 3;
+      //cVerdedigend: Result := aRating * ((2 * 1.197332) + 1.196307) / 3;    //MMM: 1,196990333
+      cVerdedigend: Result := aRating * 1.196307; //HO
       cNeutraal:    Result := aRating * 1.05;
-      cAanvallend:  Result := aRating * 0.94;
+      //cAanvallend:  Result := aRating * 0.94;   //MMM
+      cAanvallend: Result := aRating * 0.928162;  //HO
     end;
   end
   else
   begin
     case Coach of
-      cVerdedigend: Result := aRating * 0.928;
+      //cVerdedigend: Result := aRating * 0.928;  //MMM: 0.928
+      cVerdedigend: Result := aRating * 0.927930; //HO
       cNeutraal:    Result := aRating * 1.05;
-      cAanvallend:  Result := aRating * ((2 * 1.133359) + 1.135257) / 3;
+      //cAanvallend:  Result := aRating * ((2 * 1.133359) + 1.135257) / 3;    //MMM: 1,133991667
+      cAanvallend:  Result := aRating *  1.135257
     end;
   end;
 end;
 
 function TOpstelling.VerwerkTS(aRating: double): double;
 begin
-  Result := aRating * Power((FTS - 0.5) * 0.2, 0.417779);
+  //Result := aRating * Power((FTS - 0.5) * 0.2, 0.417779);     //MMM
+  Result := aRating * Power((FTS - 0.5) * 0.147832, 0.417779);  //HO
 end;
 
 procedure TOpstelling.ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
@@ -722,7 +750,7 @@ begin
             (vRating.WA_SC * vPlayer.SCO))
           * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
       end
-      else if (aPositie in [pLW, pLCM, pLB]) then
+      else if (aPositie in [pLW, pLCM, pLB, pLCV]) then
       begin
         vPlayer.AANV_R_Bijdrage := 0;
       end
@@ -750,7 +778,7 @@ begin
             (vRating.WA_SC * vPlayer.SCO))
           * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
       end
-      else if (aPositie in [pRW, pRCM, pRB]) then
+      else if (aPositie in [pRW, pRCM, pRB, pRCV]) then
       begin
         vPlayer.AANV_L_Bijdrage := 0;
       end

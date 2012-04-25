@@ -250,22 +250,38 @@ begin
 end;
 
 procedure TfrmOpstelling.UpdateRatings;
+var
+  vMID,
+  vRV,
+  vCV,
+  vLV,
+  vRA,
+  vCA,
+  vLA: double;
 begin
-  lblIM.Caption := uHTPredictor.FormatRating(FOpstelling.MID);
-  lblRV.Caption := uHTPredictor.FormatRating(FOpstelling.RV);
-  lblCV.Caption := uHTPredictor.FormatRating(FOpstelling.CV);
-  lblLV.Caption := uHTPredictor.FormatRating(FOpstelling.LV);
-  lblRA.Caption := uHTPredictor.FormatRating(FOpstelling.RA);
-  lblCA.Caption := uHTPredictor.FormatRating(FOpstelling.CA);
-  lblLA.Caption := uHTPredictor.FormatRating(FOpstelling.LA);
+  vMID := FOpstelling.MID;
+  vRV := FOpstelling.RV;
+  vCV := FOpstelling.CV;
+  vLV := FOpstelling.LV;
+  vRA := FOpstelling.RA;
+  vCA := FOpstelling.CA;
+  vLA := FOpstelling.LA;
 
-  lblHatStats.Caption := Format('%d', [Ceil((FOpstelling.MID * 3)
-                                             + FOpstelling.RV
-                                             + FOpstelling.CV
-                                             + FOpstelling.LV
-                                             + FOpstelling.RA
-                                             + FOpstelling.CA
-                                             + FOpstelling.LA)]);
+  lblIM.Caption := uHTPredictor.FormatRating(vMID);
+  lblRV.Caption := uHTPredictor.FormatRating(vRV);
+  lblCV.Caption := uHTPredictor.FormatRating(vCV);
+  lblLV.Caption := uHTPredictor.FormatRating(vLV);
+  lblRA.Caption := uHTPredictor.FormatRating(vRA);
+  lblCA.Caption := uHTPredictor.FormatRating(vCA);
+  lblLA.Caption := uHTPredictor.FormatRating(vLA);
+
+  lblHatStats.Caption := Format('%d', [Ceil((vMID * 3)
+                                             + vRV
+                                             + vCV
+                                             + vLV
+                                             + vRA
+                                             + vCA
+                                             + vLA)]);
 end;
 
 end.
