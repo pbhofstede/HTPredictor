@@ -32,9 +32,9 @@ type
     procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
     procedure SetTS(const Value: double);
     function VerwerkTS(aRating: double): double;
-    function OverCrowdingDef(aAantal: integer): double;
-    function OverCrowdingMid(aAantal: integer): double;
-    function OverCrowdingAan(aAantal: integer): double;
+    function OverCrowdingDef: double;
+    function OverCrowdingMid: double;
+    function OverCrowdingAanval: double;
   public
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
@@ -101,67 +101,36 @@ end;
 -----------------------------------------------------------------------------}
 function TOpstelling.CA: double;
 var
-  vCount,
-  vCentraalCount: integer;
-  vPlayer: TPlayer;
+  vCount: integer;
 begin
   Result := 0;
 
   for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
   begin
-    vPlayer := FOpstellingPlayerArray[vCount];
-    if vPlayer <> nil then
+    if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      //verminderde centrale bijdrage van de aanvallers
       if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
       begin
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCA)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCA)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCA)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-
-        Result := Result + (vPlayer.AANV_C_Bijdrage * OverCrowdingAan(vCentraalCount));
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingAanval);
       end
       else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
       begin
-        //verminderde centrale aanval bijdrage van de mids
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-
-        Result := Result + (vPlayer.AANV_C_Bijdrage * OverCrowdingMid(vCentraalCount));
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingMid);
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingDef);
       end
       else
       begin
-        Result := Result + vPlayer.AANV_C_Bijdrage;
+        Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
       end;
     end;
   end;
-  
+
   Result := Result * TeamZelfvertrouwen;
 
-  Result := VerrekenTypeCoach(Result, FALSE);
+  Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 constructor TOpstelling.Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
@@ -184,8 +153,7 @@ end;
 -----------------------------------------------------------------------------}
 function TOpstelling.CV: double;
 var
-  vCount,
-  vCentraalCount: integer;
+  vCount: integer;
 begin
   Result := 0;
 
@@ -193,45 +161,17 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      //verminderde centrale verdediging bijdrage van de verdedigers
-      if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
       begin
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCV)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCV)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCV)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingDef(vCentraalCount));
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingAanval);
       end
       else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
       begin
-        //verminderde centrale verdediging bijdrage van de mids
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingMid(vCentraalCount));
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingMid);
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingDef);
       end
       else
       begin
@@ -240,7 +180,7 @@ begin
     end;
   end;
 
-  Result := VerrekenTypeCoach(Result, TRUE);
+  Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
 
 destructor TOpstelling.Destroy;
@@ -304,13 +244,28 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage;
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingAanval);
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingMid);
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingDef);
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage;
+      end;
     end;
   end;
-
+  
   Result := Result * TeamZelfvertrouwen;
   
-  Result := VerrekenTypeCoach(Result, FALSE);
+  Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 function TOpstelling.LV: double;
@@ -323,17 +278,31 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingAanval);
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingMid);
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingDef);
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
+      end;
     end;
   end;
-
-  Result := VerrekenTypeCoach(Result, TRUE);
+  
+  Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
 
 function TOpstelling.MID: double;
 var
-  vCount,
-  vCentraalCount: integer;
+  vCount: integer;
 begin
   Result := 0;
 
@@ -341,65 +310,17 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin     
-      //verminderde middenveld bijdrage van de mids
-      if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
       begin
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-
-        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingMid(vCentraalCount));
+        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingAanval);
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingMid);
       end
       else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
       begin
-        //verminderde middenveld bijdrage van de verdedigers
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCV)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCV)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCV)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-
-        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingDef(vCentraalCount));
-      end
-      else if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
-      begin
-        //verminderde middenveldbijdrage van de aanvallers
-        vCentraalCount := 0;
-
-        if (FOpstellingPlayerArray[Ord(pRCA)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pCA)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-        if (FOpstellingPlayerArray[Ord(pLCA)] <> nil) then
-        begin
-          Inc(vCentraalCount);
-        end;
-
-        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingAan(vCentraalCount));
+        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingDef);
       end
       else
       begin
@@ -421,6 +342,8 @@ begin
     mMOTS:    Result := Result * 1.109650;   //MMM + HO: 1.109650
     mNormaal: Result := Result * 1;
   end;
+
+  Result := 1 + Result;
 end;
 
 {-----------------------------------------------------------------------------
@@ -430,9 +353,26 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-function TOpstelling.OverCrowdingAan(aAantal: integer): double;
+function TOpstelling.OverCrowdingAanval: double;
+var
+  vCentraalCount: integer;
 begin
-  case aAantal of
+  vCentraalCount := 0;
+
+  if (FOpstellingPlayerArray[Ord(pRCA)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+  if (FOpstellingPlayerArray[Ord(pCA)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+  if (FOpstellingPlayerArray[Ord(pLCA)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+
+  case vCentraalCount of
     2:    Result := 0.9480;  //0.9480 = HO 0.94 = MMM
     3:    Result := 0.8190;  //0.8190 = HO 0.865 = MMM
     else  Result := 1;
@@ -446,9 +386,26 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-function TOpstelling.OverCrowdingDef(aAantal: integer): double;
+function TOpstelling.OverCrowdingDef: double;
+var
+  vCentraalCount: integer;
 begin
-  case aAantal of
+  vCentraalCount := 0;
+
+  if (FOpstellingPlayerArray[Ord(pRCV)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+  if (FOpstellingPlayerArray[Ord(pCV)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+  if (FOpstellingPlayerArray[Ord(pLCV)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+
+  case vCentraalCount of
     2:    Result := 0.9647;     //0.9647 = HO 0.96 = MMM
     3:    Result := 0.8731;     //0.8731 = HO 0.91 = MMM
     else  Result := 1;
@@ -462,9 +419,26 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-function TOpstelling.OverCrowdingMid(aAantal: integer): double;
+function TOpstelling.OverCrowdingMid: double;
+var
+  vCentraalCount: integer;
 begin
-  case aAantal of
+  vCentraalCount := 0;
+
+  if (FOpstellingPlayerArray[Ord(pRCM)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+  if (FOpstellingPlayerArray[Ord(pCM)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+  if (FOpstellingPlayerArray[Ord(pLCM)] <> nil) then
+  begin
+    Inc(vCentraalCount);
+  end;
+
+  case vCentraalCount of
     2:    Result := 0.9356;     //0.9356 = HO 0.92=MMM
     3:    Result := 0.8268;     //0.8268 = HO 0.82=MMM
     else  Result := 1;
@@ -481,13 +455,28 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage;
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingAanval);
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingMid);
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingDef);
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage;
+      end;
     end;
   end;
 
   Result := Result * TeamZelfvertrouwen;
 
-  Result := VerrekenTypeCoach(Result, FALSE);
+  Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 function TOpstelling.RV: double;
@@ -500,11 +489,26 @@ begin
   begin
     if FOpstellingPlayerArray[vCount] <> nil then
     begin
-      Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingAanval);
+      end
+      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingMid);
+      end
+      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+      begin
+        Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingDef);
+      end
+      else
+      begin
+        Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
+      end;
     end;
   end;
 
-  Result := VerrekenTypeCoach(Result, TRUE);
+  Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
 
 procedure TOpstelling.SetAanvoerder(const Value: TPlayer);
@@ -704,118 +708,7 @@ begin
     vRating := Selectie.RatingBijdrages.GetRatingBijdrageByPositie(vPos);
     if (vRating <> nil) then
     begin
-      //MID_Bijdrage
-      vPlayer.MID_Bijdrage :=
-        ((vRating.MID_PM * vPlayer.PM))
-        * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-
-      //DEF_R_Bijdrage
-      if (aPositie in [pCV, pCM]) then
-      begin
-        vPlayer.DEF_R_Bijdrage :=
-          ((vRating.WB_DEF * vPlayer.DEF / 2) +
-           (vRating.WB_GK * vPlayer.GK))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end
-      else if (aPositie in [pLB, pLCV, pLW, pLCM]) then
-      begin
-        vPlayer.DEF_R_Bijdrage := 0;
-      end
-      else
-      begin
-        vPlayer.DEF_R_Bijdrage := 
-          ((vRating.WB_DEF * vPlayer.DEF) +
-           (vRating.WB_GK * vPlayer.GK))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end;
-
-      //DEF_L_Bijdrage
-      if (aPositie in [pCV, pCM]) then
-      begin
-        vPlayer.DEF_L_Bijdrage :=
-          ((vRating.WB_DEF * vPlayer.DEF / 2) +
-           (vRating.WB_GK * vPlayer.GK))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end
-      else if (aPositie in [pRB, pRCV, pRW, pRCM]) then
-      begin
-        vPlayer.DEF_L_Bijdrage := 0;
-      end
-      else
-      begin
-        vPlayer.DEF_L_Bijdrage := 
-          ((vRating.WB_DEF * vPlayer.DEF) +
-           (vRating.WB_GK * vPlayer.GK))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end;
-
-      //DEF_C_Bijdrage
-      vPlayer.DEF_C_Bijdrage :=
-        ((vRating.CD_DEF * vPlayer.DEF) +
-         (vRating.CD_GK * vPlayer.GK))
-        * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-
-      //AANV_R_Bijdrage
-      if (aPositie in [pCM]) then
-      begin
-        vPlayer.AANV_R_Bijdrage :=
-          (((vRating.WA_PASS * vPlayer.PAS) / 2) +
-            (vRating.WA_WING * vPlayer.WNG) +
-            (vRating.WA_SC * vPlayer.SCO))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end
-      else if (aPositie in [pLW, pLCM, pLB, pLCV]) then
-      begin
-        vPlayer.AANV_R_Bijdrage := 0;
-      end
-      else if (aPositie = pLCA) and (aPlayerOrder = oNaarVleugel) then
-      begin
-        vPlayer.AANV_R_Bijdrage :=
-          (vRating.WA_SC_OTHER * vPlayer.SCO)
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end
-      else
-      begin
-        vPlayer.AANV_R_Bijdrage :=
-          ((vRating.WA_PASS * vPlayer.PAS) +
-           (vRating.WA_WING * vPlayer.WNG) +
-           (vRating.WA_SC * vPlayer.SCO))
-         * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end;
-
-      //AANV_L_Bijdrage
-      if (aPositie in [pCM]) then
-      begin
-        vPlayer.AANV_L_Bijdrage :=
-          (((vRating.WA_PASS * vPlayer.PAS) / 2) +
-            (vRating.WA_WING * vPlayer.WNG) +
-            (vRating.WA_SC * vPlayer.SCO))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end
-      else if (aPositie in [pRW, pRCM, pRB, pRCV]) then
-      begin
-        vPlayer.AANV_L_Bijdrage := 0;
-      end
-      else if (aPositie = pRCA) and (aPlayerOrder = oNaarVleugel) then
-      begin
-        vPlayer.AANV_L_Bijdrage :=
-          (vRating.WA_SC_OTHER * vPlayer.SCO)
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end
-      else
-      begin
-        vPlayer.AANV_L_Bijdrage :=
-          ((vRating.WA_PASS * vPlayer.PAS) +
-           (vRating.WA_WING * vPlayer.WNG) +
-           (vRating.WA_SC * vPlayer.SCO))
-         * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
-      end;
-
-      //AANV_C_Bijdrage
-      vPlayer.AANV_C_Bijdrage :=
-          ((vRating.CA_PASS * vPlayer.PAS) +
-           (vRating.CA_SC * vPlayer.SCO))
-          * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+      vPlayer.CalculateRatings(vRating, aPositie, aPlayerOrder);
     end;
   end;
 

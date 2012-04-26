@@ -371,7 +371,7 @@ begin
   //Ceil, dus naar boven afronden.
   //0 -> 0 -> niet-bestaand
   //24,4 -> 6,1 -> 7 -> goed
-  vIntRating := Ceil(aRating / 4);
+  vIntRating := Floor(aRating);
 
   case vIntRating of
     0: vResultStr := 'niet-bestaand';
@@ -403,8 +403,8 @@ begin
       vResultStr := vResultStr + 'huh??';
   end;
 
-  vIntRating := Floor(aRating);
-  case vIntRating mod 4 of
+  vIntRating := Floor((aRating - Floor(aRating)) * 4);
+  case vIntRating of
     0: vResultStr := vResultStr + ' (zeer laag)';
     1: vResultStr := vResultStr + ' (laag)';
     2: vResultStr := vResultStr + ' (hoog)';
