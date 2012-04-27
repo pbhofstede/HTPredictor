@@ -293,77 +293,84 @@ end;
 
 procedure TPlayer.SetAANV_C_Bijdrage(const Value: double);
 begin
-  FAANV_C_Bijdrage := Value / 4;
-
-  FAANV_C_Bijdrage := FAANV_C_Bijdrage + (0.011339 * FAANV_C_Bijdrage * FAANV_C_Bijdrage);
-
-  FAANV_C_Bijdrage := FAANV_C_Bijdrage +  (-0.000029 * FAANV_C_Bijdrage * FAANV_C_Bijdrage * FAANV_C_Bijdrage);
+  FAANV_C_Bijdrage := Value;
+//  FAANV_C_Bijdrage := Value / 4;
+//
+//  FAANV_C_Bijdrage := FAANV_C_Bijdrage + (0.011339 * FAANV_C_Bijdrage * FAANV_C_Bijdrage);
+//
+//  FAANV_C_Bijdrage := FAANV_C_Bijdrage +  (-0.000029 * FAANV_C_Bijdrage * FAANV_C_Bijdrage * FAANV_C_Bijdrage);
 
   FAANV_C_Bijdrage := FAANV_C_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;
 
 procedure TPlayer.SetAANV_L_Bijdrage(const Value: double);
 begin
-  FAANV_L_Bijdrage := Value / 4;
-
-  FAANV_L_Bijdrage := FAANV_L_Bijdrage + (0.012093 * FAANV_L_Bijdrage * FAANV_L_Bijdrage);
-
-  FAANV_L_Bijdrage := FAANV_L_Bijdrage +  (-0.000027 * FAANV_L_Bijdrage * FAANV_L_Bijdrage * FAANV_L_Bijdrage);
+  FAANV_L_Bijdrage := Value;        
+//  FAANV_L_Bijdrage := Value / 4;
+//
+//  FAANV_L_Bijdrage := FAANV_L_Bijdrage + (0.012093 * FAANV_L_Bijdrage * FAANV_L_Bijdrage);
+//
+//  FAANV_L_Bijdrage := FAANV_L_Bijdrage +  (-0.000027 * FAANV_L_Bijdrage * FAANV_L_Bijdrage * FAANV_L_Bijdrage);
 
   FAANV_L_Bijdrage := FAANV_L_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;
 
 procedure TPlayer.SetAANV_R_Bijdrage(const Value: double);
 begin
-  FAANV_R_Bijdrage := Value / 4;
-
-  FAANV_R_Bijdrage := FAANV_R_Bijdrage + (0.012093 * FAANV_R_Bijdrage * FAANV_R_Bijdrage);
-
-  FAANV_R_Bijdrage := FAANV_R_Bijdrage +  (-0.000027 * FAANV_R_Bijdrage * FAANV_R_Bijdrage * FAANV_R_Bijdrage);
+  FAANV_R_Bijdrage := Value;
+//  FAANV_R_Bijdrage := Value / 4;
+//
+//  FAANV_R_Bijdrage := FAANV_R_Bijdrage + (0.012093 * FAANV_R_Bijdrage * FAANV_R_Bijdrage);
+//
+//  FAANV_R_Bijdrage := FAANV_R_Bijdrage +  (-0.000027 * FAANV_R_Bijdrage * FAANV_R_Bijdrage * FAANV_R_Bijdrage);
 
   FAANV_R_Bijdrage := FAANV_R_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;
 
 procedure TPlayer.SetDEF_C_Bijdrage(const Value: double);
 begin
-  FDEF_C_Bijdrage := Value / 4;
-
-  FDEF_C_Bijdrage := FDEF_C_Bijdrage + (0.008462 * FDEF_C_Bijdrage * FDEF_C_Bijdrage);
-
-  FDEF_C_Bijdrage := FDEF_C_Bijdrage +  (-0.000017 * FDEF_C_Bijdrage * FDEF_C_Bijdrage * FDEF_C_Bijdrage);
+  FDEF_C_Bijdrage := Value;   
+//  FDEF_C_Bijdrage := Value / 4;
+//
+//  FDEF_C_Bijdrage := FDEF_C_Bijdrage + (0.008462 * FDEF_C_Bijdrage * FDEF_C_Bijdrage);
+//
+//  FDEF_C_Bijdrage := FDEF_C_Bijdrage +  (-0.000017 * FDEF_C_Bijdrage * FDEF_C_Bijdrage * FDEF_C_Bijdrage);
 
   FDEF_C_Bijdrage := FDEF_C_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;
 
 procedure TPlayer.SetDEF_L_Bijdrage(const Value: double);
 begin
-  FDEF_L_Bijdrage := Value / 4;
-
-  FDEF_L_Bijdrage := FDEF_L_Bijdrage + (0.011591 * FDEF_L_Bijdrage * FDEF_L_Bijdrage);
-
-  FDEF_L_Bijdrage := FDEF_L_Bijdrage +  (-0.000029 * FDEF_L_Bijdrage * FDEF_L_Bijdrage * FDEF_L_Bijdrage);
+  FDEF_L_Bijdrage := Value;
+//  FDEF_L_Bijdrage := Value / 4;
+//
+//  FDEF_L_Bijdrage := FDEF_L_Bijdrage + (0.011591 * FDEF_L_Bijdrage * FDEF_L_Bijdrage);
+//
+//  FDEF_L_Bijdrage := FDEF_L_Bijdrage +  (-0.000029 * FDEF_L_Bijdrage * FDEF_L_Bijdrage * FDEF_L_Bijdrage);
 
   FDEF_L_Bijdrage := FDEF_L_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;
 
 procedure TPlayer.SetDEF_R_Bijdrage(const Value: double);
 begin
-  FDEF_R_Bijdrage := Value / 4;
-
-  FDEF_R_Bijdrage := FDEF_R_Bijdrage + (0.011591 * FDEF_R_Bijdrage * FDEF_R_Bijdrage);
-
-  FDEF_R_Bijdrage := FDEF_R_Bijdrage +  (-0.000029 * FDEF_R_Bijdrage * FDEF_R_Bijdrage * FDEF_R_Bijdrage);
+  FDEF_R_Bijdrage := Value;
+//  FDEF_R_Bijdrage := Value / 4;
+//
+//  FDEF_R_Bijdrage := FDEF_R_Bijdrage + (0.011591 * FDEF_R_Bijdrage * FDEF_R_Bijdrage);
+//
+//  FDEF_R_Bijdrage := FDEF_R_Bijdrage +  (-0.000029 * FDEF_R_Bijdrage * FDEF_R_Bijdrage * FDEF_R_Bijdrage);
 
   FDEF_R_Bijdrage := FDEF_R_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;
 
 procedure TPlayer.SetMID_Bijdrage(const Value: double);
 begin
-  FMID_Bijdrage := Value / 4;
+  FMID_Bijdrage := Value;
+//  FMID_Bijdrage := Value / 4;
+//  FMID_Bijdrage := FMID_Bijdrage + (0.008504 * FMID_Bijdrage * FMID_Bijdrage);
 
-  FMID_Bijdrage := FMID_Bijdrage + (0.008504 * FMID_Bijdrage * FMID_Bijdrage);
+//  FMID_Bijdrage := FMID_Bijdrage +  (-0.000027 * FMID_Bijdrage * FMID_Bijdrage * FMID_Bijdrage);
 
-  FMID_Bijdrage := FMID_Bijdrage +  (-0.000027 * FMID_Bijdrage * FMID_Bijdrage * FMID_Bijdrage);
 
   FMID_Bijdrage := FMID_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
 end;

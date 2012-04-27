@@ -274,7 +274,8 @@ var
   vLV,
   vRA,
   vCA,
-  vLA: double;
+  vLA,
+  vTotRating: double;
 begin
   vMID := FOpstelling.MID;
   vRV := FOpstelling.RV;
@@ -292,13 +293,16 @@ begin
   lblCA.Caption := uHTPredictor.FormatRating(vCA, FCA);
   lblLA.Caption := uHTPredictor.FormatRating(vLA, FLA);
 
-  lblHatStats.Caption := Format('%d', [Ceil(4 * ((vMID * 3)
-                                                 + vRV
-                                                 + vCV
-                                                 + vLV
-                                                 + vRA
-                                                 + vCA
-                                                 + vLA))]);
+  vTotRating := (vMID * 3)
+                  + vRV
+                  + vCV
+                  + vLV
+                  + vRA
+                  + vCA
+                  + vLA;
+
+  vTotRating := 9 + (4 * (vTotRating - 9));
+  lblHatStats.Caption := Format('%d', [Ceil(vTotRating)]);
   FMid := vMID;
   FRV := vRV;
   FCV := vCV;

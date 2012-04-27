@@ -126,7 +126,13 @@ begin
         Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
       end;
     end;
-  end;
+  end;        
+
+  Result := Result / 4;
+
+  Result := Result + (0.011339 * Result * Result);
+
+  Result := Result +  (-0.000029 * Result * Result * Result);
 
   Result := Result * TeamZelfvertrouwen;
 
@@ -179,6 +185,12 @@ begin
       end;
     end;
   end;
+  
+  Result := Result / 4;
+
+  Result := Result + (0.008462 * Result * Result);
+
+  Result := Result +  (-0.000017 * Result * Result * Result);
 
   Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
@@ -262,6 +274,12 @@ begin
       end;
     end;
   end;
+
+  Result := Result / 4;
+
+  Result := Result + (0.012093 * Result * Result);
+
+  Result := Result +  (-0.000027 * Result * Result * Result);
   
   Result := Result * TeamZelfvertrouwen;
   
@@ -296,6 +314,12 @@ begin
       end;
     end;
   end;
+
+  Result := Result / 4;
+
+  Result := Result + (0.011591 * Result * Result);
+
+  Result := Result +  (-0.000029 * Result * Result * Result);
   
   Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
@@ -328,6 +352,12 @@ begin
       end;
     end;
   end;
+                               
+  Result := Result / 4;
+  
+  Result := Result + (0.008504 * Result * Result);
+
+  Result := Result +  (-0.000027 * Result * Result * Result);
 
   Result := VerwerkTS(Result);
 
@@ -474,6 +504,12 @@ begin
     end;
   end;
 
+  Result := Result / 4;
+
+  Result := Result + (0.012093 * Result * Result);
+
+  Result := Result +  (-0.000027 * Result * Result * Result); 
+
   Result := Result * TeamZelfvertrouwen;
 
   Result := 1 + VerrekenTypeCoach(Result, FALSE);
@@ -507,6 +543,12 @@ begin
       end;
     end;
   end;
+
+  Result := Result / 4;
+
+  Result := Result + (0.011591 * Result * Result);
+
+  Result := Result +  (-0.000029 * Result * Result * Result);
 
   Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
