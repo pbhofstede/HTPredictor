@@ -6,12 +6,13 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uHTPredictor,
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxImageComboBox;
+  cxImageComboBox, cxCurrencyEdit;
 
 type
   TfrmOpstelling = class(TForm)
-    pnlRatings: TPanel;
+   pnlRatings: TPanel;
     pnlOpstelling: TPanel;
+    pnlRatingsMain: TPanel;
     lblRV: TLabel;
     lblLinkerVerdediging: TLabel;
     lblLV: TLabel;
@@ -30,10 +31,18 @@ type
     lblHatStats: TLabel;
     lblMotivatie: TLabel;
     lblTactiek: TLabel;
+    lblCoach: TLabel;
     cbMotivatie: TcxImageComboBox;
     cbTactiek: TcxImageComboBox;
-    lblCoach: TLabel;
     cbCoach: TcxImageComboBox;
+    pnlHandmatig: TPanel;
+    edMID: TcxCurrencyEdit;
+    edRV: TcxCurrencyEdit;
+    edCV: TcxCurrencyEdit;
+    edLV: TcxCurrencyEdit;
+    edRA: TcxCurrencyEdit;
+    edCA: TcxCurrencyEdit;
+    edLA: TcxCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -45,6 +54,7 @@ type
     procedure cbCoachPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
+    procedure edPropertiesChange(Sender: TObject);
   private
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
@@ -77,7 +87,7 @@ type
 
 
 function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
-  aTeamgeest: double): TfrmOpstelling;
+  aTeamgeest: double; aEigenOpstelling: Boolean): TfrmOpstelling;
 
 implementation
 uses
@@ -87,16 +97,22 @@ uses
 
 
 function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
-  aTeamgeest: double): TfrmOpstelling;
+  aTeamgeest: double; aEigenOpstelling: Boolean): TfrmOpstelling;
 begin
   
   Result := TfrmOpstelling.Create(nil);
 
   Result.Parent := aParent;
-  Result.FWedstrijdPlaats := aWedstrijdPlaats;    
+  Result.FWedstrijdPlaats := aWedstrijdPlaats;
+  
   Result.FZelfvertrouwen := aZelfvertrouwen;
+  if (aTeamgeest < 1) then
+  begin
+    aTeamgeest := 1;
+  end;
   Result.FTeamgeest := aTeamgeest;
   Result.Selectie := aSelectie;
+  Result.pnlHandmatig.Visible := not aEigenOpstelling;
 
   Result.Align := alClient;
 
@@ -321,13 +337,62 @@ var
   vLA,
   vTotRating: double;
 begin
-  vMID := FOpstelling.MID;
-  vRV := FOpstelling.RV;
-  vCV := FOpstelling.CV;
-  vLV := FOpstelling.LV;
-  vRA := FOpstelling.RA;
-  vCA := FOpstelling.CA;
-  vLA := FOpstelling.LA;
+  if (edMID.Value > 0) then
+  begin
+    vMID := edMID.Value;
+  end
+  else
+  begin
+    vMID := FOpstelling.MID;
+  end;
+  if (edRV.Value > 0) then
+  begin
+    vRV := edRV.Value;
+  end
+  else
+  begin
+    vRV := FOpstelling.RV;
+  end;
+  if (edCV.Value > 0) then
+  begin
+    vCV := edCV.Value;
+  end
+  else
+  begin
+    vCV := FOpstelling.CV;
+  end;
+  if (edLV.Value > 0) then
+  begin
+    vLV := edLV.Value;
+  end
+  else
+  begin
+    vLV := FOpstelling.LV;
+  end;
+  if (edRA.Value > 0) then
+  begin
+    vRA := edRA.Value;
+  end
+  else
+  begin
+    vRA := FOpstelling.RA;
+  end;
+  if (edCA.Value > 0) then
+  begin
+    vCA := edCA.Value;
+  end
+  else
+  begin
+    vCA := FOpstelling.CA;
+  end;
+  if (edLA.Value > 0) then
+  begin
+    vLA := edLA.Value;
+  end
+  else
+  begin
+    vLA := FOpstelling.LA;
+  end;
 
   lblIM.Caption := uHTPredictor.FormatRating(vMID, FMid);
   lblRV.Caption := uHTPredictor.FormatRating(vRV, FRV);
@@ -381,6 +446,11 @@ begin
   begin
     FOpstelling.Coach := TOpstellingCoach(cbCoach.EditValue);
   end;
+end;
+
+procedure TfrmOpstelling.edPropertiesChange(Sender: TObject);
+begin
+  UpdateRatings;
 end;
 
 end.

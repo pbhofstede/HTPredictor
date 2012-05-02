@@ -1,7 +1,7 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 304
-  Top = 53
-  Width = 1168
+  Left = 314
+  Top = 113
+  Width = 1181
   Height = 734
   Caption = 'HT Predictor'
   Color = clBtnFace
@@ -20,30 +20,29 @@ object frmHTPredictor: TfrmHTPredictor
   object cxpgctrlHTPredictor: TcxPageControl
     Left = 0
     Top = 60
-    Width = 1152
+    Width = 1165
     Height = 616
-    ActivePage = cxtbEigenTeam
+    ActivePage = cxtbTegenstander
     Align = alClient
     TabOrder = 0
     ClientRectBottom = 616
-    ClientRectRight = 1152
+    ClientRectRight = 1165
     ClientRectTop = 24
     object cxtbTegenstander: TcxTabSheet
       Caption = 'Tegenstander'
       ImageIndex = 0
-      object Panel1: TPanel
+      object pnlOpstellingTegenstander: TPanel
         Left = 0
         Top = 313
-        Width = 1002
+        Width = 1165
         Height = 279
         Align = alClient
         BevelOuter = bvNone
-        Caption = 'Scherm voor opstelling'
         TabOrder = 0
         object Splitter1: TSplitter
           Left = 0
           Top = 0
-          Width = 1002
+          Width = 1165
           Height = 3
           Cursor = crVSplit
           Align = alTop
@@ -52,7 +51,7 @@ object frmHTPredictor: TfrmHTPredictor
       object pnlSpelersGrid1: TPanel
         Left = 0
         Top = 0
-        Width = 1002
+        Width = 1165
         Height = 313
         Align = alTop
         BevelOuter = bvNone
@@ -66,7 +65,7 @@ object frmHTPredictor: TfrmHTPredictor
       object pnlSpelersGrid2: TPanel
         Left = 0
         Top = 0
-        Width = 1152
+        Width = 1165
         Height = 284
         Align = alTop
         BevelOuter = bvNone
@@ -76,7 +75,7 @@ object frmHTPredictor: TfrmHTPredictor
       object Panel4: TPanel
         Left = 0
         Top = 284
-        Width = 1152
+        Width = 1165
         Height = 308
         Align = alClient
         BevelOuter = bvNone
@@ -85,7 +84,7 @@ object frmHTPredictor: TfrmHTPredictor
         object Splitter2: TSplitter
           Left = 0
           Top = 0
-          Width = 1152
+          Width = 1165
           Height = 3
           Cursor = crVSplit
           Align = alTop
@@ -93,13 +92,13 @@ object frmHTPredictor: TfrmHTPredictor
         object cxPageControl1: TcxPageControl
           Left = 0
           Top = 3
-          Width = 1152
+          Width = 1165
           Height = 305
           ActivePage = cxTabSheet1
           Align = alClient
           TabOrder = 0
           ClientRectBottom = 305
-          ClientRectRight = 1152
+          ClientRectRight = 1165
           ClientRectTop = 24
           object cxTabSheet1: TcxTabSheet
             Caption = 'Opstelling 1'
@@ -137,75 +136,138 @@ object frmHTPredictor: TfrmHTPredictor
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 1152
+    Width = 1165
     Height = 60
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 5
-    object Label1: TLabel
-      Left = 216
-      Top = 8
-      Width = 74
-      Height = 13
-      Caption = 'Zelfvertrouwen'
-    end
-    object Label2: TLabel
-      Left = 216
-      Top = 28
-      Width = 53
-      Height = 13
-      Caption = 'Teamgeest'
-    end
-    object lblZVOmschrijving: TLabel
-      Left = 377
-      Top = 8
-      Width = 188
-      Height = 13
-      AutoSize = False
-    end
-    object lblTSOmschrijving: TLabel
-      Left = 377
-      Top = 28
-      Width = 188
-      Height = 13
-      AutoSize = False
-    end
     object btnOk: TButton
-      Left = 1063
+      Left = 1076
       Top = 24
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = 'Ok'
-      TabOrder = 0
+      TabOrder = 3
       OnClick = btnOkClick
-    end
-    object ceZelfvertrouwen: TcxCurrencyEdit
-      Left = 304
-      Top = 3
-      Properties.DisplayFormat = '0.00'
-      Properties.MaxValue = 10
-      Properties.OnChange = ceZelfvertrouwenPropertiesChange
-      TabOrder = 1
-      Width = 68
-    end
-    object ceTeamgeest: TcxCurrencyEdit
-      Left = 304
-      Top = 24
-      Properties.DisplayFormat = '0.00'
-      Properties.MaxValue = 10
-      Properties.OnChange = ceTeamgeestPropertiesChange
-      TabOrder = 2
-      Width = 68
     end
     object rgWedstrijdplaats: TcxRadioGroup
       Left = 8
       Top = 0
       Caption = 'Wedstrijd'
       Properties.Items = <>
-      TabOrder = 3
+      TabOrder = 0
       Height = 59
       Width = 185
+    end
+    object gbEigen: TcxGroupBox
+      Left = 600
+      Top = 0
+      Caption = 'Eigen team'
+      TabOrder = 2
+      Height = 59
+      Width = 389
+      object Label1: TLabel
+        Left = 10
+        Top = 17
+        Width = 74
+        Height = 13
+        Caption = 'Zelfvertrouwen'
+      end
+      object Label2: TLabel
+        Left = 10
+        Top = 38
+        Width = 53
+        Height = 13
+        Caption = 'Teamgeest'
+      end
+      object lblEigenZVOmschrijving: TLabel
+        Left = 183
+        Top = 17
+        Width = 188
+        Height = 13
+        AutoSize = False
+      end
+      object lblEigenTSOmschrijving: TLabel
+        Left = 183
+        Top = 38
+        Width = 188
+        Height = 13
+        AutoSize = False
+      end
+      object ceEigenTeamgeest: TcxCurrencyEdit
+        Left = 109
+        Top = 34
+        Properties.DisplayFormat = '0.00'
+        Properties.MaxValue = 10
+        Properties.OnChange = ceEigenTeamgeestPropertiesChange
+        TabOrder = 1
+        Width = 68
+      end
+      object ceEigenZelfvertrouwen: TcxCurrencyEdit
+        Left = 109
+        Top = 13
+        Properties.DisplayFormat = '0.00'
+        Properties.MaxValue = 10
+        Properties.OnChange = ceEigenZelfvertrouwenPropertiesChange
+        TabOrder = 0
+        Width = 68
+      end
+    end
+    object gbTegenstander: TcxGroupBox
+      Left = 200
+      Top = 0
+      Caption = 'Tegenstander'
+      TabOrder = 1
+      Height = 59
+      Width = 389
+      object Label3: TLabel
+        Left = 10
+        Top = 17
+        Width = 74
+        Height = 13
+        Caption = 'Zelfvertrouwen'
+      end
+      object Label4: TLabel
+        Left = 10
+        Top = 38
+        Width = 53
+        Height = 13
+        Caption = 'Teamgeest'
+      end
+      object lblTegenstanderZVOmschrijving: TLabel
+        Left = 183
+        Top = 17
+        Width = 188
+        Height = 13
+        AutoSize = False
+      end
+      object lblTegenstanderTSOmschrijving: TLabel
+        Left = 183
+        Top = 38
+        Width = 188
+        Height = 13
+        AutoSize = False
+      end
+      object ceTegenstanderTeamgeest: TcxCurrencyEdit
+        Left = 109
+        Top = 34
+        Properties.DisplayFormat = '0.00'
+        Properties.MaxValue = 10
+        Properties.OnChange = ceTegenstanderTeamgeestPropertiesChange
+        TabOrder = 1
+        Width = 68
+      end
+      object ceTegenstanderZelfvertrouwen: TcxCurrencyEdit
+        Left = 109
+        Top = 13
+        Properties.AssignedValues.MinValue = True
+        Properties.DisplayFormat = '0.00'
+        Properties.MaxValue = 10
+        Properties.OnChange = ceTegenstanderZelfvertrouwenPropertiesChange
+        TabOrder = 0
+        Width = 68
+      end
     end
   end
   object dxBarManager1: TdxBarManager
@@ -8037,6 +8099,7 @@ object frmHTPredictor: TfrmHTPredictor
       Caption = 'Bestand'
       object Afsluiten1: TMenuItem
         Caption = 'Afsluiten'
+        OnClick = Afsluiten1Click
       end
     end
     object Instellingen1: TMenuItem

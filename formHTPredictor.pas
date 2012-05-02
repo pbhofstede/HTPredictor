@@ -17,7 +17,7 @@ type
     cxtbEigenTeam: TcxTabSheet;
     dxBarManager1: TdxBarManager;
     imgListHTPredictor: TImageList;
-    Panel1: TPanel;
+    pnlOpstellingTegenstander: TPanel;
     pnlSpelersGrid1: TPanel;
     Splitter1: TSplitter;
     pnlSpelersGrid2: TPanel;
@@ -37,23 +37,37 @@ type
     Ratingbijdrages1: TMenuItem;
     pnlTop: TPanel;
     btnOk: TButton;
+    rgWedstrijdplaats: TcxRadioGroup;
+    gbEigen: TcxGroupBox;
     Label1: TLabel;
     Label2: TLabel;
-    ceZelfvertrouwen: TcxCurrencyEdit;
-    ceTeamgeest: TcxCurrencyEdit;
-    lblZVOmschrijving: TLabel;
-    lblTSOmschrijving: TLabel;
-    rgWedstrijdplaats: TcxRadioGroup;
+    ceEigenTeamgeest: TcxCurrencyEdit;
+    ceEigenZelfvertrouwen: TcxCurrencyEdit;
+    lblEigenZVOmschrijving: TLabel;
+    lblEigenTSOmschrijving: TLabel;
+    gbTegenstander: TcxGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    lblTegenstanderZVOmschrijving: TLabel;
+    lblTegenstanderTSOmschrijving: TLabel;
+    ceTegenstanderTeamgeest: TcxCurrencyEdit;
+    ceTegenstanderZelfvertrouwen: TcxCurrencyEdit;
     procedure FormCreate(Sender: TObject);
     procedure Ratingbijdrages1Click(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
-    procedure ceZelfvertrouwenPropertiesChange(Sender: TObject);
-    procedure ceTeamgeestPropertiesChange(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure ceTegenstanderZelfvertrouwenPropertiesChange(
+      Sender: TObject);
+    procedure ceTegenstanderTeamgeestPropertiesChange(Sender: TObject);
+    procedure ceEigenZelfvertrouwenPropertiesChange(Sender: TObject);
+    procedure ceEigenTeamgeestPropertiesChange(Sender: TObject);
+    procedure Afsluiten1Click(Sender: TObject);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
     FRatingBijdrages: TRatingBijdrages;
+    FFormOpstellingTegenstander: TForm;
+    FFormOpstellingEigen: TForm;
     procedure ToonRatingbijdrages;
     { Private declarations }
   public
@@ -146,11 +160,23 @@ begin
 end;
 
 procedure TfrmHTPredictor.btnOkClick(Sender: TObject);
+var
+  vWedstrijdPlaatsTegenstander: TWedstrijdPlaats;
 begin
   btnOk.Visible := FALSE;
 
-  FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
-    ceZelfvertrouwen.Value, ceTeamgeest.Value);
+  case TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex) of
+    wThuis: vWedstrijdPlaatsTegenstander := wUit;
+    wUit:   vWedstrijdPlaatsTegenstander := wThuis;
+    else    vWedstrijdPlaatsTegenstander := wDerby;
+  end;
+  
+  FFormOpstellingTegenstander :=
+    FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, vWedstrijdPlaatsTegenstander,
+    ceTegenstanderZelfvertrouwen.Value, ceTegenstanderTeamgeest.Value, FALSE);
+
+  FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
+    ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE);
 
   pnlTop.Enabled := FALSE;
 end;
@@ -162,19 +188,38 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-procedure TfrmHTPredictor.ceZelfvertrouwenPropertiesChange(Sender: TObject);
-begin
-  lblZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceZelfvertrouwen.Value)));
-end;
-
-procedure TfrmHTPredictor.ceTeamgeestPropertiesChange(Sender: TObject);
-begin
-  lblTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTeamgeest.Value)));
-end;
-
 procedure TfrmHTPredictor.FormDestroy(Sender: TObject);
 begin
   FRatingBijdrages.SaveToXLS(ExtractFilePath(Application.ExeName)+'ratings.xlsx');
+end;
+
+procedure TfrmHTPredictor.ceTegenstanderZelfvertrouwenPropertiesChange(
+  Sender: TObject);
+begin
+  lblTegenstanderZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceTegenstanderZelfvertrouwen.Value)));
+end;
+
+procedure TfrmHTPredictor.ceTegenstanderTeamgeestPropertiesChange(
+  Sender: TObject);
+begin
+  lblTegenstanderTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTegenstanderTeamgeest.Value)));
+end;
+
+procedure TfrmHTPredictor.ceEigenZelfvertrouwenPropertiesChange(
+  Sender: TObject);
+begin
+  lblEigenZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceEigenZelfvertrouwen.Value)));
+end;
+
+procedure TfrmHTPredictor.ceEigenTeamgeestPropertiesChange(
+  Sender: TObject);
+begin
+  lblEigenTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceEigenTeamgeest.Value)));
+end;
+
+procedure TfrmHTPredictor.Afsluiten1Click(Sender: TObject);
+begin
+  Close;
 end;
 
 end.
