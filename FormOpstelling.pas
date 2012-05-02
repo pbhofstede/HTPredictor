@@ -32,12 +32,17 @@ type
     lblTactiek: TLabel;
     cbMotivatie: TcxImageComboBox;
     cbTactiek: TcxImageComboBox;
+    lblCoach: TLabel;
+    cbCoach: TcxImageComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
     procedure cbTactiekPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure cbCoachPropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
   private
@@ -151,6 +156,14 @@ begin
     vItem.Value := vCount;
     vItem.Description := uHTPredictor.OpstellingTactiekToString(TOpstellingTactiek(vCount));
   end;
+
+
+  for vCount := Ord(Low(TOpstellingCoach)) to Ord(High(TOpstellingCoach)) do
+  begin
+    vItem := cbCoach.Properties.Items.Add;
+    vItem.Value := vCount;
+    vItem.Description := uHTPredictor.OpstellingCoachToString(TOpstellingCoach(vCount));
+  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -171,6 +184,7 @@ begin
 
   cbMotivatie.ItemIndex := Ord(mNormaal);
   cbTactiek.ItemIndex := Ord(tNormaal);
+  cbCoach.ItemIndex := Ord(cNeutraal);
 
   FOpstellingPlayerArray[1] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pKP);
   FOpstellingPlayerArray[2] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pRB);
@@ -357,6 +371,15 @@ begin
   if (FOpstelling <> nil) then
   begin
     FOpstelling.Tactiek := TOpstellingTactiek(cbTactiek.EditValue);
+  end;
+end;
+
+procedure TfrmOpstelling.cbCoachPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
+  if (FOpstelling <> nil) then
+  begin
+    FOpstelling.Coach := TOpstellingCoach(cbCoach.EditValue);
   end;
 end;
 

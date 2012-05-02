@@ -236,7 +236,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblMotivatie: TLabel
       Left = 12
-      Top = 19
+      Top = 10
       Width = 44
       Height = 13
       Caption = 'Motivatie'
@@ -249,7 +249,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblTactiek: TLabel
       Left = 12
-      Top = 40
+      Top = 31
       Width = 34
       Height = 13
       Caption = 'Tactiek'
@@ -260,9 +260,22 @@ object frmOpstelling: TfrmOpstelling
       Font.Style = []
       ParentFont = False
     end
+    object lblCoach: TLabel
+      Left = 12
+      Top = 52
+      Width = 30
+      Height = 13
+      Caption = 'Coach'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
     object cbMotivatie: TcxImageComboBox
       Left = 128
-      Top = 12
+      Top = 5
       Properties.ImmediatePost = True
       Properties.ImmediateUpdateText = True
       Properties.Items = <>
@@ -272,12 +285,22 @@ object frmOpstelling: TfrmOpstelling
     end
     object cbTactiek: TcxImageComboBox
       Left = 128
-      Top = 33
+      Top = 26
       Properties.ImmediatePost = True
       Properties.ImmediateUpdateText = True
       Properties.Items = <>
       Properties.OnValidate = cbTactiekPropertiesValidate
       TabOrder = 1
+      Width = 121
+    end
+    object cbCoach: TcxImageComboBox
+      Left = 128
+      Top = 47
+      Properties.ImmediatePost = True
+      Properties.ImmediateUpdateText = True
+      Properties.Items = <>
+      Properties.OnValidate = cbCoachPropertiesValidate
+      TabOrder = 2
       Width = 121
     end
   end

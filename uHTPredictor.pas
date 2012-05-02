@@ -22,6 +22,7 @@ function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
 function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;    
 function OpstellingMotivatieToString(aMotivatie: TOpstellingMotivatie): String;
 function OpstellingTactiekToString(aTactiek: TOpstellingTactiek): String;
+function OpstellingCoachToString(aCoach: TOpstellingCoach): String;
 function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
 function FormatRating(aRating, aPrevRating: double): String;
@@ -304,6 +305,17 @@ begin
     tAfstandsSchoten: Result := 'Afstandsschoten';
   end;
 end;
+
+
+function OpstellingCoachToString(aCoach: TOpstellingCoach): String;
+begin
+  case aCoach of
+    cNeutraal:      Result := 'Neutraal';
+    cAanvallend:    Result := 'Aanvallend';
+    cVerdedigend:   Result := 'Verdedigend';
+  end;
+end;
+
 {-----------------------------------------------------------------------------
   Procedure: PlayerPosToRatingPos
   Author:    Harry
