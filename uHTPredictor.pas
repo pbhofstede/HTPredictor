@@ -20,6 +20,8 @@ function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
 function OrderToString(aOrder: TPlayerOrder): String;
 function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
 function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;    
+function OpstellingMotivatieToString(aMotivatie: TOpstellingMotivatie): String;
+function OpstellingTactiekToString(aTactiek: TOpstellingTactiek): String;
 function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
 function FormatRating(aRating, aPrevRating: double): String;
@@ -280,6 +282,28 @@ begin
   end;
 end;
 
+
+function OpstellingMotivatieToString(aMotivatie: TOpstellingMotivatie): String;
+begin
+  case aMotivatie of
+    mNormaal:   Result := 'Normaal';
+    mPIC:       Result := 'PIC';
+    mMOTS:      Result := 'MOTS';
+  end;
+end;
+
+function OpstellingTactiekToString(aTactiek: TOpstellingTactiek): String;
+begin
+  case aTactiek of
+    tNormaal:         Result := 'Normaal';
+    tPressie:         Result := 'Pressie';
+    tCounter:         Result := 'Counter';
+    tCentrumAanval:   Result := 'Centrumaanval';
+    tVleugelAanval:   Result := 'Vleugelaanval';
+    tCreatiefSpel:    Result := 'Creatief spel';
+    tAfstandsSchoten: Result := 'Afstandsschoten';
+  end;
+end;
 {-----------------------------------------------------------------------------
   Procedure: PlayerPosToRatingPos
   Author:    Harry

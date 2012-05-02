@@ -4,7 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uHTPredictor,
-  ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls;
+  ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
+  cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
+  cxImageComboBox;
 
 type
   TfrmOpstelling = class(TForm)
@@ -26,8 +28,18 @@ type
     lblIM: TLabel;
     lblHatStatsCaption: TLabel;
     lblHatStats: TLabel;
+    lblMotivatie: TLabel;
+    lblTactiek: TLabel;
+    cbMotivatie: TcxImageComboBox;
+    cbTactiek: TcxImageComboBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure cbMotivatiePropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
+    procedure cbTactiekPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption;
+      var Error: Boolean);
   private
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
@@ -49,7 +61,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    property Selectie: TSelectie read FSelectie write SetSelectie;
+    property Selectie: TSelectie read FSelectie write SetSelectie; 
 
     procedure EnableDisableOpstellingPlayer;
     procedure UpdateAanvoerder;
@@ -122,8 +134,23 @@ begin
 end;
 
 procedure TfrmOpstelling.FormCreate(Sender: TObject);
+var
+  vCount: integer;
+  vItem: TcxImageComboBoxItem;
 begin
-//
+  for vCount := Ord(Low(TOpstellingMotivatie)) to Ord(High(TOpstellingMotivatie)) do
+  begin
+    vItem := cbMotivatie.Properties.Items.Add;
+    vItem.Value := vCount;
+    vItem.Description := uHTPredictor.OpstellingMotivatieToString(TOpstellingMotivatie(vCount));
+  end;
+
+  for vCount := Ord(Low(TOpstellingTactiek)) to Ord(High(TOpstellingTactiek)) do
+  begin
+    vItem := cbTactiek.Properties.Items.Add;
+    vItem.Value := vCount;
+    vItem.Description := uHTPredictor.OpstellingTactiekToString(TOpstellingTactiek(vCount));
+  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -141,6 +168,9 @@ begin
 
   FOpstelling := TOpstelling.Create(Self, FWedstrijdPlaats, FZelfvertrouwen, FTeamgeest);
   FOpstelling.Selectie := Selectie;
+
+  cbMotivatie.ItemIndex := Ord(mNormaal);
+  cbTactiek.ItemIndex := Ord(tNormaal);
 
   FOpstellingPlayerArray[1] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pKP);
   FOpstellingPlayerArray[2] := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, pRB);
@@ -310,6 +340,24 @@ begin
   FRA := vRA;
   FCA := vCA;
   FLA := vLA;
+end;
+
+procedure TfrmOpstelling.cbMotivatiePropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
+  if (FOpstelling <> nil) then
+  begin
+    FOpstelling.Motivatie := TOpstellingMotivatie(cbMotivatie.EditValue);
+  end;
+end;
+
+procedure TfrmOpstelling.cbTactiekPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+begin
+  if (FOpstelling <> nil) then
+  begin
+    FOpstelling.Tactiek := TOpstellingTactiek(cbTactiek.EditValue);
+  end;
 end;
 
 end.

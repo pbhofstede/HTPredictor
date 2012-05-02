@@ -28,7 +28,7 @@ object frmOpstelling: TfrmOpstelling
     TabOrder = 0
     object lblRV: TLabel
       Left = 128
-      Top = 52
+      Top = 90
       Width = 203
       Height = 13
       AutoSize = False
@@ -41,7 +41,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblLinkerVerdediging: TLabel
       Left = 12
-      Top = 88
+      Top = 126
       Width = 87
       Height = 13
       Caption = 'Linker verdediging'
@@ -54,7 +54,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblLV: TLabel
       Left = 128
-      Top = 88
+      Top = 126
       Width = 203
       Height = 13
       AutoSize = False
@@ -67,7 +67,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblRechterVerdediging: TLabel
       Left = 12
-      Top = 52
+      Top = 90
       Width = 97
       Height = 13
       Caption = 'Rechter verdediging'
@@ -80,7 +80,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object Label1: TLabel
       Left = 12
-      Top = 70
+      Top = 108
       Width = 100
       Height = 13
       Caption = 'Centrale verdediging'
@@ -93,7 +93,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblCV: TLabel
       Left = 128
-      Top = 70
+      Top = 108
       Width = 203
       Height = 13
       AutoSize = False
@@ -106,7 +106,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblRA: TLabel
       Left = 128
-      Top = 106
+      Top = 144
       Width = 203
       Height = 13
       AutoSize = False
@@ -119,7 +119,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblLinkerAanval: TLabel
       Left = 12
-      Top = 142
+      Top = 180
       Width = 63
       Height = 13
       Caption = 'Linker aanval'
@@ -132,7 +132,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblLA: TLabel
       Left = 128
-      Top = 142
+      Top = 180
       Width = 203
       Height = 13
       AutoSize = False
@@ -145,7 +145,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblRechterAanval: TLabel
       Left = 12
-      Top = 106
+      Top = 144
       Width = 73
       Height = 13
       Caption = 'Rechter aanval'
@@ -158,7 +158,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblCentraleAanval: TLabel
       Left = 12
-      Top = 124
+      Top = 162
       Width = 76
       Height = 13
       Caption = 'Centrale aanval'
@@ -171,7 +171,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblCA: TLabel
       Left = 128
-      Top = 124
+      Top = 162
       Width = 203
       Height = 13
       AutoSize = False
@@ -184,7 +184,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblMiddenveld: TLabel
       Left = 12
-      Top = 34
+      Top = 72
       Width = 54
       Height = 13
       Caption = 'Middenveld'
@@ -197,7 +197,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblIM: TLabel
       Left = 128
-      Top = 34
+      Top = 72
       Width = 203
       Height = 13
       AutoSize = False
@@ -210,7 +210,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblHatStatsCaption: TLabel
       Left = 12
-      Top = 162
+      Top = 200
       Width = 42
       Height = 13
       Caption = 'HatStats'
@@ -223,7 +223,7 @@ object frmOpstelling: TfrmOpstelling
     end
     object lblHatStats: TLabel
       Left = 128
-      Top = 162
+      Top = 200
       Width = 128
       Height = 13
       AutoSize = False
@@ -233,6 +233,52 @@ object frmOpstelling: TfrmOpstelling
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+    end
+    object lblMotivatie: TLabel
+      Left = 12
+      Top = 19
+      Width = 44
+      Height = 13
+      Caption = 'Motivatie'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object lblTactiek: TLabel
+      Left = 12
+      Top = 40
+      Width = 34
+      Height = 13
+      Caption = 'Tactiek'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object cbMotivatie: TcxImageComboBox
+      Left = 128
+      Top = 12
+      Properties.ImmediatePost = True
+      Properties.ImmediateUpdateText = True
+      Properties.Items = <>
+      Properties.OnValidate = cbMotivatiePropertiesValidate
+      TabOrder = 0
+      Width = 121
+    end
+    object cbTactiek: TcxImageComboBox
+      Left = 128
+      Top = 33
+      Properties.ImmediatePost = True
+      Properties.ImmediateUpdateText = True
+      Properties.Items = <>
+      Properties.OnValidate = cbTactiekPropertiesValidate
+      TabOrder = 1
+      Width = 121
     end
   end
   object pnlOpstelling: TPanel

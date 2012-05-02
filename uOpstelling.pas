@@ -136,12 +136,18 @@ begin
 
   Result := Result * TeamZelfvertrouwen;
 
+  if (Tactiek = tAfstandsSchoten) then
+  begin
+    Result := Result * 0.970577;
+  end;
+
   Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 constructor TOpstelling.Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
 begin
   FFormOpstelling := aFormOpstelling;
+
   FMotivatie := mNormaal;
   FTactiek := tNormaal;
   FZelfvertrouwen := aZelfvertrouwen;
@@ -191,6 +197,11 @@ begin
   Result := Result + (0.008462 * Result * Result);
 
   Result := Result +  (-0.000017 * Result * Result * Result);
+
+  case Tactiek of
+    tVleugelAanval:   Result := Result * 0.858029;
+    tCreatiefSpel:    Result := Result * 0.930999;
+  end;
 
   Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
@@ -282,6 +293,11 @@ begin
   Result := Result +  (-0.000027 * Result * Result * Result);
   
   Result := Result * TeamZelfvertrouwen;
+
+  if (Tactiek = tAfstandsSchoten) then
+  begin
+    Result := Result * 0.972980;
+  end;
   
   Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
@@ -320,6 +336,11 @@ begin
   Result := Result + (0.011591 * Result * Result);
 
   Result := Result +  (-0.000029 * Result * Result * Result);
+
+  case Tactiek of
+    tCentrumAanval:   Result := Result * 0.853911;
+    tCreatiefSpel:    Result := Result * 0.930663;
+  end;
   
   Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
@@ -371,6 +392,11 @@ begin
     mPIC:     Result := Result * 0.839949;   //MMM + HO: 0.839949
     mMOTS:    Result := Result * 1.109650;   //MMM + HO: 1.109650
     mNormaal: Result := Result * 1;
+  end;
+
+  case Tactiek of
+    tAfstandsSchoten:  Result := Result * 0.950323;
+    tCounter:         Result := Result * 0.930000;
   end;
 
   Result := 1 + Result;
@@ -512,6 +538,11 @@ begin
 
   Result := Result * TeamZelfvertrouwen;
 
+  if (Tactiek = tAfstandsSchoten) then
+  begin
+    Result := Result * 0.972980;
+  end;
+
   Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
@@ -549,6 +580,11 @@ begin
   Result := Result + (0.011591 * Result * Result);
 
   Result := Result +  (-0.000029 * Result * Result * Result);
+
+  case Tactiek of
+    tCentrumAanval:   Result := Result * 0.853911;
+    tCreatiefSpel:    Result := Result * 0.930663;
+  end;
 
   Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
