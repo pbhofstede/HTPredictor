@@ -8,7 +8,7 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, uRatingBijdrages,
   cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner,
   Menus, dxEditor, dxExEdtr, dxEdLib, dxDBELib, cxContainer, cxEdit,
-  cxTextEdit, cxCurrencyEdit, cxGroupBox, cxRadioGroup;
+  cxTextEdit, cxCurrencyEdit, cxGroupBox, cxRadioGroup, OleCtrls;
 
 type
   TfrmHTPredictor = class(TForm)
@@ -166,9 +166,10 @@ begin
   btnOk.Visible := FALSE;
 
   case TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex) of
-    wThuis: vWedstrijdPlaatsTegenstander := wUit;
-    wUit:   vWedstrijdPlaatsTegenstander := wThuis;
-    else    vWedstrijdPlaatsTegenstander := wDerby;
+    wThuis:     vWedstrijdPlaatsTegenstander := wUit;
+    wUit:       vWedstrijdPlaatsTegenstander := wThuis;
+    wDerbyThuis:vWedstrijdPlaatsTegenstander := wDerbyUit;
+    else    vWedstrijdPlaatsTegenstander := wDerbyThuis;
   end;
   
   FFormOpstellingTegenstander :=

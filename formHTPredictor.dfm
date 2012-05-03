@@ -19,13 +19,13 @@ object frmHTPredictor: TfrmHTPredictor
   TextHeight = 13
   object cxpgctrlHTPredictor: TcxPageControl
     Left = 0
-    Top = 60
+    Top = 69
     Width = 1165
-    Height = 616
-    ActivePage = cxtbTegenstander
+    Height = 607
+    ActivePage = tbResultaat
     Align = alClient
     TabOrder = 0
-    ClientRectBottom = 616
+    ClientRectBottom = 607
     ClientRectRight = 1165
     ClientRectTop = 24
     object cxtbTegenstander: TcxTabSheet
@@ -35,7 +35,7 @@ object frmHTPredictor: TfrmHTPredictor
         Left = 0
         Top = 313
         Width = 1165
-        Height = 279
+        Height = 270
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
@@ -76,7 +76,7 @@ object frmHTPredictor: TfrmHTPredictor
         Left = 0
         Top = 284
         Width = 1165
-        Height = 308
+        Height = 299
         Align = alClient
         BevelOuter = bvNone
         Caption = 'Scherm voor opstelling'
@@ -93,11 +93,11 @@ object frmHTPredictor: TfrmHTPredictor
           Left = 0
           Top = 3
           Width = 1165
-          Height = 305
+          Height = 296
           ActivePage = cxTabSheet1
           Align = alClient
           TabOrder = 0
-          ClientRectBottom = 305
+          ClientRectBottom = 296
           ClientRectRight = 1165
           ClientRectTop = 24
           object cxTabSheet1: TcxTabSheet
@@ -117,8 +117,8 @@ object frmHTPredictor: TfrmHTPredictor
       object cxGrid1: TcxGrid
         Left = 0
         Top = 0
-        Width = 1002
-        Height = 611
+        Width = 1165
+        Height = 583
         Align = alClient
         TabOrder = 0
         object cxGrid1DBTableView1: TcxGridDBTableView
@@ -137,13 +137,13 @@ object frmHTPredictor: TfrmHTPredictor
     Left = 0
     Top = 0
     Width = 1165
-    Height = 60
+    Height = 69
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 5
     object btnOk: TButton
       Left = 1076
-      Top = 24
+      Top = 33
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -157,7 +157,7 @@ object frmHTPredictor: TfrmHTPredictor
       Caption = 'Wedstrijd'
       Properties.Items = <>
       TabOrder = 0
-      Height = 59
+      Height = 67
       Width = 185
     end
     object gbEigen: TcxGroupBox
@@ -165,7 +165,7 @@ object frmHTPredictor: TfrmHTPredictor
       Top = 0
       Caption = 'Eigen team'
       TabOrder = 2
-      Height = 59
+      Height = 67
       Width = 389
       object Label1: TLabel
         Left = 10
@@ -219,7 +219,7 @@ object frmHTPredictor: TfrmHTPredictor
       Top = 0
       Caption = 'Tegenstander'
       TabOrder = 1
-      Height = 59
+      Height = 67
       Width = 389
       object Label3: TLabel
         Left = 10

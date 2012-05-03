@@ -384,7 +384,7 @@ begin
 
   case WedstrijdPlaats of
     wThuis: Result := Result * 1.199529;    //MMM + HO: 1.199529
-    wDerby: Result := Result * 1.113699;    //MMM + HO: 1.113699
+    wDerbyThuis, wDerbyUit: Result := Result * 1.113699;    //MMM + HO: 1.113699
     wUit:   Result := Result * 1;
   end;
 

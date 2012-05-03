@@ -13,7 +13,7 @@ type
   TOpstellingMotivatie = (mNormaal, mPIC, mMOTS);
   TOpstellingTactiek = (tNormaal, tPressie, tCounter, tCentrumAanval, tVleugelAanval, tCreatiefSpel, tAfstandsSchoten);
   TOpstellingCoach = (cNeutraal, cVerdedigend, cAanvallend);
-  TWedstrijdPlaats = (wThuis, wDerby, wUit);
+  TWedstrijdPlaats = (wThuis, wDerbyThuis, wDerbyUit, wUit);
 
 function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
@@ -237,9 +237,10 @@ end;
 function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
 begin
   case aWedstrijdPlaats of
-    wThuis:     Result := 'Thuis';
-    wDerby:     Result := 'Derby';
-    wUit:       Result := 'Uit';
+    wThuis:       Result := 'Thuis';
+    wDerbyThuis:  Result := 'Derby thuis';
+    wDerbyUit:    Result := 'Derby uit';
+    wUit:         Result := 'Uit';
   end;
 end;
 

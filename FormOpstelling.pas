@@ -6,12 +6,15 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uHTPredictor,
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxImageComboBox, cxCurrencyEdit;
+  cxImageComboBox, cxCurrencyEdit, cxPC, OleCtrls, ComCtrls;
 
 type
   TfrmOpstelling = class(TForm)
    pnlRatings: TPanel;
     pnlOpstelling: TPanel;
+    cxpgctrlRatings: TcxPageControl;
+    tbshtRatings: TcxTabSheet;
+    tbshtVoorspelling: TcxTabSheet;
     pnlRatingsMain: TPanel;
     lblRV: TLabel;
     lblLinkerVerdediging: TLabel;
@@ -43,6 +46,7 @@ type
     edRA: TcxCurrencyEdit;
     edCA: TcxCurrencyEdit;
     edLA: TcxCurrencyEdit;
+    Panel1: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -113,6 +117,7 @@ begin
   Result.FTeamgeest := aTeamgeest;
   Result.Selectie := aSelectie;
   Result.pnlHandmatig.Visible := not aEigenOpstelling;
+  result.tbshtVoorspelling.TabVisible := aEigenOpstelling;
 
   Result.Align := alClient;
 
@@ -180,6 +185,8 @@ begin
     vItem.Value := vCount;
     vItem.Description := uHTPredictor.OpstellingCoachToString(TOpstellingCoach(vCount));
   end;
+
+  cxpgctrlRatings.ActivePage := tbshtRatings;
 end;
 
 {-----------------------------------------------------------------------------
