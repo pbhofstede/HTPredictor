@@ -427,5 +427,143 @@ object frmOpstelling: TfrmOpstelling
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    object pnlVoorspelling: TPanel
+      Left = 470
+      Top = 0
+      Width = 284
+      Height = 58
+      BevelInner = bvLowered
+      BevelOuter = bvNone
+      TabOrder = 0
+      object spdbtnGetVoorspelling: TSpeedButton
+        Left = 5
+        Top = 4
+        Width = 23
+        Height = 22
+        Glyph.Data = {
+          36030000424D3603000000000000360000002800000010000000100000000100
+          18000000000000030000000000000000000000000000000000008000FF8000FF
+          8000FF8000FF8000FFCBCBCBB6B6B6B1B1B1B3B3B3C3C3C38000FF8000FF8000
+          FF8000FF8000FF8000FF8000FF8000FF8000FFC1C1C1B1A49EEAD5CAF0DCD1F0
+          DCD1EFDBD0C0AFA5585858A7A7A78000FF8000FF8000FF8000FF8000FF8000FF
+          A7A6A6F2DFD5F2F4F5EBEEEFDFE2E3ECEFF1EDF0F2EFF2F2F4E9E39889828383
+          838000FF8000FF8000FF8000FFBDB8B5F6F1EFF0F4F5D5AB95BB5B2AC06133C6
+          7349BB5827C98767EDF0F2F4F6F6C1AEA48C8C8C8000FF8000FFDCDCDCF6E8E1
+          F2F7F8C36D43C36231CA622EC1C4C5FFFFFFC76330C46232BC5A28ECEAE9F6F7
+          F7726863BCBCBC8000FFE6D3C8F6F8F9CE8866C66433CC6734CC6633C98563DD
+          A88FCC6431CC6634C66333BE5D2CF1F5F7F2DFD57575758000FFF4E5DCF4F4F4
+          C35E2BCD6836CC6734CC6532CB957CEAC0AACB622ECC6633CC6734C56332DCB6
+          A3F6F6F55956548000FFFCF8F5E4BCA9CC6938CE6836CC6633CC6632C1AEA5FF
+          FFFFCA5D28CC6633CD6734CB6735C77349F7F9FBBFADA58000FFFFFEFEDFA081
+          D26E3CCE6936CC6633CC6633C66839F1F6F8FAF1ECCA602BCC6734CE6937C869
+          39F9FCFEC9B7AE8000FFFEFBFBECB99FDA7644D06B38CC6633CC6633CC6633C5
+          693AFCFFFFF5E0D7CD6531D26D3BCE7143FFFFFFC8B7AD8000FFF8ECE6FEFAF7
+          E8824FD8723FCF9071E7B9A3CB622DCC6633E1CDC2FFFFFFD06733D87441E5AB
+          8EFFFEFE988E888000FFF0DBD0FFFFFFFDA374F48F5CC69F8CFFFFFFE6B299D1
+          7F56FCFEFFEDEDECDF7641E07744FFFFFFF6E9E1A9A9A98000FF8000FFFDFAF9
+          FFFFFFFFB580FFA26ED7CECBF5F9FBF7FBFCF1F6F9F19C73FA9360FEE2D2FFFF
+          FFCFBDB38000FF8000FF8000FFEEDDD3FFFFFFFFFFFFFFEFC6FFDDA6FFC696FD
+          BD8CFFBB87FFC28EFFFCF8FFFFFFF1DDD2D0D0D08000FF8000FF8000FF8000FF
+          EEDDD5FCF7F5FFFFFFFFFFFFFFFFFDFFFFFCFFFFFDFFFFFFFFFFFFEFDBD0D4D4
+          D48000FF8000FF8000FF8000FF8000FF8000FFF4F4F3EFDCD0F6E9E1FDFAF9FE
+          FCFBF9EEE9EFDBD0D1C7C28000FF8000FF8000FF8000FF8000FF}
+        OnClick = spdbtnGetVoorspellingClick
+      end
+      object lblWinst: TLabel
+        Left = 34
+        Top = 2
+        Width = 38
+        Height = 13
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblGelijk: TLabel
+        Left = 34
+        Top = 17
+        Width = 35
+        Height = 13
+        Caption = 'Gelijk:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblVerlies: TLabel
+        Left = 34
+        Top = 32
+        Width = 44
+        Height = 13
+        Caption = 'Verlies: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblWinstPerc: TLabel
+        Left = 108
+        Top = 2
+        Width = 38
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblGelijkPerc: TLabel
+        Left = 108
+        Top = 17
+        Width = 38
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblVerliesPerc: TLabel
+        Left = 108
+        Top = 32
+        Width = 38
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+  end
+  object JvPrediction: TJvHttpUrlGrabber
+    FileName = 'output.txt'
+    OutputMode = omStream
+    Agent = 'JEDI-VCL'
+    Port = 0
+    OnDoneStream = JvPredictionDoneStream
+    Left = 608
+    Top = 77
+  end
+  object jvXML: TJvSimpleXML
+    IndentString = '  '
+    Left = 616
+    Top = 152
   end
 end

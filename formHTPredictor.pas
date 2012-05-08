@@ -8,7 +8,8 @@ uses
   cxGridCustomView, cxGridCustomTableView, cxGridTableView, uRatingBijdrages,
   cxGridDBTableView, cxGrid, Db, dxmdaset, ExtCtrls, StdCtrls, dxCntner,
   Menus, dxEditor, dxExEdtr, dxEdLib, dxDBELib, cxContainer, cxEdit,
-  cxTextEdit, cxCurrencyEdit, cxGroupBox, cxRadioGroup, OleCtrls;
+  cxTextEdit, cxCurrencyEdit, cxGroupBox, cxRadioGroup, OleCtrls,
+  JvComponent, JvUrlListGrabber, JvUrlGrabbers, JvSimpleXml, JvHtmlParser;
 
 type
   TfrmHTPredictor = class(TForm)
@@ -152,6 +153,8 @@ begin
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
   FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
+  FSelectie_Eigen.TegenStander := FSelectie_Tegen;
+  FSelectie_Tegen.TegenStander := FSelectie_Eigen;
 end;
 
 procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);

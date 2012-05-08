@@ -11,12 +11,16 @@ type
     FNaam: String;
     FPlayers: TObjectList;
     FRatingBijdrages: TRatingBijdrages;
+    FTegenStander: TSelectie;
+    FCurOpstelling: TObject;
   public
     procedure UpdateOpstellingen;                           
     function GetPlayer(aID:integer):TPlayer;
     procedure LoadFromMemDataSet(aDataSet: TdxMemData; aRefresh: boolean);
     property Players:TObjectList read FPlayers write FPlayers;
     property Naam:String read FNaam write FNaam;
+    property CurOpstelling: TObject read FCurOpstelling write FCurOpstelling;
+    property TegenStander: TSelectie read FTegenStander write FTegenStander;
     property RatingBijdrages: TRatingBijdrages read FRatingBijdrages write FRatingBijdrages;
     constructor Create;
     destructor Destroy;override;

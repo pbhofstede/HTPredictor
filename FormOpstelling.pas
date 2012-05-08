@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, uHTPredictor,
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
-  cxImageComboBox, cxCurrencyEdit, cxPC, OleCtrls, ComCtrls;
+  cxImageComboBox, cxCurrencyEdit, cxPC, OleCtrls, ComCtrls, JvComponent,
+  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml;
 
 type
   TfrmOpstelling = class(TForm)
@@ -48,6 +49,16 @@ type
     edLA: TcxCurrencyEdit;
     Panel1: TPanel;
     lblTacticLevel: TLabel;
+    pnlVoorspelling: TPanel;
+    spdbtnGetVoorspelling: TSpeedButton;
+    lblWinst: TLabel;
+    lblGelijk: TLabel;
+    lblVerlies: TLabel;
+    JvPrediction: TJvHttpUrlGrabber;
+    jvXML: TJvSimpleXML;
+    lblWinstPerc: TLabel;
+    lblGelijkPerc: TLabel;
+    lblVerliesPerc: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -60,10 +71,13 @@ type
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
     procedure edPropertiesChange(Sender: TObject);
+    procedure spdbtnGetVoorspellingClick(Sender: TObject);
+    procedure JvPredictionDoneStream(Sender: TObject; Stream: TStream;
+      StreamSize: Integer; Url: String);
   private
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
-    FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;    
+    FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;
     FOpstellingAanvoerder: TfrmOpstellingPlayer;                     
     FOpstellingSpelhervatter: TfrmOpstellingPlayer;
     FWedstrijdPlaats: TWedstrijdPlaats;
@@ -78,6 +92,7 @@ type
     FLA: double;
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
+    procedure ShowResults;
     { Private declarations }
   public
     { Public declarations }
@@ -119,6 +134,9 @@ begin
   Result.Selectie := aSelectie;
   Result.pnlHandmatig.Visible := not aEigenOpstelling;
   result.tbshtVoorspelling.TabVisible := aEigenOpstelling;
+  result.pnlVoorspelling.Visible := aEigenOpstelling;
+
+  aSelectie.CurOpstelling := result.FOpstelling;
 
   Result.Align := alClient;
 
@@ -165,6 +183,10 @@ var
   vCount: integer;
   vItem: TcxImageComboBoxItem;
 begin
+  lblGelijkPerc.Caption := '';
+  lblWinstPerc.Caption := '';
+  lblVerliesPerc.Caption := '';
+
   for vCount := Ord(Low(TOpstellingMotivatie)) to Ord(High(TOpstellingMotivatie)) do
   begin
     vItem := cbMotivatie.Properties.Items.Add;
@@ -228,6 +250,12 @@ begin
 
   FOpstellingAanvoerder := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, TRUE);
   FOpstellingSpelhervatter := FormOpstellingPlayer.ToonOpstellingPlayer(pnlOpstelling, FOpstelling, FALSE);
+
+  pnlVoorspelling.Top := FOpstellingAanvoerder.Top;
+  pnlVoorspelling.Left := FOpstellingPlayerArray[5].Left;
+  pnlVoorspelling.Height := FOpstellingAanvoerder.Height;
+  pnlVoorspelling.Width := (FOpstellingPlayerArray[6].Left + FOpstellingPlayerArray[6].Width) -
+             FOpstellingPlayerArray[5].Left;
 end;
 
 {-----------------------------------------------------------------------------
@@ -463,6 +491,90 @@ end;
 procedure TfrmOpstelling.edPropertiesChange(Sender: TObject);
 begin
   UpdateRatings;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: spdbtnGetVoorspellingClick
+  Author:    Harry
+  Date:      08-mei-2012
+  Arguments: Sender: TObject
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.spdbtnGetVoorspellingClick(Sender: TObject);
+var
+  vURL: String;
+  vTeam1, vTeam2: TOpstelling;
+begin
+  case FWedstrijdPlaats of
+    wThuis, wDerbyThuis:
+    begin
+      vTeam1 := FOpstelling;
+      vTeam2 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
+    end
+    else
+    begin
+      vTeam1 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
+      vTeam2 := FOpstelling;
+    end;
+  end;
+
+  vURL := 'http://www.fantamondi.it/HTMS/dorequest.php?action=predict&'+
+    Format('TAM=%d&',[Round(vTeam1.MID * 4)])+
+    Format('TBM=%d&',[Round(vTeam2.MID * 4)])+
+    Format('TARD=%d&',[Round(vTeam1.RV * 4)])+
+    Format('TBRD=%d&',[Round(vTeam2.RV * 4)])+
+    Format('TACD=%d&',[Round(vTeam1.CV * 4)])+
+    Format('TBCD=%d&',[Round(vTeam2.CV * 4)])+
+    Format('TALD=%d&',[Round(vTeam1.LV * 4)])+
+    Format('TBLD=%d&',[Round(vTeam2.LV * 4)])+
+    Format('TARA=%d&',[Round(vTeam1.RA * 4)])+
+    Format('TBRA=%d&',[Round(vTeam2.RA * 4)])+
+    Format('TACA=%d&',[Round(vTeam1.CA * 4)])+
+    Format('TBCA=%d&',[Round(vTeam2.CA * 4)])+
+    Format('TALA=%d&',[Round(vTeam1.LA * 4)])+
+    Format('TBLA=%d',[Round(vTeam2.LA * 4)]);
+  JvPrediction.Url := vURL;
+  Screen.Cursor := crHourGlass;
+  JvPrediction.Start;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: JvPredictionDoneStream
+  Author:    Harry
+  Date:      08-mei-2012
+  Arguments: Sender: TObject; Stream: TStream; StreamSize: Integer; Url: String
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.JvPredictionDoneStream(Sender: TObject;
+  Stream: TStream; StreamSize: Integer; Url: String);
+begin
+  Screen.Cursor := crDefault;
+  jvXML.LoadFromStream(Stream);
+  ShowResults;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: ShowResults
+  Author:    Harry
+  Date:      08-mei-2012
+  Arguments: None
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.ShowResults;
+begin
+  case FWedstrijdPlaats of
+    wThuis, wDerbyThuis:
+    begin
+      lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
+      lblVerliesPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S2P')]);
+    end
+    else
+    begin
+      lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S2P')]);
+      lblVerliesPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
+    end;
+  end;
+  lblGelijkPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('SXP')]);
 end;
 
 end.
