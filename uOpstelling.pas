@@ -20,6 +20,7 @@ type
     FCoach: TOpstellingCoach;
     FWedstrijdPlaats: TWedstrijdPlaats;
     FTS: double;
+    FTacticLevel: double;
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
@@ -35,6 +36,7 @@ type
     function OverCrowdingDef: double;
     function OverCrowdingMid: double;
     function OverCrowdingAanval: double;
+    function GetTacticLevel: double;
   public
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
@@ -45,6 +47,7 @@ type
     property Tactiek: TOpstellingTactiek read FTactiek write SetTactiek;
     property Coach: TOpstellingCoach read FCoach write SetCoach;
     property TS: double read FTS write SetTS;
+    property TacticLevel: double read GetTacticLevel;
     
     constructor Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
     destructor Destroy; override;
@@ -257,6 +260,37 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+function TOpstelling.GetTacticLevel: double;
+var
+  vCount: integer;
+begin
+  if (FTacticLevel = 0) then
+  begin
+    if (FTactiek = tCounter) then
+    begin
+      for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+      begin
+        if FOpstellingPlayerArray[vCount] <> nil then
+        begin
+          if (vCount in [Ord(pRB), Ord(pRCV), Ord(pCV), Ord(pLCV), Ord(pLB)]) then
+          begin
+            FTacticLevel := FTacticLevel + (0.923695 * FOpstellingPlayerArray[vCount].PAS) +
+                                           (0.404393 * FOpstellingPlayerArray[vCount].DEF);
+          end;
+        end;
+      end;
+
+      FTacticLevel := FTacticLevel * 0.235751;
+    end
+    else
+    begin
+      FTacticLevel := 0;
+    end;
+  end;
+
+  Result := FTacticLevel;
+end;
+
 function TOpstelling.LA: double;
 var
   vCount: integer;
@@ -662,6 +696,7 @@ begin
   if (FTactiek <> Value) then
   begin
     FTactiek := Value;
+    FTacticLevel := 0;
     UpdateRatings;
   end;
 end;
@@ -753,6 +788,7 @@ var
   vRating: TRatingBijdrage;
   vPos: String;
 begin
+  FTacticLevel := 0;
   vPlayer := Selectie.GetPlayer(aPlayerID);
 
   vOldPlayer := FOpstellingPlayerArray[Ord(aPositie)];

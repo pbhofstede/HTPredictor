@@ -25,7 +25,7 @@ function OpstellingTactiekToString(aTactiek: TOpstellingTactiek): String;
 function OpstellingCoachToString(aCoach: TOpstellingCoach): String;
 function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
-function FormatRating(aRating, aPrevRating: double): String;
+function FormatRating(aRating, aPrevRating: double; aTactiek: boolean = FALSE): String;
 
 implementation
 
@@ -400,7 +400,7 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-function FormatRating(aRating, aPrevRating: double): String;
+function FormatRating(aRating, aPrevRating: double; aTactiek: boolean = FALSE): String;
 var
   vIntRating: integer;
   vResultStr: String;
@@ -408,70 +408,88 @@ begin
   //Ceil, dus naar boven afronden.
   //0 -> 0 -> niet-bestaand
   //24,4 -> 6,1 -> 7 -> goed
-  vIntRating := Floor(aRating);
 
-  case vIntRating of
-    0: vResultStr := 'niet-bestaand';
-    1: vResultStr := 'rampzalig';
-    2: vResultStr := 'waardeloos';
-    3: vResultStr := 'slecht';
-    4: vResultStr := 'zwak';
-    5: vResultStr := 'matig';
-    6: vResultStr := 'redelijk';
-    7: vResultStr := 'goed';
-    8: vResultStr := 'uitstekend';  
-    9: vResultStr := 'formidabel';
-    10: vResultStr := 'uitmuntend';
-    11: vResultStr := 'briljant';
-    12: vResultStr := 'wonderbaarlijk';
-    13: vResultStr := 'wereldklasse';
-    14: vResultStr := 'bovennatuurlijk';
-    15: vResultStr := 'reusachtig';
-    16: vResultStr := 'buitenaards';
-    17: vResultStr := 'mythisch';
-    18: vResultStr := 'magisch';
-    19: vResultStr := 'utopisch';
-    20: vResultStr := 'goddelijk';
-    21: vResultStr := 'goddelijk+';
-    22: vResultStr := 'goddelijk++';
-    23: vResultStr := 'goddelijk+++';
-    24: vResultStr := 'goddelijk++++';
-    else
-      vResultStr := vResultStr + 'huh??';
-  end;
-
-  vIntRating := Floor((aRating - Floor(aRating)) * 4);
-  case vIntRating of
-    0: vResultStr := vResultStr + ' (zeer laag)';
-    1: vResultStr := vResultStr + ' (laag)';
-    2: vResultStr := vResultStr + ' (hoog)';
-    3: vResultStr := vResultStr + ' (zeer hoog)';
-    else
-      vResultStr := vResultStr + ' (huh??)';
-  end;
-
-  Result := Format('%.2f', [aRating]);
-  if (aRating < 10) then
+  if (aTactiek AND (aRating = 0)) then
   begin
-    Result := '0' + Result;
-  end;
-
-  if (aRating <> aPrevRating) then
-  begin
-    if (aRating > aPrevRating) then
-    begin
-      Result := Format('%s (+%.2f)', [Result, aRating - aPrevRating]) + #9;
-    end
-    else
-    begin
-      Result := Format('%s (%.2f)', [Result, aRating - aPrevRating]) + #9;
-    end;
+    Result := 'geen speciale tactiek';
   end
   else
   begin
-    Result := Result + #9#9;
-  end;
+    vIntRating := Floor(aRating);
 
-  Result := Result + vResultStr;
+    case vIntRating of
+      0: vResultStr := 'niet-bestaand';
+      1: vResultStr := 'rampzalig';
+      2: vResultStr := 'waardeloos';
+      3: vResultStr := 'slecht';
+      4: vResultStr := 'zwak';
+      5: vResultStr := 'matig';
+      6: vResultStr := 'redelijk';
+      7: vResultStr := 'goed';
+      8: vResultStr := 'uitstekend';  
+      9: vResultStr := 'formidabel';
+      10: vResultStr := 'uitmuntend';
+      11: vResultStr := 'briljant';
+      12: vResultStr := 'wonderbaarlijk';
+      13: vResultStr := 'wereldklasse';
+      14: vResultStr := 'bovennatuurlijk';
+      15: vResultStr := 'reusachtig';
+      16: vResultStr := 'buitenaards';
+      17: vResultStr := 'mythisch';
+      18: vResultStr := 'magisch';
+      19: vResultStr := 'utopisch';
+      20: vResultStr := 'goddelijk';
+      21: vResultStr := 'goddelijk+';
+      22: vResultStr := 'goddelijk++';
+      23: vResultStr := 'goddelijk+++';
+      24: vResultStr := 'goddelijk++++';
+      else
+        vResultStr := vResultStr + 'huh??';
+    end;
+
+    if (not aTactiek) then
+    begin
+      vIntRating := Floor((aRating - Floor(aRating)) * 4);
+      case vIntRating of
+        0: vResultStr := vResultStr + ' (zeer laag)';
+        1: vResultStr := vResultStr + ' (laag)';
+        2: vResultStr := vResultStr + ' (hoog)';
+        3: vResultStr := vResultStr + ' (zeer hoog)';
+        else
+          vResultStr := vResultStr + ' (huh??)';
+      end;
+    end;
+  
+    Result := Format('%.2f', [aRating]);
+    if (aRating < 10) then
+    begin
+      Result := '0' + Result;
+    end;
+
+    if (aRating <> aPrevRating) then
+    begin
+      if (aRating > aPrevRating) then
+      begin
+        Result := Format('%s (+%.2f)', [Result, aRating - aPrevRating]) + #9;
+      end
+      else
+      begin
+        Result := Format('%s (%.2f)', [Result, aRating - aPrevRating]) + #9;
+      end;
+    end
+    else
+    begin
+      if (aTactiek) then
+      begin
+        Result := Result + ' ';
+      end
+      else
+      begin
+        Result := Result + #9#9;
+      end;
+    end;
+
+    Result := Result + vResultStr;
+  end;
 end;
 end.

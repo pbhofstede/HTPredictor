@@ -31,7 +31,7 @@ object frmOpstelling: TfrmOpstelling
       Top = 0
       Width = 408
       Height = 525
-      ActivePage = tbshtVoorspelling
+      ActivePage = tbshtRatings
       Align = alClient
       TabOrder = 0
       ClientRectBottom = 525
@@ -280,6 +280,19 @@ object frmOpstelling: TfrmOpstelling
             Width = 30
             Height = 13
             Caption = 'Coach'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblTacticLevel: TLabel
+            Left = 254
+            Top = 31
+            Width = 147
+            Height = 13
+            AutoSize = False
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
             Font.Height = -11

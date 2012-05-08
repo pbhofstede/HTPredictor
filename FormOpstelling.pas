@@ -47,6 +47,7 @@ type
     edCA: TcxCurrencyEdit;
     edLA: TcxCurrencyEdit;
     Panel1: TPanel;
+    lblTacticLevel: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -335,6 +336,7 @@ end;
 
 procedure TfrmOpstelling.UpdateRatings;
 var
+  vTacticLevel,
   vMID,
   vRV,
   vCV,
@@ -408,6 +410,9 @@ begin
   lblRA.Caption := uHTPredictor.FormatRating(vRA, FRA);
   lblCA.Caption := uHTPredictor.FormatRating(vCA, FCA);
   lblLA.Caption := uHTPredictor.FormatRating(vLA, FLA);
+
+  vTacticLevel := FOpstelling.TacticLevel;
+  lblTacticLevel.Caption := uHTPredictor.FormatRating(vTacticLevel, vTacticLevel, TRUE);
 
   vTotRating := (vMID * 3)
                   + vRV
