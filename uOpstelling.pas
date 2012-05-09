@@ -284,7 +284,7 @@ begin
     end
     else
     begin
-      FTacticLevel := 0;
+      FTacticLevel := 20;
     end;
   end;
 
