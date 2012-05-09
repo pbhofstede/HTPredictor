@@ -521,26 +521,26 @@ begin
     DecimalSeparator := '.';
     try
       vURL := 'http://www.fantamondi.it/HTMS/dorequest.php?action=predict&'+
-        Format('TAM=%2.f&',[FTeam1.MID * 4])+
-        Format('TBM=%2.f&',[FTeam2.MID * 4])+
-        Format('TARD=%2.f&',[FTeam1.RV * 4])+
-        Format('TBRD=%2.f&',[FTeam2.RV * 4])+
-        Format('TACD=%2.f&',[FTeam1.CV * 4])+
-        Format('TBCD=%2.f&',[FTeam2.CV * 4])+
-        Format('TALD=%2.f&',[FTeam1.LV * 4])+
-        Format('TBLD=%2.f&',[FTeam2.LV * 4])+
-        Format('TARA=%2.f&',[FTeam1.RA * 4])+
-        Format('TBRA=%2.f&',[FTeam2.RA * 4])+
-        Format('TACA=%2.f&',[FTeam1.CA * 4])+
-        Format('TBCA=%2.f&',[FTeam2.CA * 4])+
-        Format('TALA=%2.f&',[FTeam1.LA * 4])+
-        Format('TBLA=%2.f',[FTeam2.LA * 4]);
+        Format('TAM=%.2f&',[FTeam1.MID * 4])+
+        Format('TBM=%.2f&',[FTeam2.MID * 4])+
+        Format('TARD=%.2f&',[FTeam1.RV * 4])+
+        Format('TBRD=%.2f&',[FTeam2.RV * 4])+
+        Format('TACD=%.2f&',[FTeam1.CV * 4])+
+        Format('TBCD=%.2f&',[FTeam2.CV * 4])+
+        Format('TALD=%.2f&',[FTeam1.LV * 4])+
+        Format('TBLD=%.2f&',[FTeam2.LV * 4])+
+        Format('TARA=%.2f&',[FTeam1.RA * 4])+
+        Format('TBRA=%.2f&',[FTeam2.RA * 4])+
+        Format('TACA=%.2f&',[FTeam1.CA * 4])+
+        Format('TBCA=%.2f&',[FTeam2.CA * 4])+
+        Format('TALA=%.2f&',[FTeam1.LA * 4])+
+        Format('TBLA=%.2f',[FTeam2.LA * 4]);
 
       case FTeam1.Tactiek of
-        tPressie: vTaktiek := Format('&TATAC=PRES&TATACLEV=%0.f',[FTeam1.TacticLevel]);
-        tCounter: vTaktiek := Format('&TATAC=CA&TATACLEV=%0.f',[FTeam1.TacticLevel]);
-        tCentrumAanval: vTaktiek := Format('&TATAC=AIM&TATACLEV=%0.f',[FTeam1.TacticLevel]);
-        tVleugelAanval: vTaktiek := Format('&TATAC=AOW&TATACLEV=%0.f',[FTeam1.TacticLevel]);
+        tPressie: vTaktiek := Format('&TATAC=PRES&TATACLEV=%.0f',[FTeam1.TacticLevel]);
+        tCounter: vTaktiek := Format('&TATAC=CA&TATACLEV=%.0f',[FTeam1.TacticLevel]);
+        tCentrumAanval: vTaktiek := Format('&TATAC=AIM&TATACLEV=%.0f',[FTeam1.TacticLevel]);
+        tVleugelAanval: vTaktiek := Format('&TATAC=AOW&TATACLEV=%.0f',[FTeam1.TacticLevel]);
         tCreatiefSpel, tAfstandsSchoten: vTaktiek := '';
       end;
       if (vTaktiek <> '') then
@@ -549,10 +549,10 @@ begin
       end;
 
       case FTeam2.Tactiek of
-        tPressie: vTaktiek := Format('&TBTAC=PRES&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
-        tCounter: vTaktiek := Format('&TBTAC=CA&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
-        tCentrumAanval: vTaktiek := Format('&TBTAC=AIM&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
-        tVleugelAanval: vTaktiek := Format('&TBTAC=AOW&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
+        tPressie: vTaktiek := Format('&TBTAC=PRES&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
+        tCounter: vTaktiek := Format('&TBTAC=CA&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
+        tCentrumAanval: vTaktiek := Format('&TBTAC=AIM&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
+        tVleugelAanval: vTaktiek := Format('&TBTAC=AOW&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
         tCreatiefSpel, tAfstandsSchoten: vTaktiek := '';
       end;
       if (vTaktiek <> '') then
