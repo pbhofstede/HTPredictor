@@ -21,6 +21,13 @@ type
     FWedstrijdPlaats: TWedstrijdPlaats;
     FTS: double;
     FTacticLevel: double;
+    FHandmatigRV: double;
+    FHandmatigCV: double;
+    FHandmatigLV: double;
+    FHandmatigRA: double;
+    FHandmatigCA: double;
+    FHandmatigLA: double;
+    FHandmatigMID: double;
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
@@ -29,6 +36,7 @@ type
     procedure SetMotivatie(const Value: TOpstellingMotivatie);
     procedure SetTactiek(const Value: TOpstellingTactiek);
     procedure SetCoach(const Value: TOpstellingCoach);
+    procedure SetHandmatigRV(const Value: double);
     function VerrekenTypeCoach(aRating: double; aVerdediging: boolean): double;
     procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
     procedure SetTS(const Value: double);
@@ -37,7 +45,20 @@ type
     function OverCrowdingMid: double;
     function OverCrowdingAanval: double;
     function GetTacticLevel: double;
+    procedure SetHandmatigCA(const Value: double);
+    procedure SetHandmatigCV(const Value: double);
+    procedure SetHandmatigLA(const Value: double);
+    procedure SetHandmatigLV(const Value: double);
+    procedure SetHandmatigMID(const Value: double);
+    procedure SetHandmatigRA(const Value: double);
   public
+    property HandmatigMID: double write SetHandmatigMID;
+    property HandmatigRV: double write SetHandmatigRV;
+    property HandmatigCV: double write SetHandmatigCV;
+    property HandmatigLV: double write SetHandmatigLV;
+    property HandmatigRA: double write SetHandmatigRA;
+    property HandmatigCA: double write SetHandmatigCA;
+    property HandmatigLA: double write SetHandmatigLA;
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
     property Aanvoerder: TPlayer read FAanvoerder write SetAanvoerder;
@@ -108,43 +129,50 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigCA > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    Result := FHandmatigCA;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
     begin
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+        end;
       end;
     end;
-  end;        
 
-  Result := Result / 4;
+    Result := Result / 4;
 
-  Result := Result + (0.011339 * Result * Result);
+    Result := Result + (0.011339 * Result * Result);
 
-  Result := Result +  (-0.000029 * Result * Result * Result);
+    Result := Result +  (-0.000029 * Result * Result * Result);
 
-  Result := Result * TeamZelfvertrouwen;
+    Result := Result * TeamZelfvertrouwen;
 
-  if (Tactiek = tAfstandsSchoten) then
-  begin
-    Result := Result * 0.970577;
+    if (Tactiek = tAfstandsSchoten) then
+    begin
+      Result := Result * 0.970577;
+    end;
+
+    Result := 1 + VerrekenTypeCoach(Result, FALSE);
   end;
-
-  Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 constructor TOpstelling.Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
@@ -172,41 +200,48 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigCV > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    Result := FHandmatigCV;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
     begin
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+        end;
       end;
     end;
-  end;
   
-  Result := Result / 4;
+    Result := Result / 4;
 
-  Result := Result + (0.008462 * Result * Result);
+    Result := Result + (0.008462 * Result * Result);
 
-  Result := Result +  (-0.000017 * Result * Result * Result);
+    Result := Result +  (-0.000017 * Result * Result * Result);
 
-  case Tactiek of
-    tVleugelAanval:   Result := Result * 0.858029;
-    tCreatiefSpel:    Result := Result * 0.930999;
+    case Tactiek of
+      tVleugelAanval:   Result := Result * 0.858029;
+      tCreatiefSpel:    Result := Result * 0.930999;
+    end;
+
+    Result := 1 + VerrekenTypeCoach(Result, TRUE);
   end;
-
-  Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
 
 destructor TOpstelling.Destroy;
@@ -263,6 +298,7 @@ end;
 function TOpstelling.GetTacticLevel: double;
 var
   vCount: integer;
+  vLevel: double;
 begin
   if (FTacticLevel = 0) then
   begin
@@ -274,17 +310,83 @@ begin
         begin
           if (vCount in [Ord(pRB), Ord(pRCV), Ord(pCV), Ord(pLCV), Ord(pLB)]) then
           begin
-            FTacticLevel := FTacticLevel + (0.923695 * FOpstellingPlayerArray[vCount].PAS) +
-                                           (0.404393 * FOpstellingPlayerArray[vCount].DEF);
+            vLevel := (0.923695 * FOpstellingPlayerArray[vCount].PAS) +
+                      (0.404393 * FOpstellingPlayerArray[vCount].DEF);
+                       
+            vLevel := vLevel * 0.235751;
+
+            vLevel := vLevel + (0.022976 * vLevel * vLevel);
+            vLevel := vLevel + (-0.000422 * vLevel * vLevel * vLevel);
+
+            FTacticLevel := FTacticLevel + vLevel;
           end;
         end;
       end;
+    end
+    else if (FTactiek in [tCentrumAanval,tVleugelAanval]) then
+    begin
+      for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+      begin
+        if FOpstellingPlayerArray[vCount] <> nil then
+        begin
+          if (not (vCount in [Ord(pKP)])) then
+          begin
+            vLevel := (0.194912 * FOpstellingPlayerArray[vCount].PAS);
 
-      FTacticLevel := FTacticLevel * 0.235751;
+            vLevel := vLevel + (0.009067 * vLevel * vLevel);
+            vLevel := vLevel + (-0.000351 * vLevel * vLevel * vLevel);
+
+            FTacticLevel := FTacticLevel + vLevel;
+          end;
+        end;
+      end;
+    end
+    else if (FTactiek in [tPressie]) then
+    begin
+      for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+      begin
+        if FOpstellingPlayerArray[vCount] <> nil then
+        begin
+          if (not (vCount in [Ord(pKP)])) then
+          begin
+            if (FOpstellingPlayerArray[vCount].Spec = 'P') then
+            begin
+              vLevel := 0.062717 * ((2 * FOpstellingPlayerArray[vCount].DEF) + FOpstellingPlayerArray[vCount].Conditie);
+            end
+            else
+            begin
+              vLevel := 0.062717 * (FOpstellingPlayerArray[vCount].DEF + FOpstellingPlayerArray[vCount].Conditie);
+            end;
+
+            vLevel := vLevel + (0.035617 * vLevel * vLevel);
+            vLevel := vLevel + (-0.001443 * vLevel * vLevel * vLevel);
+
+            FTacticLevel := FTacticLevel + vLevel;
+          end;
+        end;
+      end;
+    end
+    else if (FTactiek in [tAfstandsSchoten]) then
+    begin
+      for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+      begin
+        if FOpstellingPlayerArray[vCount] <> nil then
+        begin
+          if (not (vCount in [Ord(pKP)])) then
+          begin
+            vLevel := 0.001162 * ((3 * FOpstellingPlayerArray[vCount].SCO) + FOpstellingPlayerArray[vCount].SP);
+
+            vLevel := vLevel + (-0.310785 * vLevel * vLevel);
+            vLevel := vLevel + (302.472449 * vLevel * vLevel * vLevel);
+
+            FTacticLevel := FTacticLevel + vLevel;
+          end;
+        end;
+      end;
     end
     else
     begin
-      FTacticLevel := 0;
+      FTacticLevel := 20;
     end;
   end;
 
@@ -297,43 +399,50 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigLA > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    Result := FHandmatigLA;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
     begin
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage;
+        end;
       end;
     end;
+
+    Result := Result / 4;
+
+    Result := Result + (0.012093 * Result * Result);
+
+    Result := Result +  (-0.000027 * Result * Result * Result);
+
+    Result := Result * TeamZelfvertrouwen;
+
+    if (Tactiek = tAfstandsSchoten) then
+    begin
+      Result := Result * 0.972980;
+    end;
+
+    Result := 1 + VerrekenTypeCoach(Result, FALSE);
   end;
-
-  Result := Result / 4;
-
-  Result := Result + (0.012093 * Result * Result);
-
-  Result := Result +  (-0.000027 * Result * Result * Result);
-  
-  Result := Result * TeamZelfvertrouwen;
-
-  if (Tactiek = tAfstandsSchoten) then
-  begin
-    Result := Result * 0.972980;
-  end;
-  
-  Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 function TOpstelling.LV: double;
@@ -342,41 +451,48 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigLV > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    Result := FHandmatigLV;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
     begin
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
+        end;
       end;
     end;
+
+    Result := Result / 4;
+
+    Result := Result + (0.011591 * Result * Result);
+
+    Result := Result +  (-0.000029 * Result * Result * Result);
+
+    case Tactiek of
+      tCentrumAanval:   Result := Result * 0.853911;
+      tCreatiefSpel:    Result := Result * 0.930663;
+    end;
+
+    Result := 1 + VerrekenTypeCoach(Result, TRUE);
   end;
-
-  Result := Result / 4;
-
-  Result := Result + (0.011591 * Result * Result);
-
-  Result := Result +  (-0.000029 * Result * Result * Result);
-
-  case Tactiek of
-    tCentrumAanval:   Result := Result * 0.853911;
-    tCreatiefSpel:    Result := Result * 0.930663;
-  end;
-  
-  Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
 
 function TOpstelling.MID: double;
@@ -385,55 +501,62 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigMID > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
-    begin     
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+    Result := FHandmatigMID;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+    begin
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+        end;
       end;
     end;
+
+    Result := Result / 4;
+
+    Result := Result + (0.008504 * Result * Result);
+
+    Result := Result +  (-0.000027 * Result * Result * Result);
+
+    Result := VerwerkTS(Result);
+
+    case WedstrijdPlaats of
+      wThuis: Result := Result * 1.199529;    //MMM + HO: 1.199529
+      wDerbyThuis, wDerbyUit: Result := Result * 1.113699;    //MMM + HO: 1.113699
+      wUit:   Result := Result * 1;
+    end;
+
+    case Motivatie of
+      mPIC:     Result := Result * 0.839949;   //MMM + HO: 0.839949
+      mMOTS:    Result := Result * 1.109650;   //MMM + HO: 1.109650
+      mNormaal: Result := Result * 1;
+    end;
+
+    case Tactiek of
+      tAfstandsSchoten:  Result := Result * 0.950323;
+      tCounter:         Result := Result * 0.930000;
+    end;
+
+    Result := 1 + Result;
   end;
-                               
-  Result := Result / 4;
-  
-  Result := Result + (0.008504 * Result * Result);
-
-  Result := Result +  (-0.000027 * Result * Result * Result);
-
-  Result := VerwerkTS(Result);
-
-  case WedstrijdPlaats of
-    wThuis: Result := Result * 1.199529;    //MMM + HO: 1.199529
-    wDerbyThuis, wDerbyUit: Result := Result * 1.113699;    //MMM + HO: 1.113699
-    wUit:   Result := Result * 1;
-  end;
-
-  case Motivatie of
-    mPIC:     Result := Result * 0.839949;   //MMM + HO: 0.839949
-    mMOTS:    Result := Result * 1.109650;   //MMM + HO: 1.109650
-    mNormaal: Result := Result * 1;
-  end;
-
-  case Tactiek of
-    tAfstandsSchoten:  Result := Result * 0.950323;
-    tCounter:         Result := Result * 0.930000;
-  end;
-
-  Result := 1 + Result;
 end;
 
 {-----------------------------------------------------------------------------
@@ -541,43 +664,50 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigRA > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    Result := FHandmatigRA;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
     begin
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage;
+        end;
       end;
     end;
+
+    Result := Result / 4;
+
+    Result := Result + (0.012093 * Result * Result);
+
+    Result := Result +  (-0.000027 * Result * Result * Result);
+
+    Result := Result * TeamZelfvertrouwen;
+
+    if (Tactiek = tAfstandsSchoten) then
+    begin
+      Result := Result * 0.972980;
+    end;
+
+    Result := 1 + VerrekenTypeCoach(Result, FALSE);
   end;
-
-  Result := Result / 4;
-
-  Result := Result + (0.012093 * Result * Result);
-
-  Result := Result +  (-0.000027 * Result * Result * Result); 
-
-  Result := Result * TeamZelfvertrouwen;
-
-  if (Tactiek = tAfstandsSchoten) then
-  begin
-    Result := Result * 0.972980;
-  end;
-
-  Result := 1 + VerrekenTypeCoach(Result, FALSE);
 end;
 
 function TOpstelling.RV: double;
@@ -586,41 +716,48 @@ var
 begin
   Result := 0;
 
-  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  if (FHandmatigRV > 0) then
   begin
-    if FOpstellingPlayerArray[vCount] <> nil then
+    Result := FHandmatigRV;
+  end
+  else
+  begin
+    for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
     begin
-      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      if FOpstellingPlayerArray[vCount] <> nil then
       begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingAanval);
-      end
-      else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingMid);
-      end
-      else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
-      begin
-        Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingDef);
-      end
-      else
-      begin
-        Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
+        if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingAanval);
+        end
+        else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingMid);
+        end
+        else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
+        begin
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingDef);
+        end
+        else
+        begin
+          Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
+        end;
       end;
     end;
+
+    Result := Result / 4;
+
+    Result := Result + (0.011591 * Result * Result);
+
+    Result := Result +  (-0.000029 * Result * Result * Result);
+
+    case Tactiek of
+      tCentrumAanval:   Result := Result * 0.853911;
+      tCreatiefSpel:    Result := Result * 0.930663;
+    end;
+
+    Result := 1 + VerrekenTypeCoach(Result, TRUE);
   end;
-
-  Result := Result / 4;
-
-  Result := Result + (0.011591 * Result * Result);
-
-  Result := Result +  (-0.000029 * Result * Result * Result);
-
-  case Tactiek of
-    tCentrumAanval:   Result := Result * 0.853911;
-    tCreatiefSpel:    Result := Result * 0.930663;
-  end;
-
-  Result := 1 + VerrekenTypeCoach(Result, TRUE);
 end;
 
 procedure TOpstelling.SetAanvoerder(const Value: TPlayer);
@@ -649,6 +786,41 @@ begin
     FCoach := Value;
     UpdateRatings;
   end;
+end;
+
+procedure TOpstelling.SetHandmatigCA(const Value: double);
+begin
+  FHandmatigCA := Value;
+end;
+
+procedure TOpstelling.SetHandmatigCV(const Value: double);
+begin
+  FHandmatigCV := Value;
+end;
+
+procedure TOpstelling.SetHandmatigLA(const Value: double);
+begin
+  FHandmatigLA := Value;
+end;
+
+procedure TOpstelling.SetHandmatigLV(const Value: double);
+begin
+  FHandmatigLV := Value;
+end;
+
+procedure TOpstelling.SetHandmatigMID(const Value: double);
+begin
+  FHandmatigMID := Value;
+end;
+
+procedure TOpstelling.SetHandmatigRA(const Value: double);
+begin
+  FHandmatigRA := Value;
+end;
+
+procedure TOpstelling.SetHandmatigRV(const Value: double);
+begin
+  FHandmatigRV := Value;
 end;
 
 procedure TOpstelling.SetMotivatie(const Value: TOpstellingMotivatie);
