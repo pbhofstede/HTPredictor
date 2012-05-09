@@ -505,6 +505,8 @@ var
   vURL: String;
   vTeam1, vTeam2: TOpstelling;
 begin
+
+  //http://www.fantamondi.it/HTMS/dorequest.php?action=predict&TAM=10&TBM=10&TARD=1&TBRD=2&TACD=2&TBCD=3&TALD=4&TBLD=5&TARA=7&TBRA=6&TACA=4&TBCA=4&TALA=5&TBLA=3
   case FWedstrijdPlaats of
     wThuis, wDerbyThuis:
     begin
