@@ -47,7 +47,6 @@ type
     edRA: TcxCurrencyEdit;
     edCA: TcxCurrencyEdit;
     edLA: TcxCurrencyEdit;
-    Panel1: TPanel;
     lblTacticLevel: TLabel;
     pnlVoorspelling: TPanel;
     spdbtnGetVoorspelling: TSpeedButton;
@@ -59,6 +58,36 @@ type
     lblWinstPerc: TLabel;
     lblGelijkPerc: TLabel;
     lblVerliesPerc: TLabel;
+    lblUitslag: TLabel;
+    lblTeam1: TLabel;
+    lblTeam2: TLabel;
+    Label2: TLabel;
+    lblBBZ1: TLabel;
+    lblBBZ2: TLabel;
+    Label3: TLabel;
+    lblKansen1: TLabel;
+    lblKansen2: TLabel;
+    Label4: TLabel;
+    lblLinks1: TLabel;
+    lblLinks2: TLabel;
+    Label5: TLabel;
+    lblCentrum1: TLabel;
+    lblCentrum2: TLabel;
+    Label6: TLabel;
+    lblRechts1: TLabel;
+    lblRechts2: TLabel;
+    Label7: TLabel;
+    lblSH1: TLabel;
+    lblSH2: TLabel;
+    Label8: TLabel;
+    lblGoals1: TLabel;
+    lblGoals2: TLabel;
+    Bevel1: TBevel;
+    Bevel2: TBevel;
+    Label9: TLabel;
+    lblWinst1: TLabel;
+    lblWinst2: TLabel;
+    lblTeamsGelijk: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -75,6 +104,8 @@ type
     procedure JvPredictionDoneStream(Sender: TObject; Stream: TStream;
       StreamSize: Integer; Url: String);
   private
+    FTeam1, FTeam2: TOpstelling;
+    FBusy: boolean;
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
     FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;
@@ -93,6 +124,8 @@ type
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
     procedure ShowResults;
+    procedure ShowDetailedResults;
+    procedure ClearVoorspelling;
     { Private declarations }
   public
     { Public declarations }
@@ -186,6 +219,7 @@ begin
   lblGelijkPerc.Caption := '';
   lblWinstPerc.Caption := '';
   lblVerliesPerc.Caption := '';
+  lblUitslag.Caption := '';
 
   for vCount := Ord(Low(TOpstellingMotivatie)) to Ord(High(TOpstellingMotivatie)) do
   begin
@@ -256,6 +290,19 @@ begin
   pnlVoorspelling.Height := FOpstellingAanvoerder.Height;
   pnlVoorspelling.Width := (FOpstellingPlayerArray[6].Left + FOpstellingPlayerArray[6].Width) -
              FOpstellingPlayerArray[5].Left;
+
+  case FWedstrijdPlaats of
+    wThuis, wDerbyThuis:
+    begin
+      FTeam1 := FOpstelling;
+      FTeam2 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
+    end
+    else
+    begin
+      FTeam1 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
+      FTeam2 := FOpstelling;
+    end;
+  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -374,6 +421,8 @@ var
   vLA,
   vTotRating: double;
 begin
+  ClearVoorspelling;
+
   vMID := FOpstelling.MID;
   vRV := FOpstelling.RV;
   vCV := FOpstelling.CV;
@@ -461,42 +510,62 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmOpstelling.spdbtnGetVoorspellingClick(Sender: TObject);
 var
-  vURL: String;
-  vTeam1, vTeam2: TOpstelling;
+  vURL, vTaktiek: String;
+  vSeperator: Char;
 begin
+  if (JvPrediction.Status = gsStopped) and not(FBusy) then
+  begin
+    FBusy := TRUE;
 
-  //http://www.fantamondi.it/HTMS/dorequest.php?action=predict&TAM=10&TBM=10&TARD=1&TBRD=2&TACD=2&TBCD=3&TALD=4&TBLD=5&TARA=7&TBRA=6&TACA=4&TBCA=4&TALA=5&TBLA=3
-  case FWedstrijdPlaats of
-    wThuis, wDerbyThuis:
-    begin
-      vTeam1 := FOpstelling;
-      vTeam2 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
-    end
-    else
-    begin
-      vTeam1 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
-      vTeam2 := FOpstelling;
+    vSeperator := DecimalSeparator;
+    DecimalSeparator := '.';
+    try
+      vURL := 'http://www.fantamondi.it/HTMS/dorequest.php?action=predict&'+
+        Format('TAM=%2.f&',[FTeam1.MID * 4])+
+        Format('TBM=%2.f&',[FTeam2.MID * 4])+
+        Format('TARD=%2.f&',[FTeam1.RV * 4])+
+        Format('TBRD=%2.f&',[FTeam2.RV * 4])+
+        Format('TACD=%2.f&',[FTeam1.CV * 4])+
+        Format('TBCD=%2.f&',[FTeam2.CV * 4])+
+        Format('TALD=%2.f&',[FTeam1.LV * 4])+
+        Format('TBLD=%2.f&',[FTeam2.LV * 4])+
+        Format('TARA=%2.f&',[FTeam1.RA * 4])+
+        Format('TBRA=%2.f&',[FTeam2.RA * 4])+
+        Format('TACA=%2.f&',[FTeam1.CA * 4])+
+        Format('TBCA=%2.f&',[FTeam2.CA * 4])+
+        Format('TALA=%2.f&',[FTeam1.LA * 4])+
+        Format('TBLA=%2.f',[FTeam2.LA * 4]);
+
+      case FTeam1.Tactiek of
+        tPressie: vTaktiek := Format('&TATAC=PRES&TATACLEV=%0.f',[FTeam1.TacticLevel]);
+        tCounter: vTaktiek := Format('&TATAC=CA&TATACLEV=%0.f',[FTeam1.TacticLevel]);
+        tCentrumAanval: vTaktiek := Format('&TATAC=AIM&TATACLEV=%0.f',[FTeam1.TacticLevel]);
+        tVleugelAanval: vTaktiek := Format('&TATAC=AOW&TATACLEV=%0.f',[FTeam1.TacticLevel]);
+        tCreatiefSpel, tAfstandsSchoten: vTaktiek := '';
+      end;
+      if (vTaktiek <> '') then
+      begin
+        vURL := Format('%s%s',[vUrl, vTaktiek]);
+      end;
+
+      case FTeam2.Tactiek of
+        tPressie: vTaktiek := Format('&TBTAC=PRES&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
+        tCounter: vTaktiek := Format('&TBTAC=CA&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
+        tCentrumAanval: vTaktiek := Format('&TBTAC=AIM&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
+        tVleugelAanval: vTaktiek := Format('&TBTAC=AOW&TBTACLEV=%0.f',[FTeam2.TacticLevel]);
+        tCreatiefSpel, tAfstandsSchoten: vTaktiek := '';
+      end;
+      if (vTaktiek <> '') then
+      begin
+        vURL := Format('%s%s',[vUrl, vTaktiek]);
+      end;
+    finally
+      DecimalSeparator := vSeperator;
     end;
+    JvPrediction.Url := vURL;
+    Screen.Cursor := crHourGlass;
+    JvPrediction.Start;
   end;
-
-  vURL := 'http://www.fantamondi.it/HTMS/dorequest.php?action=predict&'+
-    Format('TAM=%d&',[Round(vTeam1.MID * 4)])+
-    Format('TBM=%d&',[Round(vTeam2.MID * 4)])+
-    Format('TARD=%d&',[Round(vTeam1.RV * 4)])+
-    Format('TBRD=%d&',[Round(vTeam2.RV * 4)])+
-    Format('TACD=%d&',[Round(vTeam1.CV * 4)])+
-    Format('TBCD=%d&',[Round(vTeam2.CV * 4)])+
-    Format('TALD=%d&',[Round(vTeam1.LV * 4)])+
-    Format('TBLD=%d&',[Round(vTeam2.LV * 4)])+
-    Format('TARA=%d&',[Round(vTeam1.RA * 4)])+
-    Format('TBRA=%d&',[Round(vTeam2.RA * 4)])+
-    Format('TACA=%d&',[Round(vTeam1.CA * 4)])+
-    Format('TBCA=%d&',[Round(vTeam2.CA * 4)])+
-    Format('TALA=%d&',[Round(vTeam1.LA * 4)])+
-    Format('TBLA=%d',[Round(vTeam2.LA * 4)]);
-  JvPrediction.Url := vURL;
-  Screen.Cursor := crHourGlass;
-  JvPrediction.Start;
 end;
 
 {-----------------------------------------------------------------------------
@@ -512,6 +581,40 @@ begin
   Screen.Cursor := crDefault;
   jvXML.LoadFromStream(Stream);
   ShowResults;
+  ShowDetailedResults;
+  FBusy := FALSE;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: ClearVoorspelling
+  Author:    Harry
+  Date:      09-mei-2012
+  Arguments: None
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.ClearVoorspelling;
+begin
+  lblGelijkPerc.Caption := '?';
+  lblWinstPerc.Caption := '?';
+  lblVerliesPerc.Caption := '?';
+  lblUitslag.Caption := '';
+  lblBBZ1.Caption := '?';
+  lblBBZ2.Caption := '?';
+  lblKansen1.Caption := '?';
+  lblKansen2.Caption := '?';
+  lblLinks1.Caption := '?';
+  lblLinks2.Caption := '?';
+  lblCentrum1.Caption := '?';
+  lblCentrum2.Caption := '?';
+  lblRechts1.Caption := '?';
+  lblRechts2.Caption := '?';
+  lblSH1.Caption := '?';
+  lblSH2.Caption := '?';
+  lblGoals1.Caption := '?';
+  lblGoals2.Caption := '?';
+  lblTeamsGelijk.Caption := '?';
+  lblWinst1.Caption := '?';
+  lblWinst2.Caption := '?'; 
 end;
 
 {-----------------------------------------------------------------------------
@@ -536,6 +639,58 @@ begin
     end;
   end;
   lblGelijkPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('SXP')]);
+  lblUitslag.Caption := Format('%s - %s',[jvXML.Root.Items.Value('T1'), jvXML.Root.Items.Value('T2')]);
+end;
+
+procedure TfrmOpstelling.ShowDetailedResults;
+var
+  vGoals1, vGoals2: double;
+  vSeperator: Char;
+begin
+  vSeperator := DecimalSeparator;
+  DecimalSeparator := '.';
+  try
+    if (FTeam1.Selectie <> nil) then
+    begin
+      lblTeam1.Caption := FTeam1.Selectie.Naam;
+    end
+    else
+    begin
+      lblTeam1.Caption := '?';
+    end;
+      
+    if (FTeam2.Selectie <> nil) then
+    begin
+      lblTeam2.Caption := FTeam2.Selectie.Naam;
+    end
+    else
+    begin
+      lblTeam2.Caption := '?';
+    end;
+
+    vGoals1 := StrToFloat(jvXML.Root.Items.Value('T1'));
+    vGoals2 := StrToFloat(jvXML.Root.Items.Value('T2'));
+    lblUitslag.Caption := Format('%.0f - %.0f',[vGoals1, vGoals2]);
+    lblBBZ1.Caption := Format('%s',[jvXML.Root.Items.Value('P1')]);
+    lblBBZ2.Caption := Format('%s',[jvXML.Root.Items.Value('P2')]);
+    lblKansen1.Caption := Format('%s',[jvXML.Root.Items.Value('A1')]);
+    lblKansen2.Caption := Format('%s',[jvXML.Root.Items.Value('A2')]);
+    lblLinks1.Caption := Format('%s',[jvXML.Root.Items.Value('C1L')]);
+    lblLinks2.Caption := Format('%s',[jvXML.Root.Items.Value('C2L')]);
+    lblCentrum1.Caption := Format('%s',[jvXML.Root.Items.Value('C1C')]);
+    lblCentrum2.Caption := Format('%s',[jvXML.Root.Items.Value('C2C')]);
+    lblRechts1.Caption := Format('%s',[jvXML.Root.Items.Value('C1R')]);
+    lblRechts2.Caption := Format('%s',[jvXML.Root.Items.Value('C2R')]);
+    lblSH1.Caption := Format('%s',[jvXML.Root.Items.Value('CP1')]);
+    lblSH2.Caption := Format('%s',[jvXML.Root.Items.Value('CP2')]);
+    lblGoals1.Caption := Format('%s',[jvXML.Root.Items.Value('T1')]);
+    lblGoals2.Caption := Format('%s',[jvXML.Root.Items.Value('T2')]);
+    lblTeamsGelijk.Caption := Format('%s%%',[jvXML.Root.Items.Value('SXP')]);
+    lblWinst1.Caption := Format('%s%%',[jvXML.Root.Items.Value('S1P')]);
+    lblWinst2.Caption := Format('%s%%',[jvXML.Root.Items.Value('S2P')]);
+  finally
+    DecimalSeparator := vSeperator;
+  end;
 end;
 
 end.

@@ -31,7 +31,7 @@ object frmOpstelling: TfrmOpstelling
       Top = 0
       Width = 408
       Height = 525
-      ActivePage = tbshtRatings
+      ActivePage = tbshtVoorspelling
       Align = alClient
       TabOrder = 0
       ClientRectBottom = 525
@@ -406,15 +406,270 @@ object frmOpstelling: TfrmOpstelling
       end
       object tbshtVoorspelling: TcxTabSheet
         Caption = 'Voorspelling'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = []
         ImageIndex = 1
-        object Panel1: TPanel
-          Left = 0
-          Top = 320
-          Width = 408
-          Height = 181
-          Align = alBottom
-          Caption = 'Panel1'
-          TabOrder = 0
+        ParentFont = False
+        object lblTeam1: TLabel
+          Left = 120
+          Top = 16
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblTeam2: TLabel
+          Left = 230
+          Top = 16
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object Label2: TLabel
+          Left = 24
+          Top = 48
+          Width = 45
+          Height = 13
+          Caption = 'Balbezit'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblBBZ1: TLabel
+          Left = 119
+          Top = 48
+          Width = 52
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblBBZ2: TLabel
+          Left = 229
+          Top = 48
+          Width = 52
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label3: TLabel
+          Left = 24
+          Top = 64
+          Width = 35
+          Height = 13
+          Caption = 'Kansen'
+        end
+        object lblKansen1: TLabel
+          Left = 120
+          Top = 64
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblKansen2: TLabel
+          Left = 230
+          Top = 64
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object Label4: TLabel
+          Left = 24
+          Top = 96
+          Width = 57
+          Height = 13
+          Caption = 'Goals (links)'
+        end
+        object lblLinks1: TLabel
+          Left = 120
+          Top = 96
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblLinks2: TLabel
+          Left = 230
+          Top = 96
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object Label5: TLabel
+          Left = 24
+          Top = 112
+          Width = 76
+          Height = 13
+          Caption = 'Goals (centraal)'
+        end
+        object lblCentrum1: TLabel
+          Left = 120
+          Top = 112
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblCentrum2: TLabel
+          Left = 230
+          Top = 112
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object Label6: TLabel
+          Left = 24
+          Top = 128
+          Width = 67
+          Height = 13
+          Caption = 'Goals (rechts)'
+        end
+        object lblRechts1: TLabel
+          Left = 120
+          Top = 128
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblRechts2: TLabel
+          Left = 230
+          Top = 128
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object Label7: TLabel
+          Left = 24
+          Top = 144
+          Width = 50
+          Height = 13
+          Caption = 'Goals (SH)'
+        end
+        object lblSH1: TLabel
+          Left = 120
+          Top = 144
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblSH2: TLabel
+          Left = 230
+          Top = 144
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object Label8: TLabel
+          Left = 24
+          Top = 160
+          Width = 80
+          Height = 13
+          Caption = 'Goals (Totaal)'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblGoals1: TLabel
+          Left = 110
+          Top = 160
+          Width = 52
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object lblGoals2: TLabel
+          Left = 220
+          Top = 160
+          Width = 52
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Bevel1: TBevel
+          Left = 129
+          Top = 150
+          Width = 33
+          Height = 10
+          Shape = bsBottomLine
+        end
+        object Bevel2: TBevel
+          Left = 238
+          Top = 150
+          Width = 33
+          Height = 10
+          Shape = bsBottomLine
+        end
+        object Label9: TLabel
+          Left = 24
+          Top = 192
+          Width = 61
+          Height = 13
+          Caption = 'Winstkansen'
+        end
+        object lblWinst1: TLabel
+          Left = 120
+          Top = 192
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblWinst2: TLabel
+          Left = 230
+          Top = 192
+          Width = 42
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'lblTeam1'
+        end
+        object lblTeamsGelijk: TLabel
+          Left = 184
+          Top = 192
+          Width = 42
+          Height = 13
+          Alignment = taCenter
+          Caption = 'lblTeam1'
         end
       end
     end
@@ -546,6 +801,20 @@ object frmOpstelling: TfrmOpstelling
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblUitslag: TLabel
+        Left = 217
+        Top = 27
+        Width = 57
+        Height = 19
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False
