@@ -374,62 +374,13 @@ var
   vLA,
   vTotRating: double;
 begin
-  if (edMID.Value > 0) then
-  begin
-    vMID := edMID.Value;
-  end
-  else
-  begin
-    vMID := FOpstelling.MID;
-  end;
-  if (edRV.Value > 0) then
-  begin
-    vRV := edRV.Value;
-  end
-  else
-  begin
-    vRV := FOpstelling.RV;
-  end;
-  if (edCV.Value > 0) then
-  begin
-    vCV := edCV.Value;
-  end
-  else
-  begin
-    vCV := FOpstelling.CV;
-  end;
-  if (edLV.Value > 0) then
-  begin
-    vLV := edLV.Value;
-  end
-  else
-  begin
-    vLV := FOpstelling.LV;
-  end;
-  if (edRA.Value > 0) then
-  begin
-    vRA := edRA.Value;
-  end
-  else
-  begin
-    vRA := FOpstelling.RA;
-  end;
-  if (edCA.Value > 0) then
-  begin
-    vCA := edCA.Value;
-  end
-  else
-  begin
-    vCA := FOpstelling.CA;
-  end;
-  if (edLA.Value > 0) then
-  begin
-    vLA := edLA.Value;
-  end
-  else
-  begin
-    vLA := FOpstelling.LA;
-  end;
+  vMID := FOpstelling.MID;
+  vRV := FOpstelling.RV;
+  vCV := FOpstelling.CV;
+  vLV := FOpstelling.LV;
+  vRA := FOpstelling.RA;
+  vCA := FOpstelling.CA;
+  vLA := FOpstelling.LA;
 
   lblIM.Caption := uHTPredictor.FormatRating(vMID, FMid);
   lblRV.Caption := uHTPredictor.FormatRating(vRV, FRV);
@@ -490,6 +441,14 @@ end;
 
 procedure TfrmOpstelling.edPropertiesChange(Sender: TObject);
 begin
+  FOpstelling.HandmatigMID := edMID.Value;
+  FOpstelling.HandmatigRV := edRV.Value;
+  FOpstelling.HandmatigCV := edCV.Value;
+  FOpstelling.HandmatigLV := edLV.Value;
+  FOpstelling.HandmatigRA := edRA.Value;
+  FOpstelling.HandmatigCA := edCA.Value;
+  FOpstelling.HandmatigLA := edLA.Value;
+  
   UpdateRatings;
 end;
 
