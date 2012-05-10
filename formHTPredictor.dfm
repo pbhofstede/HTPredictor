@@ -89,14 +89,16 @@ object frmHTPredictor: TfrmHTPredictor
           Cursor = crVSplit
           Align = alTop
         end
-        object cxPageControl1: TcxPageControl
+        object pcEigenOpstellingen: TcxPageControl
           Left = 0
           Top = 3
           Width = 1165
           Height = 296
           ActivePage = cxTabSheet1
           Align = alClient
+          Options = [pcoAlwaysShowGoDialogButton, pcoCloseButton, pcoGoDialog, pcoGradient, pcoGradientClientArea, pcoRedrawOnResize]
           TabOrder = 0
+          OnPageChanging = pcEigenOpstellingenPageChanging
           ClientRectBottom = 296
           ClientRectRight = 1165
           ClientRectTop = 24
@@ -104,8 +106,8 @@ object frmHTPredictor: TfrmHTPredictor
             Caption = 'Opstelling 1'
             ImageIndex = 0
           end
-          object cxTabSheet2: TcxTabSheet
-            Caption = 'Opstelling 2'
+          object tsNew: TcxTabSheet
+            Caption = '...'
             ImageIndex = 1
           end
         end
@@ -141,21 +143,12 @@ object frmHTPredictor: TfrmHTPredictor
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 5
-    object btnOk: TButton
-      Left = 1076
-      Top = 33
-      Width = 75
-      Height = 25
-      Anchors = [akRight, akBottom]
-      Caption = 'Ok'
-      TabOrder = 3
-      OnClick = btnOkClick
-    end
     object rgWedstrijdplaats: TcxRadioGroup
       Left = 8
       Top = 0
       Caption = 'Wedstrijd'
       Properties.Items = <>
+      Properties.OnChange = rgWedstrijdplaatsPropertiesChange
       TabOrder = 0
       Height = 67
       Width = 185
@@ -198,6 +191,7 @@ object frmHTPredictor: TfrmHTPredictor
       object ceEigenTeamgeest: TcxCurrencyEdit
         Left = 109
         Top = 34
+        EditValue = 5
         Properties.DisplayFormat = '0.00'
         Properties.MaxValue = 10
         Properties.OnChange = ceEigenTeamgeestPropertiesChange
@@ -207,6 +201,7 @@ object frmHTPredictor: TfrmHTPredictor
       object ceEigenZelfvertrouwen: TcxCurrencyEdit
         Left = 109
         Top = 13
+        EditValue = 5
         Properties.DisplayFormat = '0.00'
         Properties.MaxValue = 10
         Properties.OnChange = ceEigenZelfvertrouwenPropertiesChange
@@ -252,6 +247,7 @@ object frmHTPredictor: TfrmHTPredictor
       object ceTegenstanderTeamgeest: TcxCurrencyEdit
         Left = 109
         Top = 34
+        EditValue = 5
         Properties.DisplayFormat = '0.00'
         Properties.MaxValue = 10
         Properties.OnChange = ceTegenstanderTeamgeestPropertiesChange
@@ -261,6 +257,7 @@ object frmHTPredictor: TfrmHTPredictor
       object ceTegenstanderZelfvertrouwen: TcxCurrencyEdit
         Left = 109
         Top = 13
+        EditValue = 5
         Properties.AssignedValues.MinValue = True
         Properties.DisplayFormat = '0.00'
         Properties.MaxValue = 10

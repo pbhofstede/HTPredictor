@@ -126,10 +126,16 @@ type
     procedure ShowResults;
     procedure ShowDetailedResults;
     procedure ClearVoorspelling;
+    procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
+    procedure SetZelfVertrouwen(const Value: double);
+    procedure SetTeamgeest(const Value: double);
     { Private declarations }
   public
     { Public declarations }
-    property Selectie: TSelectie read FSelectie write SetSelectie; 
+    property Selectie: TSelectie read FSelectie write SetSelectie;
+    property WedstrijdPlaats: TWedstrijdPlaats read FWedstrijdPlaats write SetWedstrijdPlaats;
+    property ZelfVertrouwen: double read FZelfVertrouwen write SetZelfVertrouwen;
+    property Teamgeest: double read FTeamgeest write SetTeamgeest;
 
     procedure EnableDisableOpstellingPlayer;
     procedure UpdateAanvoerder;
@@ -158,7 +164,7 @@ begin
   Result.Parent := aParent;
   Result.FWedstrijdPlaats := aWedstrijdPlaats;
   
-  Result.FZelfvertrouwen := aZelfvertrouwen;
+  Result.Zelfvertrouwen := aZelfvertrouwen;
   if (aTeamgeest < 1) then
   begin
     aTeamgeest := 1;
@@ -259,7 +265,7 @@ begin
 
   FSelectie := Value;
 
-  FOpstelling := TOpstelling.Create(Self, FWedstrijdPlaats, FZelfvertrouwen, FTeamgeest);
+  FOpstelling := TOpstelling.Create(Self, FWedstrijdPlaats, Zelfvertrouwen, FTeamgeest);
   FOpstelling.Selectie := Selectie;
 
   cbMotivatie.ItemIndex := Ord(mNormaal);
@@ -690,6 +696,79 @@ begin
     lblWinst2.Caption := Format('%s%%',[jvXML.Root.Items.Value('S2P')]);
   finally
     DecimalSeparator := vSeperator;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
+begin
+  if (FWedstrijdPlaats <> Value) then
+  begin
+    FWedstrijdPlaats := Value;
+
+    if (FOpstelling <> nil) then
+    begin
+      case FWedstrijdPlaats of
+        wThuis, wDerbyThuis:
+        begin
+          FTeam1 := FOpstelling;
+          FTeam2 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
+        end
+        else
+        begin
+          FTeam1 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
+          FTeam2 := FOpstelling;
+        end;
+      end;
+
+      FOpstelling.WedstrijdPlaats := Value
+    end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.SetZelfVertrouwen(const Value: double);
+begin
+  if (FZelfVertrouwen <> Value) then
+  begin
+    FZelfVertrouwen := Value;
+
+    if (FOpstelling <> nil) then
+    begin
+      FOpstelling.Zelfvertrouwen := Value;
+    end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.SetTeamgeest(const Value: double);
+begin
+  if (FTeamgeest <> Value) then
+  begin
+    FTeamgeest := Value;
+
+    if (FOpstelling <> nil) then
+    begin
+      FOpstelling.Teamgeest := Value;
+    end;
   end;
 end;
 

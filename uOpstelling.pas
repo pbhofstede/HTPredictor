@@ -19,7 +19,7 @@ type
     FTactiek: TOpstellingTactiek;
     FCoach: TOpstellingCoach;
     FWedstrijdPlaats: TWedstrijdPlaats;
-    FTS: double;
+    FTeamgeest: double;
     FTacticLevel: double;
     FHandmatigRV: double;
     FHandmatigCV: double;
@@ -39,8 +39,8 @@ type
     procedure SetHandmatigRV(const Value: double);
     function VerrekenTypeCoach(aRating: double; aVerdediging: boolean): double;
     procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
-    procedure SetTS(const Value: double);
-    function VerwerkTS(aRating: double): double;
+    procedure SetTeamgeest(const Value: double);
+    function VerwerkTeamgeest(aRating: double): double;
     function OverCrowdingDef: double;
     function OverCrowdingMid: double;
     function OverCrowdingAanval: double;
@@ -67,10 +67,10 @@ type
     property Motivatie: TOpstellingMotivatie read FMotivatie write SetMotivatie;
     property Tactiek: TOpstellingTactiek read FTactiek write SetTactiek;
     property Coach: TOpstellingCoach read FCoach write SetCoach;
-    property TS: double read FTS write SetTS;
+    property Teamgeest: double read FTeamgeest write SetTeamgeest;
     property TacticLevel: double read GetTacticLevel;
     
-    constructor Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
+    constructor Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTeamgeest: double);
     destructor Destroy; override;
 
     function GetPlayerOnPosition(aPositie: TPlayerPosition): TPlayer;
@@ -175,7 +175,7 @@ begin
   end;
 end;
 
-constructor TOpstelling.Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTS: double);
+constructor TOpstelling.Create(aFormOpstelling: TForm; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen, aTeamgeest: double);
 begin
   FFormOpstelling := aFormOpstelling;
 
@@ -184,7 +184,7 @@ begin
   FZelfvertrouwen := aZelfvertrouwen;
   FWedstrijdPlaats := aWedstrijdPlaats;
   FCoach := cNeutraal;
-  FTS := aTS;
+  FTeamgeest := aTeamgeest;
 end;
 
 {-----------------------------------------------------------------------------
@@ -536,7 +536,7 @@ begin
 
     Result := Result +  (-0.000027 * Result * Result * Result);
 
-    Result := VerwerkTS(Result);
+    Result := VerwerkTeamgeest(Result);
 
     case WedstrijdPlaats of
       wThuis: Result := Result * 1.199529;    //MMM + HO: 1.199529
@@ -873,11 +873,11 @@ begin
   end;
 end;
 
-procedure TOpstelling.SetTS(const Value: double);
+procedure TOpstelling.SetTeamgeest(const Value: double);
 begin
-  if (FTS <> Value) then
+  if (FTeamgeest <> Value) then
   begin
-    FTS := Value;
+    FTeamgeest := Value;
     UpdateRatings;
   end;
 end;
@@ -946,11 +946,11 @@ begin
   end;
 end;
 
-function TOpstelling.VerwerkTS(aRating: double): double;
+function TOpstelling.VerwerkTeamgeest(aRating: double): double;
 begin
-  //Result := aRating * Power((FTS - 0.5) * 0.2, 0.417779);     //MMM
-  //Result := aRating * Power((FTS - 0.5) * 0.147832, 0.417779);  //HO
-  Result := aRating * Power((FTS - 0.5) * 0.147832, 0.417779);  
+  //Result := aRating * Power((FTeamgeest - 0.5) * 0.2, 0.417779);     //MMM
+  //Result := aRating * Power((FTeamgeest - 0.5) * 0.147832, 0.417779);  //HO
+  Result := aRating * Power((FTeamgeest - 0.5) * 0.147832, 0.417779);  
 end;
 
 procedure TOpstelling.ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);

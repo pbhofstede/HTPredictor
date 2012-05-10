@@ -24,9 +24,8 @@ type
     pnlSpelersGrid2: TPanel;
     Panel4: TPanel;
     Splitter2: TSplitter;
-    cxPageControl1: TcxPageControl;
+    pcEigenOpstellingen: TcxPageControl;
     cxTabSheet1: TcxTabSheet;
-    cxTabSheet2: TcxTabSheet;
     tbResultaat: TcxTabSheet;
     cxGrid1DBTableView1: TcxGridDBTableView;
     cxGrid1Level1: TcxGridLevel;
@@ -37,7 +36,6 @@ type
     Instellingen1: TMenuItem;
     Ratingbijdrages1: TMenuItem;
     pnlTop: TPanel;
-    btnOk: TButton;
     rgWedstrijdplaats: TcxRadioGroup;
     gbEigen: TcxGroupBox;
     Label1: TLabel;
@@ -53,9 +51,9 @@ type
     lblTegenstanderTSOmschrijving: TLabel;
     ceTegenstanderTeamgeest: TcxCurrencyEdit;
     ceTegenstanderZelfvertrouwen: TcxCurrencyEdit;
+    tsNew: TcxTabSheet;
     procedure FormCreate(Sender: TObject);
     procedure Ratingbijdrages1Click(Sender: TObject);
-    procedure btnOkClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ceTegenstanderZelfvertrouwenPropertiesChange(
       Sender: TObject);
@@ -63,12 +61,16 @@ type
     procedure ceEigenZelfvertrouwenPropertiesChange(Sender: TObject);
     procedure ceEigenTeamgeestPropertiesChange(Sender: TObject);
     procedure Afsluiten1Click(Sender: TObject);
+    procedure rgWedstrijdplaatsPropertiesChange(Sender: TObject);
+    procedure pcEigenOpstellingenPageChanging(Sender: TObject;
+      NewPage: TcxTabSheet; var AllowChange: Boolean);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
     FRatingBijdrages: TRatingBijdrages;
     FFormOpstellingTegenstander: TForm;
     FFormOpstellingEigen: TForm;
+    FAantalEigenOpstellingen: integer;
     procedure ToonRatingbijdrages;
     { Private declarations }
   public
@@ -155,34 +157,20 @@ begin
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Eigen.TegenStander := FSelectie_Tegen;
   FSelectie_Tegen.TegenStander := FSelectie_Eigen;
+
+  
+  FFormOpstellingTegenstander :=
+    FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, wUit,
+    ceTegenstanderZelfvertrouwen.Value, ceTegenstanderTeamgeest.Value, FALSE);
+
+  FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, wThuis,
+    ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE);
+  Inc(FAantalEigenOpstellingen);
 end;
 
 procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);
 begin
   ToonRatingbijdrages;
-end;
-
-procedure TfrmHTPredictor.btnOkClick(Sender: TObject);
-var
-  vWedstrijdPlaatsTegenstander: TWedstrijdPlaats;
-begin
-  btnOk.Visible := FALSE;
-
-  case TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex) of
-    wThuis:     vWedstrijdPlaatsTegenstander := wUit;
-    wUit:       vWedstrijdPlaatsTegenstander := wThuis;
-    wDerbyThuis:vWedstrijdPlaatsTegenstander := wDerbyUit;
-    else    vWedstrijdPlaatsTegenstander := wDerbyThuis;
-  end;
-  
-  FFormOpstellingTegenstander :=
-    FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, vWedstrijdPlaatsTegenstander,
-    ceTegenstanderZelfvertrouwen.Value, ceTegenstanderTeamgeest.Value, FALSE);
-
-  FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
-    ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE);
-
-  pnlTop.Enabled := FALSE;
 end;
 
 {-----------------------------------------------------------------------------
@@ -194,36 +182,136 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.FormDestroy(Sender: TObject);
 begin
-  FRatingBijdrages.SaveToXLS(ExtractFilePath(Application.ExeName)+'ratings.xlsx');
+  if (FRatingBijdrages <> nil) then
+  begin
+    FRatingBijdrages.SaveToXLS(ExtractFilePath(Application.ExeName)+'ratings.xlsx');
+    FRatingBijdrages.Free;
+  end;
 end;
 
-procedure TfrmHTPredictor.ceTegenstanderZelfvertrouwenPropertiesChange(
-  Sender: TObject);
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.ceTegenstanderZelfvertrouwenPropertiesChange(Sender: TObject);
 begin
+  TfrmOpstelling(FFormOpstellingTegenstander).Zelfvertrouwen := ceTegenstanderZelfvertrouwen.Value;
+
   lblTegenstanderZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceTegenstanderZelfvertrouwen.Value)));
 end;
 
-procedure TfrmHTPredictor.ceTegenstanderTeamgeestPropertiesChange(
-  Sender: TObject);
-begin
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.ceTegenstanderTeamgeestPropertiesChange(Sender: TObject);
+begin                       
+  TfrmOpstelling(FFormOpstellingTegenstander).Teamgeest := ceTegenstanderTeamgeest.Value;
+
   lblTegenstanderTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTegenstanderTeamgeest.Value)));
 end;
 
-procedure TfrmHTPredictor.ceEigenZelfvertrouwenPropertiesChange(
-  Sender: TObject);
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.ceEigenZelfvertrouwenPropertiesChange(Sender: TObject);
 begin
+  TfrmOpstelling(FFormOpstellingEigen).Zelfvertrouwen := ceEigenZelfvertrouwen.Value;
+
   lblEigenZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceEigenZelfvertrouwen.Value)));
 end;
 
-procedure TfrmHTPredictor.ceEigenTeamgeestPropertiesChange(
-  Sender: TObject);
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.ceEigenTeamgeestPropertiesChange(Sender: TObject);
 begin
+  TfrmOpstelling(FFormOpstellingEigen).Teamgeest := ceEigenTeamgeest.Value;
+
   lblEigenTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceEigenTeamgeest.Value)));
 end;
 
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.Afsluiten1Click(Sender: TObject);
 begin
   Close;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.rgWedstrijdplaatsPropertiesChange(Sender: TObject);
+var
+  vWedstrijdPlaatsTegenstander: TWedstrijdPlaats;
+begin
+  case TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex) of
+    wThuis:     vWedstrijdPlaatsTegenstander := wUit;
+    wUit:       vWedstrijdPlaatsTegenstander := wThuis;
+    wDerbyThuis:vWedstrijdPlaatsTegenstander := wDerbyUit;
+    else        vWedstrijdPlaatsTegenstander := wDerbyThuis;
+  end;
+
+  if (FFormOpstellingTegenstander <> nil) then
+  begin
+    TfrmOpstelling(FFormOpstellingTegenstander).WedstrijdPlaats := vWedstrijdPlaatsTegenstander;
+  end;
+
+  if (FFormOpstellingEigen <> nil) then
+  begin
+    TfrmOpstelling(FFormOpstellingEigen).WedstrijdPlaats := TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex);
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     10-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.pcEigenOpstellingenPageChanging(Sender: TObject; NewPage: TcxTabSheet; var AllowChange: Boolean);
+var
+  vPage: TcxTabSheet;
+begin
+  if (NewPage = tsNew) then
+  begin
+    AllowChange := FALSE;
+
+    vPage := TcxTabSheet.Create(self);
+    Inc(FAantalEigenOpstellingen);
+    vPage.Caption := Format('Opstelling %d', [FAantalEigenOpstellingen]);
+    vPage.PageControl := pcEigenOpstellingen;
+    vPage.PageIndex := NewPage.TabIndex;
+
+    FormOpstelling.ToonOpstelling(vPage, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
+      ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE);
+
+    pcEigenOpstellingen.ActivePage := vPage;
+  end;
 end;
 
 end.

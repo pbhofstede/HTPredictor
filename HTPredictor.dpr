@@ -1,6 +1,7 @@
 program HTPredictor;
 
-uses
+uses 
+  FastMM4,
   Forms,
   formHTPredictor in 'formHTPredictor.pas' {frmHTPredictor},
   uHTPredictor in 'uHTPredictor.pas',
