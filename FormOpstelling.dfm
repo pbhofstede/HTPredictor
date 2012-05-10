@@ -1,6 +1,6 @@
 object frmOpstelling: TfrmOpstelling
-  Left = 327
-  Top = 249
+  Left = 296
+  Top = 304
   BorderStyle = bsNone
   Caption = 'frmOpstelling'
   ClientHeight = 525
@@ -815,6 +815,48 @@ object frmOpstelling: TfrmOpstelling
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblWinstDiff: TLabel
+        Left = 151
+        Top = 2
+        Width = 38
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblGelijkDiff: TLabel
+        Left = 151
+        Top = 17
+        Width = 38
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object lblVerliesDiff: TLabel
+        Left = 151
+        Top = 32
+        Width = 38
+        Height = 13
+        Alignment = taRightJustify
+        Caption = 'Winst: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
         Font.Name = 'Tahoma'
         Font.Style = [fsBold]
         ParentFont = False

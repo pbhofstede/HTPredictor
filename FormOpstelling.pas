@@ -7,7 +7,7 @@ uses
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxImageComboBox, cxCurrencyEdit, cxPC, OleCtrls, ComCtrls, JvComponent,
-  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml;
+  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml, dxmdaset;
 
 type
   TfrmOpstelling = class(TForm)
@@ -88,6 +88,9 @@ type
     lblWinst1: TLabel;
     lblWinst2: TLabel;
     lblTeamsGelijk: TLabel;
+    lblWinstDiff: TLabel;
+    lblGelijkDiff: TLabel;
+    lblVerliesDiff: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -104,6 +107,7 @@ type
     procedure JvPredictionDoneStream(Sender: TObject; Stream: TStream;
       StreamSize: Integer; Url: String);
   private
+    FLaatsteWinst, FLaatsteVerlies, FLaatsteGelijk: double;
     FTeam1, FTeam2: TOpstelling;
     FBusy: boolean;
     FSelectie: TSelectie;
@@ -121,6 +125,7 @@ type
     FRA: double;
     FCA: double;
     FLA: double;
+    FMemData: TdxMemData;
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
     procedure ShowResults;
@@ -129,9 +134,11 @@ type
     procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
     procedure SetZelfVertrouwen(const Value: double);
     procedure SetTeamgeest(const Value: double);
+    function GetVerschil(aNewWaarde, aOldWaarde: double): String;
     { Private declarations }
   public
     { Public declarations }
+    property MemData: TdxMemData read FMemData write FMemData;
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property WedstrijdPlaats: TWedstrijdPlaats read FWedstrijdPlaats write SetWedstrijdPlaats;
     property ZelfVertrouwen: double read FZelfVertrouwen write SetZelfVertrouwen;
@@ -146,7 +153,7 @@ type
 
 
 function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
-  aTeamgeest: double; aEigenOpstelling: Boolean): TfrmOpstelling;
+  aTeamgeest: double; aEigenOpstelling: Boolean; aResultSet: TdxMemData): TfrmOpstelling;
 
 implementation
 uses
@@ -156,7 +163,7 @@ uses
 
 
 function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
-  aTeamgeest: double; aEigenOpstelling: Boolean): TfrmOpstelling;
+  aTeamgeest: double; aEigenOpstelling: Boolean; aResultSet: TdxMemData): TfrmOpstelling;
 begin
   
   Result := TfrmOpstelling.Create(nil);
@@ -171,6 +178,7 @@ begin
   end;
   Result.FTeamgeest := aTeamgeest;
   Result.Selectie := aSelectie;
+  Result.MemData := aResultSet;
   Result.pnlHandmatig.Visible := not aEigenOpstelling;
   result.tbshtVoorspelling.TabVisible := aEigenOpstelling;
   result.pnlVoorspelling.Visible := aEigenOpstelling;
@@ -620,7 +628,26 @@ begin
   lblGoals2.Caption := '?';
   lblTeamsGelijk.Caption := '?';
   lblWinst1.Caption := '?';
-  lblWinst2.Caption := '?'; 
+  lblWinst2.Caption := '?';
+  lblWinstDiff.Caption := '';
+  lblVerliesDiff.Caption := '';
+  lblGelijkDiff.Caption := '';
+end;
+
+function TfrmOpstelling.GetVerschil(aNewWaarde, aOldWaarde: double):String;
+begin
+  result := '';
+  if (aOldWaarde > 0) then
+  begin
+    if (aNewWaarde >= aOldWaarde) then
+    begin
+      result := Format(' (+%.2f%%)',[aNewWaarde - aOldWaarde]);
+    end
+    else
+    begin
+      result := Format(' (%.2f%%)',[aNewWaarde - aOldWaarde]);
+    end;
+  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -631,21 +658,44 @@ end;
   Result:    None
 -----------------------------------------------------------------------------}
 procedure TfrmOpstelling.ShowResults;
+var
+  vSeperator: Char;
 begin
-  case FWedstrijdPlaats of
-    wThuis, wDerbyThuis:
-    begin
-      lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
-      lblVerliesPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S2P')]);
-    end
-    else
-    begin
-      lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S2P')]);
-      lblVerliesPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
+  vSeperator := DecimalSeparator;
+  DecimalSeparator := '.';
+  try
+    case FWedstrijdPlaats of
+      wThuis, wDerbyThuis:
+      begin
+        lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
+        lblWinstDiff.Caption := GetVerschil(StrToFloat(jvXML.Root.Items.Value('S1P')), FLaatsteWinst);
+
+        lblVerliesPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S2P')]);
+        lblVerliesDiff.Caption := GetVerschil(StrToFloat(jvXML.Root.Items.Value('S2P')), FLaatsteVerlies);
+
+        FLaatsteWinst := StrToFloat(jvXML.Root.Items.Value('S1P'));
+        FLaatsteVerlies := StrToFloat(jvXML.Root.Items.Value('S2P'));
+      end
+      else
+      begin
+        lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S2P')]);
+        lblWinstDiff.Caption := GetVerschil(StrToFloat(jvXML.Root.Items.Value('S2P')), FLaatsteWinst);
+        lblVerliesPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
+        lblVerliesDiff.Caption := GetVerschil(StrToFloat(jvXML.Root.Items.Value('S1P')), FLaatsteVerlies);
+
+        FLaatsteWinst := StrToFloat(jvXML.Root.Items.Value('S2P'));
+        FLaatsteVerlies := StrToFloat(jvXML.Root.Items.Value('S1P'));
+      end;
     end;
+    lblGelijkPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('SXP')]);
+    lblGelijkDiff.Caption := GetVerschil(StrToFloat(jvXML.Root.Items.Value('SXP')), FLaatsteGelijk);
+
+    FLaatsteGelijk := StrToFloat(jvXML.Root.Items.Value('SXP'));
+      
+    lblUitslag.Caption := Format('%s - %s',[jvXML.Root.Items.Value('T1'), jvXML.Root.Items.Value('T2')]);
+  finally
+    DecimalSeparator := vSeperator;
   end;
-  lblGelijkPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('SXP')]);
-  lblUitslag.Caption := Format('%s - %s',[jvXML.Root.Items.Value('T1'), jvXML.Root.Items.Value('T2')]);
 end;
 
 procedure TfrmOpstelling.ShowDetailedResults;
@@ -694,6 +744,42 @@ begin
     lblTeamsGelijk.Caption := Format('%s%%',[jvXML.Root.Items.Value('SXP')]);
     lblWinst1.Caption := Format('%s%%',[jvXML.Root.Items.Value('S1P')]);
     lblWinst2.Caption := Format('%s%%',[jvXML.Root.Items.Value('S2P')]);
+
+    if (MemData <> nil) and (MemData.Active) then
+    begin
+      MemData.DisableControls;
+      try
+        MemData.First;
+        if MemData.Locate('ID',TcxTabSheet(Parent).TabIndex,[]) then
+        begin
+          MemData.Edit;
+        end
+        else
+        begin
+          MemData.Insert;
+          MemData.FieldByName('ID').asInteger := TcxTabSheet(Parent).TabIndex;
+        end;
+        MemData.FieldByName('OPSTELLING').asString := FOpstelling.Formatie;
+        MemData.FieldByName('TAKTIEK').asString := uHTPredictor.OpstellingTactiekToString(FOpstelling.Tactiek);
+        MemData.FieldByName('LV').asFloat := FOpstelling.LV;
+        MemData.FieldByName('CV').asFloat := FOpstelling.CV;
+        MemData.FieldByName('RV').asFloat := FOpstelling.RV;
+        MemData.FieldByName('MID').asFloat := FOpstelling.MID;
+        MemData.FieldByName('RA').asFloat := FOpstelling.RA;
+        MemData.FieldByName('CA').asFloat := FOpstelling.CA;
+        MemData.FieldByName('LA').asFloat := FOpstelling.LA;
+        MemData.FieldByName('WINST_THUIS').asFloat := StrToFloat(jvXML.Root.Items.Value('S1P'));
+        MemData.FieldByName('VERLIES_THUIS').asFloat := StrToFloat(jvXML.Root.Items.Value('S2P'));
+        MemData.FieldByName('GELIJK').asFloat := StrToFloat(jvXML.Root.Items.Value('SXP'));
+        MemData.FieldByName('GOALS_THUIS').asFloat := StrToFloat(jvXML.Root.Items.Value('T1'));
+        MemData.FieldByName('GOALS_UIT').asFloat := StrToFloat(jvXML.Root.Items.Value('T2'));
+
+
+        MemData.Post;
+      finally
+        MemData.EnableControls;
+      end;
+    end;
   finally
     DecimalSeparator := vSeperator;
   end;

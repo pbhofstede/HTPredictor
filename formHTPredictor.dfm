@@ -1,6 +1,6 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 361
-  Top = 65
+  Left = 360
+  Top = 125
   Width = 1181
   Height = 734
   Caption = 'HT Predictor'
@@ -22,7 +22,7 @@ object frmHTPredictor: TfrmHTPredictor
     Top = 69
     Width = 1165
     Height = 607
-    ActivePage = cxtbEigenTeam
+    ActivePage = tbResultaat
     Align = alClient
     TabOrder = 0
     ClientRectBottom = 607
@@ -125,9 +125,97 @@ object frmHTPredictor: TfrmHTPredictor
         TabOrder = 0
         object cxGrid1DBTableView1: TcxGridDBTableView
           NavigatorButtons.ConfirmDelete = False
+          DataController.DataSource = dsPredictions
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
           DataController.Summary.SummaryGroups = <>
+          OptionsData.CancelOnExit = False
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.ColumnAutoWidth = True
+          OptionsView.GroupByBox = False
+          object cxGrid1DBTableView1RecId: TcxGridDBColumn
+            DataBinding.FieldName = 'RecId'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Visible = False
+          end
+          object cxGrid1DBTableView1ID: TcxGridDBColumn
+            DataBinding.FieldName = 'ID'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Visible = False
+          end
+          object cxGrid1DBTableView1OPSTELLING: TcxGridDBColumn
+            Caption = 'Opstelling'
+            DataBinding.FieldName = 'OPSTELLING'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1TAKTIEK: TcxGridDBColumn
+            Caption = 'Taktiek'
+            DataBinding.FieldName = 'TAKTIEK'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1LV: TcxGridDBColumn
+            Caption = 'Verd. (links)'
+            DataBinding.FieldName = 'LV'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1CV: TcxGridDBColumn
+            Caption = 'Verd. (centr.)'
+            DataBinding.FieldName = 'CV'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1RV: TcxGridDBColumn
+            Caption = 'Verd. (rechts)'
+            DataBinding.FieldName = 'RV'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1MID: TcxGridDBColumn
+            Caption = 'Mid'
+            DataBinding.FieldName = 'MID'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1RA: TcxGridDBColumn
+            Caption = 'Aanval (rechts)'
+            DataBinding.FieldName = 'RA'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1CA: TcxGridDBColumn
+            Caption = 'Aanval (centr.)'
+            DataBinding.FieldName = 'CA'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1LA: TcxGridDBColumn
+            Caption = 'Aanval (links)'
+            DataBinding.FieldName = 'LA'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1WINST_THUIS: TcxGridDBColumn
+            Caption = 'Winst (thuis)'
+            DataBinding.FieldName = 'WINST_THUIS'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1VERLIES_THUIS: TcxGridDBColumn
+            Caption = 'Verlies (thuis)'
+            DataBinding.FieldName = 'VERLIES_THUIS'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1GELIJK: TcxGridDBColumn
+            Caption = 'Gelijk'
+            DataBinding.FieldName = 'GELIJK'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1GOALS_THUIS: TcxGridDBColumn
+            Caption = 'Goals (thuis)'
+            DataBinding.FieldName = 'GOALS_THUIS'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
+          object cxGrid1DBTableView1GOALS_UIT: TcxGridDBColumn
+            Caption = 'Goals (uit)'
+            DataBinding.FieldName = 'GOALS_UIT'
+            PropertiesClassName = 'TcxTextEditProperties'
+          end
         end
         object cxGrid1Level1: TcxGridLevel
           GridView = cxGrid1DBTableView1
@@ -8090,8 +8178,8 @@ object frmHTPredictor: TfrmHTPredictor
       000000000000}
   end
   object MainMenu1: TMainMenu
-    Left = 184
-    Top = 80
+    Left = 64
+    Top = 288
     object Bestand1: TMenuItem
       Caption = 'Bestand'
       object Afsluiten1: TMenuItem
@@ -8106,5 +8194,63 @@ object frmHTPredictor: TfrmHTPredictor
         OnClick = Ratingbijdrages1Click
       end
     end
+  end
+  object dxmdPredictions: TdxMemData
+    Indexes = <>
+    SortOptions = []
+    Left = 328
+    Top = 229
+    object dxmdPredictionsID: TIntegerField
+      FieldName = 'ID'
+    end
+    object dxmdPredictionsOPSTELLING: TStringField
+      FieldName = 'OPSTELLING'
+      Size = 10
+    end
+    object dxmdPredictionsTAKTIEK: TStringField
+      FieldName = 'TAKTIEK'
+      Size = 15
+    end
+    object dxmdPredictionsLV: TFloatField
+      FieldName = 'LV'
+    end
+    object dxmdPredictionsCV: TFloatField
+      FieldName = 'CV'
+    end
+    object dxmdPredictionsRV: TFloatField
+      FieldName = 'RV'
+    end
+    object dxmdPredictionsMID: TFloatField
+      FieldName = 'MID'
+    end
+    object dxmdPredictionsRA: TFloatField
+      FieldName = 'RA'
+    end
+    object dxmdPredictionsCA: TFloatField
+      FieldName = 'CA'
+    end
+    object dxmdPredictionsLA: TFloatField
+      FieldName = 'LA'
+    end
+    object dxmdPredictionsWINST_THUIS: TFloatField
+      FieldName = 'WINST_THUIS'
+    end
+    object dxmdPredictionsVERLIES_THUIS: TFloatField
+      FieldName = 'VERLIES_THUIS'
+    end
+    object dxmdPredictionsGELIJK: TFloatField
+      FieldName = 'GELIJK'
+    end
+    object dxmdPredictionsGOALS_THUIS: TFloatField
+      FieldName = 'GOALS_THUIS'
+    end
+    object dxmdPredictionsGOALS_UIT: TFloatField
+      FieldName = 'GOALS_UIT'
+    end
+  end
+  object dsPredictions: TDataSource
+    DataSet = dxmdPredictions
+    Left = 320
+    Top = 173
   end
 end

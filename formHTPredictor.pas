@@ -52,6 +52,39 @@ type
     ceTegenstanderTeamgeest: TcxCurrencyEdit;
     ceTegenstanderZelfvertrouwen: TcxCurrencyEdit;
     tsNew: TcxTabSheet;
+    dxmdPredictions: TdxMemData;
+    dxmdPredictionsID: TIntegerField;
+    dxmdPredictionsOPSTELLING: TStringField;
+    dxmdPredictionsTAKTIEK: TStringField;
+    dxmdPredictionsLV: TFloatField;
+    dxmdPredictionsCV: TFloatField;
+    dxmdPredictionsRV: TFloatField;
+    dxmdPredictionsMID: TFloatField;
+    dxmdPredictionsRA: TFloatField;
+    dxmdPredictionsCA: TFloatField;
+    dxmdPredictionsLA: TFloatField;
+    dxmdPredictionsWINST_THUIS: TFloatField;
+    dxmdPredictionsVERLIES_THUIS: TFloatField;
+    dxmdPredictionsGELIJK: TFloatField;
+    dxmdPredictionsGOALS_THUIS: TFloatField;
+    dxmdPredictionsGOALS_UIT: TFloatField;
+    dsPredictions: TDataSource;
+    cxGrid1DBTableView1RecId: TcxGridDBColumn;
+    cxGrid1DBTableView1ID: TcxGridDBColumn;
+    cxGrid1DBTableView1OPSTELLING: TcxGridDBColumn;
+    cxGrid1DBTableView1TAKTIEK: TcxGridDBColumn;
+    cxGrid1DBTableView1LV: TcxGridDBColumn;
+    cxGrid1DBTableView1CV: TcxGridDBColumn;
+    cxGrid1DBTableView1RV: TcxGridDBColumn;
+    cxGrid1DBTableView1MID: TcxGridDBColumn;
+    cxGrid1DBTableView1RA: TcxGridDBColumn;
+    cxGrid1DBTableView1CA: TcxGridDBColumn;
+    cxGrid1DBTableView1LA: TcxGridDBColumn;
+    cxGrid1DBTableView1WINST_THUIS: TcxGridDBColumn;
+    cxGrid1DBTableView1VERLIES_THUIS: TcxGridDBColumn;
+    cxGrid1DBTableView1GELIJK: TcxGridDBColumn;
+    cxGrid1DBTableView1GOALS_THUIS: TcxGridDBColumn;
+    cxGrid1DBTableView1GOALS_UIT: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure Ratingbijdrages1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -138,6 +171,7 @@ var
   vCount: integer;
   vItem: TcxRadioGroupItem;
 begin
+  dxmdPredictions.Open;
   cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
 
   for vCount := Ord(Low(TWedstrijdPlaats)) to Ord(High(TWedstrijdPlaats)) do
@@ -161,10 +195,10 @@ begin
   
   FFormOpstellingTegenstander :=
     FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, wUit,
-    ceTegenstanderZelfvertrouwen.Value, ceTegenstanderTeamgeest.Value, FALSE);
+    ceTegenstanderZelfvertrouwen.Value, ceTegenstanderTeamgeest.Value, FALSE, nil);
 
   FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, wThuis,
-    ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE);
+    ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE, dxmdPredictions);
   Inc(FAantalEigenOpstellingen);
 end;
 
@@ -308,7 +342,7 @@ begin
     vPage.PageIndex := NewPage.TabIndex;
 
     FormOpstelling.ToonOpstelling(vPage, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
-      ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE);
+      ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE, dxmdPredictions);
 
     pcEigenOpstellingen.ActivePage := vPage;
   end;

@@ -28,6 +28,7 @@ type
     FHandmatigCA: double;
     FHandmatigLA: double;
     FHandmatigMID: double;
+    FFormatie: String;
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
@@ -59,6 +60,7 @@ type
     property HandmatigRA: double write SetHandmatigRA;
     property HandmatigCA: double write SetHandmatigCA;
     property HandmatigLA: double write SetHandmatigLA;
+    property Formatie: String read FFormatie write FFormatie;
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Spelhervatter: TPlayer read FSpelhervatter write SetSpelhervatter;
     property Aanvoerder: TPlayer read FAanvoerder write SetAanvoerder;
@@ -185,6 +187,7 @@ begin
   FWedstrijdPlaats := aWedstrijdPlaats;
   FCoach := cNeutraal;
   FTeamgeest := aTeamgeest;
+  FFormatie := '2-5-3 of zo?';
 end;
 
 {-----------------------------------------------------------------------------
