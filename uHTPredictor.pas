@@ -14,9 +14,10 @@ type
   TOpstellingTactiek = (tNormaal, tPressie, tCounter, tCentrumAanval, tVleugelAanval, tCreatiefSpel, tAfstandsSchoten);
   TOpstellingCoach = (cNeutraal, cVerdedigend, cAanvallend);
   TWedstrijdPlaats = (wThuis, wDerbyThuis, wDerbyUit, wUit);
+  TPlayerFileType = (pfNTXls, pfHOCsv);
 
-function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
-function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
+function ImportSpelers(aFileType: TPlayerFileType; aXLSFile:String; aPlayerDataSet:TdxMemData):String;
+function AllPlayerFieldsMapped(aFileType: TPlayerFileType; aPlayerDataSet: TdxMemData):boolean;
 function OrderToString(aOrder: TPlayerOrder): String;
 function WedstrijdPlaatsToString(aWedstrijdPlaats: TWedstrijdPlaats): String;
 function TeamZelfvertrouwenToString(aTeamZelfvertrouwen: TTeamZelfvertrouwen): String;    
@@ -26,11 +27,28 @@ function OpstellingCoachToString(aCoach: TOpstellingCoach): String;
 function TeamSpiritToString(aTeamSpirit: TTeamSpirit): String;
 function PlayerPosToRatingPos(aPosition:TPlayerPosition; aOrder: TPlayerOrder; aSpec: String):String;
 function FormatRating(aRating, aPrevRating: double; aTactiek: boolean = FALSE): String;
+function GetIniSection(aFileType: TPlayerFileType):String;
 
 implementation
 
 uses
   SysUtils, IniFiles, Forms, uBibExcel, uBibConv, Dialogs, Windows, FormKiesTabSheet, Math;
+
+
+{-----------------------------------------------------------------------------
+  Procedure: GetIniSection
+  Author:    Harry
+  Date:      11-mei-2012
+  Arguments: aFileType: TPlayerFileType
+  Result:    String
+-----------------------------------------------------------------------------}
+function GetIniSection(aFileType: TPlayerFileType):String;
+begin
+  case aFileType of
+    pfHOCsv: result := 'HO_MAPPING';
+    pfNTXls: result := 'PLAYER_MAPPING';
+  end;
+end;
 
 {-----------------------------------------------------------------------------
   Procedure: AllPlayerFieldsMapped
@@ -39,7 +57,7 @@ uses
   Arguments: aPlayerDataSet: TdxMemData
   Result:    boolean
 -----------------------------------------------------------------------------}
-function AllPlayerFieldsMapped(aPlayerDataSet: TdxMemData):boolean;
+function AllPlayerFieldsMapped(aFileType: TPlayerFileType; aPlayerDataSet: TdxMemData):boolean;
 var
   i:integer;
 begin
@@ -53,7 +71,7 @@ begin
         if (aPlayerDataSet.Fields[i].Required) and (UpperCase(aPlayerDataSet.Fields[i].FieldName) <> 'RECID') then
         begin
           result := result and
-            (ReadString('PLAYER_MAPPING',aPlayerDataSet.Fields[i].FieldName,'') <> '');
+            (ReadString(GetIniSection(aFileType),aPlayerDataSet.Fields[i].FieldName,'') <> '');
         end;
       end;
     finally
@@ -69,93 +87,108 @@ end;
   Arguments: aPlayerDataSet: TdxMemData
   Result:    integer
 -----------------------------------------------------------------------------}
-function SavePlayersToMemDataSet(aExcelSheet: TExcelFunctions; aPlayerDataSet: TdxMemData):integer;
+function SavePlayersToMemDataSet(aFileType: TPlayerFileType;aExcelSheet: TExcelFunctions; aPlayerDataSet: TdxMemData):integer;
 var
   i, j, vCount: integer;
   vStaminaColumn, vStamina: String;
   vIni: TIniFile;
   vValue: Variant;
+  vSeparator: Char;
 begin
-  result := 0;
-  aExcelSheet.ExcelApp.ActiveSheet.Range['A1'].Select;
-
-  //fix nav. niet importeren van de onderste 2 spelers.
-  vCount := aExcelSheet.ExcelApp.ActiveSheet.UsedRange.Rows.Count + 1;
-
-  if (vCount > 0) then
+  vSeparator := DecimalSeparator;
+  if (aFileType = pfHOCSV) then
   begin
-    vIni := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
-    try
-      vStaminaColumn := vIni.ReadString('PLAYER_MAPPING','CONDITIE','');
-      if (vStaminaColumn <> '') then
-      begin
-        for i:=1 to vCount do
+    DecimalSeparator := '.';
+  end;
+  try
+    result := 0;
+    aExcelSheet.ExcelApp.ActiveSheet.Range['A1'].Select;
+
+    //fix nav. niet importeren van de onderste 2 spelers.
+    vCount := aExcelSheet.ExcelApp.ActiveSheet.UsedRange.Rows.Count + 1;
+
+    if (vCount > 0) then
+    begin
+      vIni := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
+      try
+        vStaminaColumn := vIni.ReadString(GetIniSection(aFileType),'CONDITIE','');
+        if (vStaminaColumn <> '') then
         begin
-          try
-            vStamina := aExcelSheet.GetCellRange(Format('%s%d', [vStaminaColumn, i]));
+          for i:=1 to vCount do
+          begin
+            try
+              vStamina := aExcelSheet.GetCellRange(Format('%s%d', [vStaminaColumn, i]));
 
-            if (uBibConv.AnyStrToFloat(vStamina) > 0) then
-            begin
-              aPlayerDataSet.Append;
-              aPlayerDataSet.FieldByName('LAND').asString := aExcelSheet.ExcelApp.ActiveSheet.Name;
-
-              for j:=0 to aPlayerDataSet.Fields.Count - 1 do
+              if (uBibConv.AnyStrToFloat(vStamina) > 0) then
               begin
-                if (aPlayerDataSet.Fields[j].Required) then
+                aPlayerDataSet.Append;
+                aPlayerDataSet.FieldByName('LAND').asString := aExcelSheet.ExcelApp.ActiveSheet.Name;
+
+                for j:=0 to aPlayerDataSet.Fields.Count - 1 do
                 begin
-                  vValue := aExcelSheet.GetCellRange(Format('%s%d', [vIni.ReadString('PLAYER_MAPPING',aPlayerDataSet.Fields[j].FieldName,''), i])).Value;
-
-                  if (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT') then
+                  if (aPlayerDataSet.Fields[j].Required) then
                   begin
-                    if uBibConv.StringIsInteger(vValue) then
+                    vValue := aExcelSheet.GetCellRange(Format('%s%d', [vIni.ReadString(GetIniSection(aFileType),aPlayerDataSet.Fields[j].FieldName,''), i])).Value;
+
+                    if (uBibConv.StringIsReal(vValue)) then
                     begin
-                      vValue := uBibConv.AnyStrToInt(vValue);
-                    end
-                    else
-                    begin
-                      vValue := 0;
+                      vValue := StrToFloat(vValue);
                     end;
-                  end;
 
-                  if (aPlayerDataSet.Fields[j].FieldName = 'VORM') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'CONDITIE') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'KEEPEN') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'VERDEDIGEN') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'POSITIESPEL') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'VLEUGELSPEL') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'PASSEN') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'SCOREN') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'SPELHERVATTEN') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'ERVARING') or
-                     (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT') then
-                  begin
-                    if uBibConv.AnyStrToInt(vValue) > 0 then
+                    if (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT') then
                     begin
-                      if (Floor(vValue) = vValue) and
-                         ((vValue < 8) or
-                          (((aPlayerDataSet.Fields[j].FieldName = 'ERVARING') or
-                            (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT')) and
-                           (vValue < 20))) then
+                      if uBibConv.StringIsInteger(vValue) then
                       begin
-                        vValue := vValue + 0.5;
+                        vValue := uBibConv.AnyStrToInt(vValue);
+                      end
+                      else
+                      begin
+                        vValue := 0;
                       end;
                     end;
-                  end;
-                  aPlayerDataSet.Fields[j].Value := vValue;
-                end;
-              end;
 
-              aPlayerDataSet.Post;
+                    if (aPlayerDataSet.Fields[j].FieldName = 'VORM') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'CONDITIE') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'KEEPEN') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'VERDEDIGEN') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'POSITIESPEL') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'VLEUGELSPEL') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'PASSEN') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'SCOREN') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'SPELHERVATTEN') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'ERVARING') or
+                       (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT') then
+                    begin
+                      if uBibConv.AnyStrToInt(vValue) > 0 then
+                      begin
+                        if (Floor(vValue) = vValue) and
+                           ((vValue < 8) or
+                            (((aPlayerDataSet.Fields[j].FieldName = 'ERVARING') or
+                              (aPlayerDataSet.Fields[j].FieldName = 'LOYALITEIT')) and
+                             (vValue < 20))) then
+                        begin
+                          vValue := vValue + 0.5;
+                        end;
+                      end;
+                    end;
+                    aPlayerDataSet.Fields[j].Value := vValue;
+                  end;
+                end;
+
+                aPlayerDataSet.Post;
+              end;
+            except
+              ShowMessage('Fout bij toevoegen regel '+IntToStr(i) + ' van '+aExcelSheet.ExcelApp.ActiveSheet.Name);
+              raise;
             end;
-          except
-            ShowMessage('Fout bij toevoegen regel '+IntToStr(i) + ' van '+aExcelSheet.ExcelApp.ActiveSheet.Name);
-            raise;
           end;
         end;
+      finally
+        vIni.Free;
       end;
-    finally
-      vIni.Free;
     end;
+  finally
+    DecimalSeparator := vSeparator;
   end;
 end;
 
@@ -166,7 +199,7 @@ end;
   Arguments: aXLSFile:String
   Result:    integer
 -----------------------------------------------------------------------------}
-function ImportSpelers(aXLSFile:String; aPlayerDataSet:TdxMemData):String;
+function ImportSpelers(aFileType: TPlayerFileType; aXLSFile:String; aPlayerDataSet:TdxMemData):String;
 var
   vExcel: TExcelFunctions;
   vSheets, i: integer;
@@ -197,7 +230,7 @@ begin
               ExcelApp.ActiveWorkbook.Worksheets[i].Activate;
               if vExcel.ExcelApp.ActiveSheet.Name = result then
               begin
-                SavePlayersToMemDataSet(vExcel, aPlayerDataSet);
+                SavePlayersToMemDataSet(aFileType, vExcel, aPlayerDataSet);
               end;
             end;
           end;

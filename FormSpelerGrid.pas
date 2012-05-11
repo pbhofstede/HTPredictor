@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   dxBar, cxGridLevel, cxGridCustomTableView, cxGridTableView, cxPC,
   cxGridDBTableView, cxClasses, cxControls, cxGridCustomView, cxGrid,
-  ExtCtrls, Db, dxmdaset, uSelectie;
+  ExtCtrls, Db, dxmdaset, uSelectie, uHTPredictor;
 
 type
   TfrmSpelerGrid = class(TForm)
@@ -31,7 +31,6 @@ type
     dxBarDockControl1: TdxBarDockControl;
     dxBarManager1: TdxBarManager;
     dxBarManager1Bar1: TdxBar;
-    btnLoadPlayers: TdxBarButton;
     dsSpelers: TDataSource;
     mdSpelers: TdxMemData;
     mdSpelersNAAM: TStringField;
@@ -50,22 +49,27 @@ type
     btnOpslaan: TdxBarButton;
     mdSpelersLOYALITEIT: TFloatField;
     cxGridSpelersViewLOYALITEIT: TcxGridDBColumn;
-    procedure btnLoadPlayersClick(Sender: TObject);
+    btnLaadFromHO: TdxBarButton;
+    dxBarSubItem1: TdxBarSubItem;
+    btnLoadFree: TdxBarButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure mdSpelersAfterPost(DataSet: TDataSet);
     procedure dsSpelersStateChange(Sender: TObject);
     procedure btnOpslaanClick(Sender: TObject);
+    procedure btnLoadFreeClick(Sender: TObject);
+    procedure btnLaadFromHOClick(Sender: TObject);
   private
     FLoading: boolean;
     FSelectie: TSelectie;
     FTabSheet: TcxTabSheet;
     FOldCaption : String;
+    procedure LoadPlayers(aPlayerFileType:TPlayerFileType);
     procedure SetTabSheet(const Value: TcxTabSheet);
     { Private declarations }
   public
     { Public declarations }
-    procedure MapPlayerFields;
+    procedure MapPlayerFields(aFileType: TPlayerFileType);
     property Selectie: TSelectie read FSelectie write FSelectie;
     property TabSheet: TcxTabSheet read FTabSheet write SetTabSheet;
   end;
@@ -73,18 +77,18 @@ type
 implementation
 
 uses
-  FormHTPredictor, uHTPredictor, FormFieldMapping;
+  FormHTPredictor, FormFieldMapping;
 
 {$R *.DFM}
 
 {-----------------------------------------------------------------------------
-  Procedure: btnLoadPlayersClick
+  Procedure: LoadPlayers
   Author:    Harry
-  Date:      12-apr-2012
-  Arguments: Sender: TObject
+  Date:      11-mei-2012
+  Arguments: aPlayerFile: TPlayerFile
   Result:    None
 -----------------------------------------------------------------------------}
-procedure TfrmSpelerGrid.btnLoadPlayersClick(Sender: TObject);
+procedure TfrmSpelerGrid.LoadPlayers(aPlayerFileType: TPlayerFileType);
 var
   vFileName, vSheetName: String;
 begin
@@ -96,7 +100,10 @@ begin
   with TOpenDialog.Create(nil) do
   begin
     try
-      Filter := 'Excel files|*.xls;*.xlsx';
+      case aPlayerFileType of
+        pfNTXls: Filter := 'Excel files|*.xls;*.xlsx';
+        pfHOCsv: Filter := 'CSV files|*.csv';
+      end;
       if Execute then
       begin
         vFileName := FileName;
@@ -108,16 +115,16 @@ begin
 
   if (vFileName <> '') then
   begin
-    if not (uHTPredictor.AllPlayerFieldsMapped(mdSpelers)) then
+    if not (uHTPredictor.AllPlayerFieldsMapped(aPlayerFileType, mdSpelers)) then
     begin
-      MapPlayerFields;
+      MapPlayerFields(aPlayerFileType);
     end;
 
-    if (uHTPredictor.AllPlayerFieldsMapped(mdSpelers)) then
+    if (uHTPredictor.AllPlayerFieldsMapped(aPlayerFileType,mdSpelers)) then
     begin
       FLoading := TRUE;
       try
-        vSheetName := uHTPredictor.ImportSpelers(vFileName, mdSpelers);
+        vSheetName := uHTPredictor.ImportSpelers(aPlayerFileType, vFileName, mdSpelers);
         FSelectie.Naam := vSheetName;
         FSelectie.LoadFromMemDataSet(mdSpelers, FALSE);
         FTabSheet.Caption := Format('%s (%s)',[FOldCaption, vSheetName]);
@@ -136,12 +143,12 @@ end;
   Arguments: None
   Result:    None
 -----------------------------------------------------------------------------}
-procedure TfrmSpelerGrid.MapPlayerFields;
+procedure TfrmSpelerGrid.MapPlayerFields(aFileType: TPlayerFileType);
 begin
   with TfrmFieldMapping.Create(nil) do
   begin
     try
-      IniSection := 'PLAYER_MAPPING';
+      IniSection := uHTPredictor.GetIniSection(aFileType);
       MapDataSet := mdSpelers;
       ShowModal;
     finally
@@ -227,6 +234,30 @@ begin
   begin
     mdSpelers.Post;
   end;
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: btnLoadFreeClick
+  Author:    Harry
+  Date:      11-mei-2012
+  Arguments: Sender: TObject
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmSpelerGrid.btnLoadFreeClick(Sender: TObject);
+begin
+  LoadPlayers(pfNTXls);
+end;
+
+{-----------------------------------------------------------------------------
+  Procedure: btnLaadFromHOClick
+  Author:    Harry
+  Date:      11-mei-2012
+  Arguments: Sender: TObject
+  Result:    None
+-----------------------------------------------------------------------------}
+procedure TfrmSpelerGrid.btnLaadFromHOClick(Sender: TObject);
+begin
+  LoadPlayers(pfHOCsv);
 end;
 
 end.

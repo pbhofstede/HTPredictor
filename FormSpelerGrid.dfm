@@ -221,10 +221,8 @@ object frmSpelerGrid: TfrmSpelerGrid
       FloatClientHeight = 0
       ItemLinks = <
         item
-          UserDefine = [udPaintStyle]
-          UserPaintStyle = psCaptionGlyph
           Visible = True
-          ItemName = 'btnLoadPlayers'
+          ItemName = 'dxBarSubItem1'
         end
         item
           BeginGroup = True
@@ -237,14 +235,6 @@ object frmSpelerGrid: TfrmSpelerGrid
       Visible = True
       WholeRow = False
     end
-    object btnLoadPlayers: TdxBarButton
-      Caption = 'Laad spelers'
-      Category = 0
-      Hint = 'Laad spelers'
-      Visible = ivAlways
-      ImageIndex = 25
-      OnClick = btnLoadPlayersClick
-    end
     object btnOpslaan: TdxBarButton
       Caption = 'Opslaan'
       Category = 0
@@ -253,6 +243,37 @@ object frmSpelerGrid: TfrmSpelerGrid
       Visible = ivAlways
       ImageIndex = 27
       OnClick = btnOpslaanClick
+    end
+    object btnLaadFromHO: TdxBarButton
+      Caption = 'HO! (csv)'
+      Category = 0
+      Hint = 'HO! (csv)'
+      Visible = ivAlways
+      ImageIndex = 75
+      OnClick = btnLaadFromHOClick
+    end
+    object dxBarSubItem1: TdxBarSubItem
+      Caption = 'Laad spelers'
+      Category = 0
+      Visible = ivAlways
+      ImageIndex = 25
+      ItemLinks = <
+        item
+          Visible = True
+          ItemName = 'btnLoadFree'
+        end
+        item
+          Visible = True
+          ItemName = 'btnLaadFromHO'
+        end>
+    end
+    object btnLoadFree: TdxBarButton
+      Caption = 'NT/U20 (xls)'
+      Category = 0
+      Hint = 'NT/U20 (xls)'
+      Visible = ivAlways
+      ImageIndex = 75
+      OnClick = btnLoadFreeClick
     end
   end
   object dsSpelers: TDataSource
