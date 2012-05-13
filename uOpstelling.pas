@@ -3,7 +3,7 @@ unit uOpstelling;
 interface
 
 uses
-  Contnrs, uSelectie, uPlayer, uHTPredictor, Forms;
+  Contnrs, uSelectie, uPlayer, uHTPredictor, Forms, Classes;
 
 type
   TOpstelling = class
@@ -29,6 +29,7 @@ type
     FHandmatigLA: double;
     FHandmatigMID: double;
     FFormatie: String;
+    FPrevNotifySelectieChanged: TNotifyEvent;
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
@@ -52,6 +53,7 @@ type
     procedure SetHandmatigLV(const Value: double);
     procedure SetHandmatigMID(const Value: double);
     procedure SetHandmatigRA(const Value: double);
+    procedure NotifySelectieChanged(Sender: TObject);
   public
     property HandmatigMID: double write SetHandmatigMID;
     property HandmatigRV: double write SetHandmatigRV;
@@ -143,19 +145,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_C_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].AANV_C_Bijdrage(Self);
         end;
       end;
     end;
@@ -215,19 +217,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_C_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].DEF_C_Bijdrage(Self);
         end;
       end;
     end;
@@ -414,19 +416,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_L_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].AANV_L_Bijdrage(Self);
         end;
       end;
     end;
@@ -466,19 +468,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_L_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].DEF_L_Bijdrage(Self);
         end;
       end;
     end;
@@ -516,19 +518,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].MID_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].MID_Bijdrage(Self);
         end;
       end;
     end;
@@ -569,6 +571,17 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+procedure TOpstelling.NotifySelectieChanged(Sender: TObject);
+begin
+  UpdateRatings;
+
+  //event doorlussen naar andere selecties
+  if Assigned(FPrevNotifySelectieChanged) then
+  begin
+    FPrevNotifySelectieChanged(Sender);
+  end;
+end;
+
 function TOpstelling.OverCrowdingAanval: double;
 var
   vCentraalCount: integer;
@@ -679,19 +692,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].AANV_R_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].AANV_R_Bijdrage(Self);
         end;
       end;
     end;
@@ -731,19 +744,19 @@ begin
       begin
         if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingAanval);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage(Self) * OverCrowdingAanval);
         end
         else if (vCount in [Ord(pRCM), Ord(pCM), Ord(pLCM)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingMid);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage(Self) * OverCrowdingMid);
         end
         else if (vCount in [Ord(pRCV), Ord(pCV), Ord(pLCV)]) then
         begin
-          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage * OverCrowdingDef);
+          Result := Result + (FOpstellingPlayerArray[vCount].DEF_R_Bijdrage(Self) * OverCrowdingDef);
         end
         else
         begin
-          Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage;
+          Result := Result + FOpstellingPlayerArray[vCount].DEF_R_Bijdrage(Self);
         end;
       end;
     end;
@@ -838,6 +851,13 @@ end;
 procedure TOpstelling.SetSelectie(const Value: TSelectie);
 begin
   FSelectie := Value;
+
+  if Assigned(FSelectie.NotifySelectieChanged) then
+  begin
+    FPrevNotifySelectieChanged := FSelectie.NotifySelectieChanged;
+  end;
+
+  FSelectie.NotifySelectieChanged := NotifySelectieChanged;
 end;
 
 {-----------------------------------------------------------------------------
@@ -982,7 +1002,7 @@ begin
     begin
       Aanvoerder := nil;
     end;
-    vOldPlayer.ClearBijdrages;
+    vOldPlayer.ClearBijdrages(Self);
   end;
 
   if (FFormOpstelling <> nil) then
@@ -997,7 +1017,7 @@ begin
     vRating := Selectie.RatingBijdrages.GetRatingBijdrageByPositie(vPos);
     if (vRating <> nil) then
     begin
-      vPlayer.CalculateRatings(vRating, aPositie, aPlayerOrder);
+      vPlayer.CalculateRatings(Self, vRating, aPositie, aPlayerOrder);
     end;
   end;
 

@@ -1,6 +1,6 @@
 program HTPredictor;
 
-uses 
+uses
   FastMM4,
   Forms,
   formHTPredictor in 'formHTPredictor.pas' {frmHTPredictor},
@@ -15,7 +15,8 @@ uses
   uOpstelling in 'uOpstelling.pas',
   uRatingBijdrages in 'uRatingBijdrages.pas',
   uRatingBijdrage in 'uRatingBijdrage.pas',
-  FormRatingbijdrages in 'FormRatingbijdrages.pas' {frmRatingBijdrages};
+  FormRatingbijdrages in 'FormRatingbijdrages.pas' {frmRatingBijdrages},
+  uOpstellingPlayer in 'uOpstellingPlayer.pas';
 
 {$R *.RES}
 

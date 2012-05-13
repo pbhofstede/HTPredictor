@@ -465,9 +465,9 @@ begin
           FMyHint := Format('MID: %.2f'+#13#10+
                             'RV: %.2f CV: %.2f LV: %.2f'+#13#10+
                             'RA: %.2f CA: %.2f LA: %.2f',
-                            [vPlayer.MID_Bijdrage,
-                             vPlayer.DEF_R_Bijdrage, vPlayer.DEF_C_Bijdrage, vPlayer.DEF_L_Bijdrage,
-                             vPlayer.AANV_R_Bijdrage, vPlayer.AANV_C_Bijdrage, vPlayer.AANV_L_Bijdrage]);
+                            [vPlayer.MID_Bijdrage(Opstelling),
+                             vPlayer.DEF_R_Bijdrage(Opstelling), vPlayer.DEF_C_Bijdrage(Opstelling), vPlayer.DEF_L_Bijdrage(Opstelling),
+                             vPlayer.AANV_R_Bijdrage(Opstelling), vPlayer.AANV_C_Bijdrage(Opstelling), vPlayer.AANV_L_Bijdrage(Opstelling)]);
         end;
 
         if aSender = cbPlayer then

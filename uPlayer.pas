@@ -3,7 +3,7 @@ unit uPlayer;
 interface
 
 uses
-  uHTPredictor, uRatingBijdrage;
+  uHTPredictor, uRatingBijdrage, uOpstellingPlayer;
 
 type
   TPlayer = class
@@ -20,16 +20,10 @@ type
     FWNG: double;
     FID: integer;
     FNaam: String;
-    FSpec: String;
-    FDEF_R_Bijdrage: double;
-    FAANV_R_Bijdrage: double;
-    FMID_Bijdrage: double;
-    FAANV_C_Bijdrage: double;
-    FDEF_L_Bijdrage: double;
-    FAANV_L_Bijdrage: double;
-    FDEF_C_Bijdrage: double;
+    FSpec: String;  
     FSelectie: TObject;
     FLoyaliteit: double;
+    FOpstellingPlayerArray: array of TOpstellingPlayer;
     function GetDef: double;
     function GetGK: double;
     function GetPAS: double;
@@ -38,14 +32,9 @@ type
     function GetSP: double;
     function GetWNG: double;
     function GetLoyaliteitFactor: double;
-    procedure SetAANV_C_Bijdrage(const Value: double);
-    procedure SetAANV_L_Bijdrage(const Value: double);
-    procedure SetAANV_R_Bijdrage(const Value: double);
-    procedure SetDEF_C_Bijdrage(const Value: double);
-    procedure SetDEF_L_Bijdrage(const Value: double);
-    procedure SetDEF_R_Bijdrage(const Value: double);
-    procedure SetMID_Bijdrage(const Value: double);
-  public
+    function GetOpstellingPlayer(aOpstelling: TObject): TOpstellingPlayer;
+  public      
+    property Selectie: TObject read FSelectie write FSelectie;
     property ID: integer read FID write FID;
     property Naam: String read FNaam write FNaam;
     property Spec: String read FSpec write FSpec;
@@ -60,30 +49,31 @@ type
     property SP: double read GetSP write FSP;
     property XP: double read FXP write FXP;
     property Loyaliteit: double read FLoyaliteit write FLoyaliteit;
-    property Selectie: TObject read FSelectie write FSelectie;
 
-    property MID_Bijdrage: double read FMID_Bijdrage write SetMID_Bijdrage;
-    property DEF_R_Bijdrage: double read FDEF_R_Bijdrage write SetDEF_R_Bijdrage;
-    property DEF_C_Bijdrage: double read FDEF_C_Bijdrage write SetDEF_C_Bijdrage;
-    property DEF_L_Bijdrage: double read FDEF_L_Bijdrage write SetDEF_L_Bijdrage;
-    property AANV_R_Bijdrage: double read FAANV_R_Bijdrage write SetAANV_R_Bijdrage;
-    property AANV_L_Bijdrage: double read FAANV_L_Bijdrage write SetAANV_L_Bijdrage;
-    property AANV_C_Bijdrage: double read FAANV_C_Bijdrage write SetAANV_C_Bijdrage;
-
-    function GetPositionRating(aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
     function GetFormFactor: double;
     function GetConditieFactor: double;
     function GetXPFactor: double;
 
-    procedure CalculateRatings(aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
+    function Mid_Bijdrage(aOpstelling: TObject): double;
+    function DEF_R_Bijdrage(aOpstelling: TObject): double;
+    function DEF_C_Bijdrage(aOpstelling: TObject): double;
+    function DEF_L_Bijdrage(aOpstelling: TObject): double;
+    function AANV_R_Bijdrage(aOpstelling: TObject): double;
+    function AANV_C_Bijdrage(aOpstelling: TObject): double;
+    function AANV_L_Bijdrage(aOpstelling: TObject): double;
+                                                   
+    function GetPositionRating(aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
+    procedure CalculateRatings(aOpstelling: TObject; aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
 
-    procedure ClearBijdrages;
+    procedure ClearBijdrages(aOpstelling: TObject);
+
+    destructor Destroy; override;
   end;
 
 implementation
 
 uses
-  uSelectie, Math;
+  uSelectie, Math, uOpstelling;
 
 { TPlayer }
 
@@ -137,15 +127,19 @@ begin
   result := TSelectie(FSelectie).RatingBijdrages.CalcBijdrage(Self, aPosition, aOrder);
 end;
 
-procedure TPlayer.ClearBijdrages;
+procedure TPlayer.ClearBijdrages(aOpstelling: TObject);
+var
+  vPlayerOpstelling: TOpstellingPlayer;
 begin
-  DEF_R_Bijdrage := 0;
-  DEF_C_Bijdrage := 0;
-  DEF_L_Bijdrage := 0;
-  AANV_R_Bijdrage := 0;
-  AANV_C_Bijdrage := 0;
-  AANV_L_Bijdrage := 0;
-  MID_Bijdrage := 0;
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+  
+  vPlayerOpstelling.DEF_R_Bijdrage := 0;
+  vPlayerOpstelling.DEF_C_Bijdrage := 0;
+  vPlayerOpstelling.DEF_L_Bijdrage := 0;
+  vPlayerOpstelling.AANV_R_Bijdrage := 0;
+  vPlayerOpstelling.AANV_C_Bijdrage := 0;
+  vPlayerOpstelling.AANV_L_Bijdrage := 0;
+  vPlayerOpstelling.MID_Bijdrage := 0;
 end;
 
 function TPlayer.GetLoyaliteitFactor: double;
@@ -188,191 +182,126 @@ begin
   Result := FWNG + GetLoyaliteitFactor;
 end;
 
-procedure TPlayer.CalculateRatings(aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
+procedure TPlayer.CalculateRatings(aOpstelling: TObject; aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
+var
+  vPlayerOpstelling: TOpstellingPlayer;
 begin
-  //MID_Bijdrage
-  MID_Bijdrage := (aRating.MID_PM * PM);
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
 
-  //DEF_R_Bijdrage
-  if (aPositie in [pCV, pCM]) then
+  vPlayerOpstelling.CalculateRatings(aRating, aPositie, aPlayerOrder);
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     13-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+function TPlayer.GetOpstellingPlayer(aOpstelling: TObject): TOpstellingPlayer;
+var
+  vCount: integer;
+begin
+  Result := nil;
+  vCount := 0;
+
+  while (Result = nil) and
+        (vCount < Length(FOpstellingPlayerArray)) do
   begin
-    DEF_R_Bijdrage :=
-        (aRating.WB_DEF * DEF / 2)
-      + (aRating.WB_GK * GK);
-       
-  end
-  else if (aPositie in [pLB, pLCV, pLW, pLCM]) then
-  begin
-    DEF_R_Bijdrage := 0;
-  end
-  else
-  begin
-    DEF_R_Bijdrage :=
-        (aRating.WB_DEF * DEF)
-      + (aRating.WB_GK * GK);
+    if (FOpstellingPlayerArray[vCount].Opstelling = TOpstelling(aOpstelling)) then
+    begin
+      Result := FOpstellingPlayerArray[vCount];
+    end
+    else
+    begin
+      Inc(vCount);
+    end;
   end;
 
-  //DEF_L_Bijdrage
-  if (aPositie in [pCV, pCM]) then
+  if (Result = nil) then
   begin
-    DEF_L_Bijdrage :=
-        (aRating.WB_DEF * DEF / 2)
-      + (aRating.WB_GK * GK);
-  end
-  else if (aPositie in [pRB, pRCV, pRW, pRCM]) then
+    Result := TOpstellingPlayer.Create(Self, TOpstelling(aOpstelling));
+
+    SetLength(FOpstellingPlayerArray, Length(FOpstellingPlayerArray) + 1);
+    FOpstellingPlayerArray[Length(FOpstellingPlayerArray) - 1] := Result;
+  end;
+end;
+
+function TPlayer.Mid_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.Mid_Bijdrage;
+end;
+
+
+function TPlayer.AANV_C_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.AANV_C_Bijdrage;
+end;
+
+function TPlayer.AANV_L_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.AANV_L_Bijdrage;
+end;
+
+function TPlayer.AANV_R_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.AANV_R_Bijdrage;
+end;
+
+function TPlayer.DEF_C_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.DEF_C_Bijdrage;
+end;
+
+function TPlayer.DEF_L_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.DEF_L_Bijdrage;
+end;
+
+function TPlayer.DEF_R_Bijdrage(aOpstelling: TObject): double;
+var
+  vPlayerOpstelling: TOpstellingPlayer;
+begin
+  vPlayerOpstelling := GetOpstellingPlayer(aOpstelling);
+
+  Result := vPlayerOpstelling.DEF_R_Bijdrage;
+end;
+
+destructor TPlayer.Destroy;
+var
+  vCount: integer;
+begin
+  for vCount := 0 to Length(FOpstellingPlayerArray) - 1 do
   begin
-    DEF_L_Bijdrage := 0;
-  end
-  else
-  begin
-    DEF_L_Bijdrage :=
-        (aRating.WB_DEF * DEF)
-      + (aRating.WB_GK * GK);
+    FOpstellingPlayerArray[vCount].Free;
   end;
 
-  //DEF_C_Bijdrage
-  DEF_C_Bijdrage :=
-      (aRating.CD_DEF * DEF)
-    + (aRating.CD_GK * GK);
-
-  //AANV_R_Bijdrage
-  if (aPositie in [pCM]) then
-  begin
-    AANV_R_Bijdrage :=
-        (aRating.WA_PASS * PAS / 2)
-      + (aRating.WA_WING * WNG)
-      + (aRating.WA_SC * SCO);
-  end
-  else if (aPositie in [pLW, pLCM, pLB, pLCV]) then
-  begin
-    AANV_R_Bijdrage := 0;
-  end
-  else if (aPositie = pLCA) and (aPlayerOrder = oNaarVleugel) then
-  begin
-    AANV_R_Bijdrage :=
-        (aRating.WA_SC_OTHER * SCO);
-  end
-  else
-  begin
-    AANV_R_Bijdrage :=
-        (aRating.WA_PASS * PAS)
-      + (aRating.WA_WING * WNG)
-      + (aRating.WA_SC * SCO);
-  end;
-
-  //AANV_L_Bijdrage
-  if (aPositie in [pCM]) then
-  begin
-    AANV_L_Bijdrage :=
-        (aRating.WA_PASS * PAS / 2)
-      + (aRating.WA_WING * WNG)
-      + (aRating.WA_SC * SCO);
-  end
-  else if (aPositie in [pRW, pRCM, pRB, pRCV]) then
-  begin
-    AANV_L_Bijdrage := 0;
-  end
-  else if (aPositie = pRCA) and (aPlayerOrder = oNaarVleugel) then
-  begin
-    AANV_L_Bijdrage :=
-        (aRating.WA_SC_OTHER * SCO);
-  end
-  else
-  begin
-    AANV_L_Bijdrage :=
-        (aRating.WA_PASS * PAS)
-      + (aRating.WA_WING * WNG)
-      + (aRating.WA_SC * SCO);
-  end;
-
-  //AANV_C_Bijdrage
-  AANV_C_Bijdrage :=
-      (aRating.CA_PASS * PAS)
-    + (aRating.CA_SC * SCO);
-end;
-
-procedure TPlayer.SetAANV_C_Bijdrage(const Value: double);
-begin
-  FAANV_C_Bijdrage := Value;
-//  FAANV_C_Bijdrage := Value / 4;
-//
-//  FAANV_C_Bijdrage := FAANV_C_Bijdrage + (0.011339 * FAANV_C_Bijdrage * FAANV_C_Bijdrage);
-//
-//  FAANV_C_Bijdrage := FAANV_C_Bijdrage +  (-0.000029 * FAANV_C_Bijdrage * FAANV_C_Bijdrage * FAANV_C_Bijdrage);
-
-  FAANV_C_Bijdrage := FAANV_C_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
-end;
-
-procedure TPlayer.SetAANV_L_Bijdrage(const Value: double);
-begin
-  FAANV_L_Bijdrage := Value;        
-//  FAANV_L_Bijdrage := Value / 4;
-//
-//  FAANV_L_Bijdrage := FAANV_L_Bijdrage + (0.012093 * FAANV_L_Bijdrage * FAANV_L_Bijdrage);
-//
-//  FAANV_L_Bijdrage := FAANV_L_Bijdrage +  (-0.000027 * FAANV_L_Bijdrage * FAANV_L_Bijdrage * FAANV_L_Bijdrage);
-
-  FAANV_L_Bijdrage := FAANV_L_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
-end;
-
-procedure TPlayer.SetAANV_R_Bijdrage(const Value: double);
-begin
-  FAANV_R_Bijdrage := Value;
-//  FAANV_R_Bijdrage := Value / 4;
-//
-//  FAANV_R_Bijdrage := FAANV_R_Bijdrage + (0.012093 * FAANV_R_Bijdrage * FAANV_R_Bijdrage);
-//
-//  FAANV_R_Bijdrage := FAANV_R_Bijdrage +  (-0.000027 * FAANV_R_Bijdrage * FAANV_R_Bijdrage * FAANV_R_Bijdrage);
-
-  FAANV_R_Bijdrage := FAANV_R_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
-end;
-
-procedure TPlayer.SetDEF_C_Bijdrage(const Value: double);
-begin
-  FDEF_C_Bijdrage := Value;   
-//  FDEF_C_Bijdrage := Value / 4;
-//
-//  FDEF_C_Bijdrage := FDEF_C_Bijdrage + (0.008462 * FDEF_C_Bijdrage * FDEF_C_Bijdrage);
-//
-//  FDEF_C_Bijdrage := FDEF_C_Bijdrage +  (-0.000017 * FDEF_C_Bijdrage * FDEF_C_Bijdrage * FDEF_C_Bijdrage);
-
-  FDEF_C_Bijdrage := FDEF_C_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
-end;
-
-procedure TPlayer.SetDEF_L_Bijdrage(const Value: double);
-begin
-  FDEF_L_Bijdrage := Value;
-//  FDEF_L_Bijdrage := Value / 4;
-//
-//  FDEF_L_Bijdrage := FDEF_L_Bijdrage + (0.011591 * FDEF_L_Bijdrage * FDEF_L_Bijdrage);
-//
-//  FDEF_L_Bijdrage := FDEF_L_Bijdrage +  (-0.000029 * FDEF_L_Bijdrage * FDEF_L_Bijdrage * FDEF_L_Bijdrage);
-
-  FDEF_L_Bijdrage := FDEF_L_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
-end;
-
-procedure TPlayer.SetDEF_R_Bijdrage(const Value: double);
-begin
-  FDEF_R_Bijdrage := Value;
-//  FDEF_R_Bijdrage := Value / 4;
-//
-//  FDEF_R_Bijdrage := FDEF_R_Bijdrage + (0.011591 * FDEF_R_Bijdrage * FDEF_R_Bijdrage);
-//
-//  FDEF_R_Bijdrage := FDEF_R_Bijdrage +  (-0.000029 * FDEF_R_Bijdrage * FDEF_R_Bijdrage * FDEF_R_Bijdrage);
-
-  FDEF_R_Bijdrage := FDEF_R_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
-end;
-
-procedure TPlayer.SetMID_Bijdrage(const Value: double);
-begin
-  FMID_Bijdrage := Value;
-//  FMID_Bijdrage := Value / 4;
-//  FMID_Bijdrage := FMID_Bijdrage + (0.008504 * FMID_Bijdrage * FMID_Bijdrage);
-
-//  FMID_Bijdrage := FMID_Bijdrage +  (-0.000027 * FMID_Bijdrage * FMID_Bijdrage * FMID_Bijdrage);
-
-
-  FMID_Bijdrage := FMID_Bijdrage * GetConditieFactor * GetFormFactor * GetXPFactor;
+  SetLength(FOpstellingPlayerArray, 0);
+  inherited;
 end;
 
 end.

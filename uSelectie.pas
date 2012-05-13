@@ -3,7 +3,7 @@ unit uSelectie;
 interface
 
 uses
-  dxmdaset, Contnrs, uPlayer, uRatingBijdrages;
+  dxmdaset, Contnrs, uPlayer, uRatingBijdrages, Classes;
 
 type
   TSelectie = class
@@ -13,8 +13,9 @@ type
     FRatingBijdrages: TRatingBijdrages;
     FTegenStander: TSelectie;
     FCurOpstelling: TObject;
+    FNotifySelectieChanged: TNotifyEvent;
   public
-    procedure UpdateOpstellingen;                           
+    procedure UpdateOpstellingen;
     function GetPlayer(aID:integer):TPlayer;
     procedure LoadFromMemDataSet(aDataSet: TdxMemData; aRefresh: boolean);
     property Players:TObjectList read FPlayers write FPlayers;
@@ -22,6 +23,7 @@ type
     property CurOpstelling: TObject read FCurOpstelling write FCurOpstelling;
     property TegenStander: TSelectie read FTegenStander write FTegenStander;
     property RatingBijdrages: TRatingBijdrages read FRatingBijdrages write FRatingBijdrages;
+    property NotifySelectieChanged: TNotifyEvent read FNotifySelectieChanged write FNotifySelectieChanged;
     constructor Create;
     destructor Destroy;override;
   end;
@@ -141,6 +143,12 @@ begin
       FreeBookmark(vBookMark);
       EnableControls;
     end;
+  end;
+
+  if Assigned(FNotifySelectieChanged) then
+  begin
+
+    FNotifySelectieChanged(nil);
   end;
 end;
 
