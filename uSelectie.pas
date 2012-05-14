@@ -136,6 +136,8 @@ begin
         vPlayer.XP := FieldByName('ERVARING').asFloat;
         vPlayer.Loyaliteit := FieldByName('LOYALITEIT').AsFloat;
 
+        vPlayer.RecalculateRatings;
+
         Next;
       end;
     finally

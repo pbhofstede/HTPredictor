@@ -24,6 +24,7 @@ type
     FSelectie: TObject;
     FLoyaliteit: double;
     FOpstellingPlayerArray: array of TOpstellingPlayer;
+    FLastUsedOpstellingPlayer: TOpstellingPlayer;
     function GetDef: double;
     function GetGK: double;
     function GetPAS: double;
@@ -64,7 +65,7 @@ type
                                                    
     function GetPositionRating(aPosition: TPlayerPosition; aOrder: TPlayerOrder): double;
     procedure CalculateRatings(aOpstelling: TObject; aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
-
+    procedure RecalculateRatings;
     procedure ClearBijdrages(aOpstelling: TObject);
 
     destructor Destroy; override;
@@ -182,6 +183,9 @@ begin
   Result := FWNG + GetLoyaliteitFactor;
 end;
 
+
+
+
 procedure TPlayer.CalculateRatings(aOpstelling: TObject; aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
 var
   vPlayerOpstelling: TOpstellingPlayer;
@@ -202,29 +206,40 @@ function TPlayer.GetOpstellingPlayer(aOpstelling: TObject): TOpstellingPlayer;
 var
   vCount: integer;
 begin
-  Result := nil;
-  vCount := 0;
-
-  while (Result = nil) and
-        (vCount < Length(FOpstellingPlayerArray)) do
+  //FLastUsedOpstellingPlayer gebruiken voor performance (stel er worden 10.000 opstellingen doorberekend, dan lust hij hier wel erg vaak onnodig doorheen
+  if (FLastUsedOpstellingPlayer <> nil) and
+     (FLastUsedOpstellingPlayer.Opstelling = aOpstelling) then
   begin
-    if (FOpstellingPlayerArray[vCount].Opstelling = TOpstelling(aOpstelling)) then
+    Result := FLastUsedOpstellingPlayer;
+  end
+  else
+  begin
+    vCount := 0;
+    Result := nil;
+
+    while (Result = nil) and
+          (vCount < Length(FOpstellingPlayerArray)) do
     begin
-      Result := FOpstellingPlayerArray[vCount];
-    end
-    else
+      if (FOpstellingPlayerArray[vCount].Opstelling = TOpstelling(aOpstelling)) then
+      begin
+        Result := FOpstellingPlayerArray[vCount];
+      end
+      else
+      begin
+        Inc(vCount);
+      end;
+    end;
+
+    if (Result = nil) then
     begin
-      Inc(vCount);
+      Result := TOpstellingPlayer.Create(Self, TOpstelling(aOpstelling));
+
+      SetLength(FOpstellingPlayerArray, Length(FOpstellingPlayerArray) + 1);
+      FOpstellingPlayerArray[Length(FOpstellingPlayerArray) - 1] := Result;
     end;
   end;
 
-  if (Result = nil) then
-  begin
-    Result := TOpstellingPlayer.Create(Self, TOpstelling(aOpstelling));
-
-    SetLength(FOpstellingPlayerArray, Length(FOpstellingPlayerArray) + 1);
-    FOpstellingPlayerArray[Length(FOpstellingPlayerArray) - 1] := Result;
-  end;
+  FLastUsedOpstellingPlayer := Result;
 end;
 
 function TPlayer.Mid_Bijdrage(aOpstelling: TObject): double;
@@ -302,6 +317,16 @@ begin
 
   SetLength(FOpstellingPlayerArray, 0);
   inherited;
+end;
+
+procedure TPlayer.RecalculateRatings;
+var
+  vCount: integer;
+begin
+  for vCount := 0 to Length(FOpstellingPlayerArray) - 1 do
+  begin
+    FOpstellingPlayerArray[vCount].RecalculateRatings;
+  end;
 end;
 
 end.

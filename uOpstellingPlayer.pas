@@ -37,9 +37,9 @@ type
     property AANV_R_Bijdrage: double read FAANV_R_Bijdrage write SetAANV_R_Bijdrage;
     property AANV_L_Bijdrage: double read FAANV_L_Bijdrage write SetAANV_L_Bijdrage;
     property AANV_C_Bijdrage: double read FAANV_C_Bijdrage write SetAANV_C_Bijdrage;
-
-    procedure CalculateRatings(aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
+                                                             
     procedure RecalculateRatings;
+    procedure CalculateRatings(aRating: TRatingBijdrage; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
     constructor Create(aPlayer, aOpstelling: TObject);
   end;
 
@@ -47,8 +47,6 @@ implementation
 
 uses
   uSelectie, Math, uPlayer;
-
-
 
 procedure TOpstellingPlayer.RecalculateRatings;
 begin
