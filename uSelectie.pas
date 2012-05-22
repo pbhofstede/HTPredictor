@@ -3,7 +3,7 @@ unit uSelectie;
 interface
 
 uses
-  dxmdaset, Contnrs, uPlayer, uRatingBijdrages, Classes;
+  dxmdaset, Contnrs, uPlayer, uHTPredictor, uRatingBijdrages, Classes;
 
 type
   TSelectie = class
@@ -11,17 +11,27 @@ type
     FNaam: String;
     FPlayers: TObjectList;
     FRatingBijdrages: TRatingBijdrages;
-    FTegenStander: TSelectie;
-    FCurOpstelling: TObject;
+    FTegenStander: TObject;
     FNotifySelectieChanged: TNotifyEvent;
+    FTeamGeest: double;
+    FZelfvertrouwen: double;
+    FWedstrijdPlaats: TWedstrijdPlaats;
+    FEigenSelectie: Boolean;
+    procedure SetTeamGeest(const Value: double);
+    procedure SetZelfvertrouwen(const Value: double);
+    procedure SetWedstrdijdPlaats(const Value: TWedstrijdPlaats);
+    procedure SetEigenSelectie(const Value: Boolean);
   public
     procedure UpdateOpstellingen;
     function GetPlayer(aID:integer):TPlayer;
     procedure LoadFromMemDataSet(aDataSet: TdxMemData; aRefresh: boolean);
     property Players:TObjectList read FPlayers write FPlayers;
     property Naam:String read FNaam write FNaam;
-    property CurOpstelling: TObject read FCurOpstelling write FCurOpstelling;
-    property TegenStander: TSelectie read FTegenStander write FTegenStander;
+    property TegenStander: TObject read FTegenStander write FTegenStander;
+    property Zelfvertrouwen: double read FZelfvertrouwen write SetZelfvertrouwen;
+    property TeamGeest: double read FTeamGeest write SetTeamGeest;                
+    property EigenSelectie: Boolean read FEigenSelectie write SetEigenSelectie;
+    property WedstrijdPlaats: TWedstrijdPlaats read FWedstrijdPlaats write SetWedstrdijdPlaats;
     property RatingBijdrages: TRatingBijdrages read FRatingBijdrages write FRatingBijdrages;
     property NotifySelectieChanged: TNotifyEvent read FNotifySelectieChanged write FNotifySelectieChanged;
     constructor Create;
@@ -44,6 +54,9 @@ uses
 constructor TSelectie.Create;
 begin
   FPlayers := TObjectList.Create(TRUE);
+
+  FTeamGeest := 5;
+  FZelfvertrouwen := 5;
 end;
 
 {-----------------------------------------------------------------------------
@@ -151,6 +164,53 @@ begin
   begin
 
     FNotifySelectieChanged(nil);
+  end;
+end;
+
+
+procedure TSelectie.SetEigenSelectie(const Value: Boolean);
+begin
+  FEigenSelectie := Value;
+end;
+
+procedure TSelectie.SetTeamGeest(const Value: double);
+begin
+  if (FTeamGeest <> Value) then
+  begin
+    FTeamGeest := Value;
+    
+    if Assigned(FNotifySelectieChanged) then
+    begin
+      FNotifySelectieChanged(nil);
+    end;
+  end;
+end;
+
+procedure TSelectie.SetWedstrdijdPlaats(const Value: TWedstrijdPlaats);
+begin
+  if (FWedstrijdPlaats <> Value) then
+  begin
+    FWedstrijdPlaats := Value;
+
+    if (EigenSelectie) then
+    begin
+      if Assigned(FNotifySelectieChanged) then
+      begin
+        FNotifySelectieChanged(nil);
+      end;
+    end;
+  end;
+end;
+
+procedure TSelectie.SetZelfvertrouwen(const Value: double);
+begin
+  if (FZelfvertrouwen <> Value) then
+  begin
+    FZelfvertrouwen := Value;
+    if Assigned(FNotifySelectieChanged) then
+    begin
+      FNotifySelectieChanged(nil);
+    end;
   end;
 end;
 

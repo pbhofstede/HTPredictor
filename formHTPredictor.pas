@@ -189,8 +189,6 @@ begin
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
   FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
-  FSelectie_Eigen.TegenStander := FSelectie_Tegen;
-  FSelectie_Tegen.TegenStander := FSelectie_Eigen;
 
   
   FFormOpstellingTegenstander :=
@@ -200,6 +198,10 @@ begin
   FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, wThuis,
     ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE, dxmdPredictions);
   Inc(FAantalEigenOpstellingen);
+
+
+  FSelectie_Eigen.TegenStander := TfrmOpstelling(FFormOpstellingTegenstander).Opstelling;
+  FSelectie_Tegen.TegenStander := nil;
 end;
 
 procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);
@@ -232,7 +234,7 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceTegenstanderZelfvertrouwenPropertiesChange(Sender: TObject);
 begin
-  TfrmOpstelling(FFormOpstellingTegenstander).Zelfvertrouwen := ceTegenstanderZelfvertrouwen.Value;
+  FSelectie_Tegen.Zelfvertrouwen := ceTegenstanderZelfvertrouwen.Value;
 
   lblTegenstanderZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceTegenstanderZelfvertrouwen.Value)));
 end;
@@ -246,7 +248,7 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceTegenstanderTeamgeestPropertiesChange(Sender: TObject);
 begin                       
-  TfrmOpstelling(FFormOpstellingTegenstander).Teamgeest := ceTegenstanderTeamgeest.Value;
+  FSelectie_Tegen.Teamgeest := ceTegenstanderTeamgeest.Value;
 
   lblTegenstanderTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTegenstanderTeamgeest.Value)));
 end;
@@ -260,7 +262,7 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceEigenZelfvertrouwenPropertiesChange(Sender: TObject);
 begin
-  TfrmOpstelling(FFormOpstellingEigen).Zelfvertrouwen := ceEigenZelfvertrouwen.Value;
+  FSelectie_Eigen.Zelfvertrouwen := ceEigenZelfvertrouwen.Value;
 
   lblEigenZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceEigenZelfvertrouwen.Value)));
 end;
@@ -274,7 +276,7 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceEigenTeamgeestPropertiesChange(Sender: TObject);
 begin
-  TfrmOpstelling(FFormOpstellingEigen).Teamgeest := ceEigenTeamgeest.Value;
+  FSelectie_Eigen.Teamgeest := ceEigenTeamgeest.Value;
 
   lblEigenTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceEigenTeamgeest.Value)));
 end;
@@ -309,14 +311,14 @@ begin
     else        vWedstrijdPlaatsTegenstander := wDerbyThuis;
   end;
 
-  if (FFormOpstellingTegenstander <> nil) then
+  if (FSelectie_Eigen <> nil) then
   begin
-    TfrmOpstelling(FFormOpstellingTegenstander).WedstrijdPlaats := vWedstrijdPlaatsTegenstander;
+    FSelectie_Eigen.WedstrijdPlaats := TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex);
   end;
 
-  if (FFormOpstellingEigen <> nil) then
+  if (FSelectie_Tegen <> nil) then
   begin
-    TfrmOpstelling(FFormOpstellingEigen).WedstrijdPlaats := TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex);
+    FSelectie_Tegen.WedstrijdPlaats := vWedstrijdPlaatsTegenstander;
   end;
 end;
 

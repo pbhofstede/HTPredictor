@@ -11,7 +11,7 @@ uses
 
 type
   TfrmOpstelling = class(TForm)
-   pnlRatings: TPanel;
+    pnlRatings: TPanel;
     pnlOpstelling: TPanel;
     cxpgctrlRatings: TcxPageControl;
     tbshtRatings: TcxTabSheet;
@@ -108,16 +108,12 @@ type
       StreamSize: Integer; Url: String);
   private
     FLaatsteWinst, FLaatsteVerlies, FLaatsteGelijk: double;
-    FTeam1, FTeam2: TOpstelling;
     FBusy: boolean;
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
     FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;
     FOpstellingAanvoerder: TfrmOpstellingPlayer;                     
     FOpstellingSpelhervatter: TfrmOpstellingPlayer;
-    FWedstrijdPlaats: TWedstrijdPlaats;
-    FZelfVertrouwen: double;
-    FTeamgeest: double;
     FMID: double;
     FRV: double;
     FCV: double;
@@ -126,24 +122,23 @@ type
     FCA: double;
     FLA: double;
     FMemData: TdxMemData;
+    FEigenOpstelling: Boolean;
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
     procedure ShowResults;
     procedure ShowDetailedResults;
     procedure ClearVoorspelling;
-    procedure SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
-    procedure SetZelfVertrouwen(const Value: double);
-    procedure SetTeamgeest(const Value: double);
     function GetVerschil(aNewWaarde, aOldWaarde: double): String;
+    procedure SetEigenOpstelling(const Value: Boolean);
+    function Team1: TOpstelling;
+    function Team2: TOpstelling;
     { Private declarations }
   public
     { Public declarations }
     property MemData: TdxMemData read FMemData write FMemData;
     property Selectie: TSelectie read FSelectie write SetSelectie;
-    property WedstrijdPlaats: TWedstrijdPlaats read FWedstrijdPlaats write SetWedstrijdPlaats;
-    property ZelfVertrouwen: double read FZelfVertrouwen write SetZelfVertrouwen;
-    property Teamgeest: double read FTeamgeest write SetTeamgeest;
-
+    property EigenOpstelling: Boolean read FEigenOpstelling write SetEigenOpstelling;
+    property Opstelling: TOpstelling read FOpstelling;
     procedure EnableDisableOpstellingPlayer;
     procedure UpdateAanvoerder;
     procedure UpdateSpelhervatter;
@@ -169,21 +164,10 @@ begin
   Result := TfrmOpstelling.Create(nil);
 
   Result.Parent := aParent;
-  Result.FWedstrijdPlaats := aWedstrijdPlaats;
   
-  Result.Zelfvertrouwen := aZelfvertrouwen;
-  if (aTeamgeest < 1) then
-  begin
-    aTeamgeest := 1;
-  end;
-  Result.FTeamgeest := aTeamgeest;
   Result.Selectie := aSelectie;
   Result.MemData := aResultSet;
-  Result.pnlHandmatig.Visible := not aEigenOpstelling;
-  result.tbshtVoorspelling.TabVisible := aEigenOpstelling;
-  result.pnlVoorspelling.Visible := aEigenOpstelling;
-
-  aSelectie.CurOpstelling := result.FOpstelling;
+  Result.EigenOpstelling := aEigenOpstelling;
 
   Result.Align := alClient;
 
@@ -273,7 +257,7 @@ begin
 
   FSelectie := Value;
 
-  FOpstelling := TOpstelling.Create(Self, FWedstrijdPlaats, Zelfvertrouwen, FTeamgeest);
+  FOpstelling := TOpstelling.Create(Self);
   FOpstelling.Selectie := Selectie;
 
   cbMotivatie.ItemIndex := Ord(mNormaal);
@@ -304,19 +288,6 @@ begin
   pnlVoorspelling.Height := FOpstellingAanvoerder.Height;
   pnlVoorspelling.Width := (FOpstellingPlayerArray[6].Left + FOpstellingPlayerArray[6].Width) -
              FOpstellingPlayerArray[5].Left;
-
-  case FWedstrijdPlaats of
-    wThuis, wDerbyThuis:
-    begin
-      FTeam1 := FOpstelling;
-      FTeam2 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
-    end
-    else
-    begin
-      FTeam1 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
-      FTeam2 := FOpstelling;
-    end;
-  end;
 end;
 
 {-----------------------------------------------------------------------------
@@ -535,26 +506,26 @@ begin
     DecimalSeparator := '.';
     try
       vURL := 'http://www.fantamondi.it/HTMS/dorequest.php?action=predict&'+
-        Format('TAM=%.2f&',[FTeam1.MID * 4])+
-        Format('TBM=%.2f&',[FTeam2.MID * 4])+
-        Format('TARD=%.2f&',[FTeam1.RV * 4])+
-        Format('TBRD=%.2f&',[FTeam2.RV * 4])+
-        Format('TACD=%.2f&',[FTeam1.CV * 4])+
-        Format('TBCD=%.2f&',[FTeam2.CV * 4])+
-        Format('TALD=%.2f&',[FTeam1.LV * 4])+
-        Format('TBLD=%.2f&',[FTeam2.LV * 4])+
-        Format('TARA=%.2f&',[FTeam1.RA * 4])+
-        Format('TBRA=%.2f&',[FTeam2.RA * 4])+
-        Format('TACA=%.2f&',[FTeam1.CA * 4])+
-        Format('TBCA=%.2f&',[FTeam2.CA * 4])+
-        Format('TALA=%.2f&',[FTeam1.LA * 4])+
-        Format('TBLA=%.2f',[FTeam2.LA * 4]);
+        Format('TAM=%.2f&',[Team1.MID * 4])+
+        Format('TBM=%.2f&',[Team2.MID * 4])+
+        Format('TARD=%.2f&',[Team1.RV * 4])+
+        Format('TBRD=%.2f&',[Team2.RV * 4])+
+        Format('TACD=%.2f&',[Team1.CV * 4])+
+        Format('TBCD=%.2f&',[Team2.CV * 4])+
+        Format('TALD=%.2f&',[Team1.LV * 4])+
+        Format('TBLD=%.2f&',[Team2.LV * 4])+
+        Format('TARA=%.2f&',[Team1.RA * 4])+
+        Format('TBRA=%.2f&',[Team2.RA * 4])+
+        Format('TACA=%.2f&',[Team1.CA * 4])+
+        Format('TBCA=%.2f&',[Team2.CA * 4])+
+        Format('TALA=%.2f&',[Team1.LA * 4])+
+        Format('TBLA=%.2f',[Team2.LA * 4]);
 
-      case FTeam1.Tactiek of
-        tPressie: vTaktiek := Format('&TATAC=PRES&TATACLEV=%.0f',[FTeam1.TacticLevel]);
-        tCounter: vTaktiek := Format('&TATAC=CA&TATACLEV=%.0f',[FTeam1.TacticLevel]);
-        tCentrumAanval: vTaktiek := Format('&TATAC=AIM&TATACLEV=%.0f',[FTeam1.TacticLevel]);
-        tVleugelAanval: vTaktiek := Format('&TATAC=AOW&TATACLEV=%.0f',[FTeam1.TacticLevel]);
+      case Team1.Tactiek of
+        tPressie: vTaktiek := Format('&TATAC=PRES&TATACLEV=%.0f',[Team1.TacticLevel]);
+        tCounter: vTaktiek := Format('&TATAC=CA&TATACLEV=%.0f',[Team1.TacticLevel]);
+        tCentrumAanval: vTaktiek := Format('&TATAC=AIM&TATACLEV=%.0f',[Team1.TacticLevel]);
+        tVleugelAanval: vTaktiek := Format('&TATAC=AOW&TATACLEV=%.0f',[Team1.TacticLevel]);
         tCreatiefSpel, tAfstandsSchoten: vTaktiek := '';
       end;
       if (vTaktiek <> '') then
@@ -562,11 +533,11 @@ begin
         vURL := Format('%s%s',[vUrl, vTaktiek]);
       end;
 
-      case FTeam2.Tactiek of
-        tPressie: vTaktiek := Format('&TBTAC=PRES&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
-        tCounter: vTaktiek := Format('&TBTAC=CA&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
-        tCentrumAanval: vTaktiek := Format('&TBTAC=AIM&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
-        tVleugelAanval: vTaktiek := Format('&TBTAC=AOW&TBTACLEV=%.0f',[FTeam2.TacticLevel]);
+      case Team2.Tactiek of
+        tPressie: vTaktiek := Format('&TBTAC=PRES&TBTACLEV=%.0f',[Team2.TacticLevel]);
+        tCounter: vTaktiek := Format('&TBTAC=CA&TBTACLEV=%.0f',[Team2.TacticLevel]);
+        tCentrumAanval: vTaktiek := Format('&TBTAC=AIM&TBTACLEV=%.0f',[Team2.TacticLevel]);
+        tVleugelAanval: vTaktiek := Format('&TBTAC=AOW&TBTACLEV=%.0f',[Team2.TacticLevel]);
         tCreatiefSpel, tAfstandsSchoten: vTaktiek := '';
       end;
       if (vTaktiek <> '') then
@@ -664,7 +635,7 @@ begin
   vSeperator := DecimalSeparator;
   DecimalSeparator := '.';
   try
-    case FWedstrijdPlaats of
+    case FSelectie.WedstrijdPlaats of
       wThuis, wDerbyThuis:
       begin
         lblWinstPerc.Caption := Format('%s %%',[jvXML.Root.Items.Value('S1P')]);
@@ -706,18 +677,18 @@ begin
   vSeperator := DecimalSeparator;
   DecimalSeparator := '.';
   try
-    if (FTeam1.Selectie <> nil) then
+    if (Team1.Selectie <> nil) then
     begin
-      lblTeam1.Caption := FTeam1.Selectie.Naam;
+      lblTeam1.Caption := Team1.Selectie.Naam;
     end
     else
     begin
       lblTeam1.Caption := '?';
     end;
       
-    if (FTeam2.Selectie <> nil) then
+    if (Team2.Selectie <> nil) then
     begin
-      lblTeam2.Caption := FTeam2.Selectie.Naam;
+      lblTeam2.Caption := Team2.Selectie.Naam;
     end
     else
     begin
@@ -785,76 +756,47 @@ begin
   end;
 end;
 
+
+procedure TfrmOpstelling.SetEigenOpstelling(const Value: Boolean);
+begin
+  FEigenOpstelling := Value;
+
+  pnlHandmatig.Visible := not FEigenOpstelling;
+  tbshtVoorspelling.TabVisible := FEigenOpstelling;
+  pnlVoorspelling.Visible := FEigenOpstelling;
+end;
+
 {-----------------------------------------------------------------------------
   Author:    Pieter Bas
-  Datum:     10-05-2012
+  Datum:     22-05-2012
   Doel:
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-procedure TfrmOpstelling.SetWedstrijdPlaats(const Value: TWedstrijdPlaats);
+function TfrmOpstelling.Team1: TOpstelling;
 begin
-  if (FWedstrijdPlaats <> Value) then
-  begin
-    FWedstrijdPlaats := Value;
+  Result := nil;
 
-    if (FOpstelling <> nil) then
-    begin
-      case FWedstrijdPlaats of
-        wThuis, wDerbyThuis:
-        begin
-          FTeam1 := FOpstelling;
-          FTeam2 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
-        end
-        else
-        begin
-          FTeam1 := TOpstelling(FOpstelling.Selectie.TegenStander.CurOpstelling);
-          FTeam2 := FOpstelling;
-        end;
-      end;
-
-      FOpstelling.WedstrijdPlaats := Value
-    end;
+  case FSelectie.WedstrijdPlaats of
+    wThuis, wDerbyThuis:  Result := FOpstelling;
+    wUit, wDerbyUit:      Result := TOpstelling(Selectie.Tegenstander);
   end;
 end;
 
 {-----------------------------------------------------------------------------
   Author:    Pieter Bas
-  Datum:     10-05-2012
+  Datum:     22-05-2012
   Doel:
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
-procedure TfrmOpstelling.SetZelfVertrouwen(const Value: double);
+function TfrmOpstelling.Team2: TOpstelling;
 begin
-  if (FZelfVertrouwen <> Value) then
-  begin
-    FZelfVertrouwen := Value;
+  Result := nil;
 
-    if (FOpstelling <> nil) then
-    begin
-      FOpstelling.Zelfvertrouwen := Value;
-    end;
-  end;
-end;
-
-{-----------------------------------------------------------------------------
-  Author:    Pieter Bas
-  Datum:     10-05-2012
-  Doel:
-  
-  <eventuele fixes>
------------------------------------------------------------------------------}
-procedure TfrmOpstelling.SetTeamgeest(const Value: double);
-begin
-  if (FTeamgeest <> Value) then
-  begin
-    FTeamgeest := Value;
-
-    if (FOpstelling <> nil) then
-    begin
-      FOpstelling.Teamgeest := Value;
-    end;
+  case FSelectie.WedstrijdPlaats of
+    wThuis, wDerbyThuis:  Result := TOpstelling(Selectie.Tegenstander);
+    wUit, wDerbyUit:      Result := FOpstelling;
   end;
 end;
 
