@@ -186,22 +186,29 @@ begin
   FRatingBijdrages := TRatingBijdrages.Create;
 
   FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
-  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
+  FSelectie_Tegen.EigenSelectie := FALSE;
+  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);   
+  FSelectie_Tegen.EigenSelectie := TRUE;
   FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
 
   
-  FFormOpstellingTegenstander :=
-    FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, wUit,
-    ceTegenstanderZelfvertrouwen.Value, ceTegenstanderTeamgeest.Value, FALSE, nil);
+  FFormOpstellingTegenstander := FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, nil);
 
-  FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, wThuis,
-    ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE, dxmdPredictions);
+  FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, dxmdPredictions);
   Inc(FAantalEigenOpstellingen);
 
 
   FSelectie_Eigen.TegenStander := TfrmOpstelling(FFormOpstellingTegenstander).Opstelling;
   FSelectie_Tegen.TegenStander := nil;
+
+  rgWedstrijdplaatsPropertiesChange(nil);
+
+  ceTegenstanderZelfvertrouwenPropertiesChange(nil);
+  ceTegenstanderTeamgeestPropertiesChange(nil);
+
+  ceEigenZelfvertrouwenPropertiesChange(nil);
+  ceEigenTeamgeestPropertiesChange(nil);
 end;
 
 procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);
@@ -234,9 +241,9 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceTegenstanderZelfvertrouwenPropertiesChange(Sender: TObject);
 begin
-  FSelectie_Tegen.Zelfvertrouwen := ceTegenstanderZelfvertrouwen.Value;
+  FSelectie_Tegen.Zelfvertrouwen := Min(Max(ceTegenstanderZelfvertrouwen.Value, 1), 10);
 
-  lblTegenstanderZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceTegenstanderZelfvertrouwen.Value)));
+  lblTegenstanderZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(FSelectie_Tegen.Zelfvertrouwen)));
 end;
 
 {-----------------------------------------------------------------------------
@@ -248,9 +255,9 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceTegenstanderTeamgeestPropertiesChange(Sender: TObject);
 begin                       
-  FSelectie_Tegen.Teamgeest := ceTegenstanderTeamgeest.Value;
+  FSelectie_Tegen.Teamgeest := Min(Max(ceTegenstanderTeamgeest.Value, 1), 10);
 
-  lblTegenstanderTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceTegenstanderTeamgeest.Value)));
+  lblTegenstanderTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(FSelectie_Tegen.Teamgeest)));
 end;
 
 {-----------------------------------------------------------------------------
@@ -262,9 +269,9 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceEigenZelfvertrouwenPropertiesChange(Sender: TObject);
 begin
-  FSelectie_Eigen.Zelfvertrouwen := ceEigenZelfvertrouwen.Value;
+  FSelectie_Eigen.Zelfvertrouwen := Min(Max(ceEigenZelfvertrouwen.Value, 1), 10);
 
-  lblEigenZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(ceEigenZelfvertrouwen.Value)));
+  lblEigenZVOmschrijving.Caption := uHTPredictor.TeamZelfvertrouwenToString(TTeamZelfvertrouwen(Floor(FSelectie_Eigen.Zelfvertrouwen)));
 end;
 
 {-----------------------------------------------------------------------------
@@ -276,9 +283,9 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.ceEigenTeamgeestPropertiesChange(Sender: TObject);
 begin
-  FSelectie_Eigen.Teamgeest := ceEigenTeamgeest.Value;
+  FSelectie_Eigen.Teamgeest := Min(Max(ceEigenTeamgeest.Value, 1), 10);
 
-  lblEigenTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(ceEigenTeamgeest.Value)));
+  lblEigenTSOmschrijving.Caption := uHTPredictor.TeamSpiritToString(TTeamSpirit(Floor(FSelectie_Eigen.Teamgeest)));
 end;
 
 {-----------------------------------------------------------------------------
@@ -343,8 +350,7 @@ begin
     vPage.PageControl := pcEigenOpstellingen;
     vPage.PageIndex := NewPage.TabIndex;
 
-    FormOpstelling.ToonOpstelling(vPage, FSelectie_Eigen, TWedstrijdPlaats(rgWedstrijdplaats.ItemIndex),
-      ceEigenZelfvertrouwen.Value, ceEigenTeamgeest.Value, TRUE, dxmdPredictions);
+    FormOpstelling.ToonOpstelling(vPage, FSelectie_Eigen, dxmdPredictions);
 
     pcEigenOpstellingen.ActivePage := vPage;
   end;

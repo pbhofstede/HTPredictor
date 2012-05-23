@@ -171,70 +171,63 @@ procedure TOpstellingPlayer.SetAANV_C_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin                         
-  FAANV_C_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FAANV_C_Bijdrage := FAANV_C_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FAANV_C_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 procedure TOpstellingPlayer.SetAANV_L_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin
-  FAANV_L_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FAANV_L_Bijdrage := FAANV_L_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FAANV_L_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 procedure TOpstellingPlayer.SetAANV_R_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin
-  FAANV_R_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FAANV_R_Bijdrage := FAANV_R_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FAANV_R_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 procedure TOpstellingPlayer.SetDEF_C_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin
-  FDEF_C_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FDEF_C_Bijdrage := FDEF_C_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FDEF_C_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 procedure TOpstellingPlayer.SetDEF_L_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin
-  FDEF_L_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FDEF_L_Bijdrage := FDEF_L_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FDEF_L_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 procedure TOpstellingPlayer.SetDEF_R_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin
-  FDEF_R_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FDEF_R_Bijdrage := FDEF_R_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FDEF_R_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 procedure TOpstellingPlayer.SetMID_Bijdrage(const Value: double);
 var
   vPlayer: TPlayer;
 begin  
-  FMID_Bijdrage := Value;
   vPlayer := TPlayer(FPlayer);
 
-  FMID_Bijdrage := FMID_Bijdrage * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
+  FMID_Bijdrage := Value * vPlayer.GetConditieFactor * vPlayer.GetFormFactor * vPlayer.GetXPFactor;
 end;
 
 

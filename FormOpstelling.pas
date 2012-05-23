@@ -122,14 +122,12 @@ type
     FCA: double;
     FLA: double;
     FMemData: TdxMemData;
-    FEigenOpstelling: Boolean;
     procedure SetSelectie(const Value: TSelectie);
     procedure FreeObjecten;
     procedure ShowResults;
     procedure ShowDetailedResults;
     procedure ClearVoorspelling;
     function GetVerschil(aNewWaarde, aOldWaarde: double): String;
-    procedure SetEigenOpstelling(const Value: Boolean);
     function Team1: TOpstelling;
     function Team2: TOpstelling;
     { Private declarations }
@@ -137,7 +135,6 @@ type
     { Public declarations }
     property MemData: TdxMemData read FMemData write FMemData;
     property Selectie: TSelectie read FSelectie write SetSelectie;
-    property EigenOpstelling: Boolean read FEigenOpstelling write SetEigenOpstelling;
     property Opstelling: TOpstelling read FOpstelling;
     procedure EnableDisableOpstellingPlayer;
     procedure UpdateAanvoerder;
@@ -147,8 +144,7 @@ type
   end;
 
 
-function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
-  aTeamgeest: double; aEigenOpstelling: Boolean; aResultSet: TdxMemData): TfrmOpstelling;
+function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aResultSet: TdxMemData): TfrmOpstelling;
 
 implementation
 uses
@@ -157,17 +153,15 @@ uses
 {$R *.DFM}
 
 
-function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aWedstrijdPlaats: TWedstrijdPlaats; aZelfvertrouwen,
-  aTeamgeest: double; aEigenOpstelling: Boolean; aResultSet: TdxMemData): TfrmOpstelling;
+function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aResultSet: TdxMemData): TfrmOpstelling;
 begin
-  
+
   Result := TfrmOpstelling.Create(nil);
 
   Result.Parent := aParent;
-  
+
   Result.Selectie := aSelectie;
   Result.MemData := aResultSet;
-  Result.EigenOpstelling := aEigenOpstelling;
 
   Result.Align := alClient;
 
@@ -256,6 +250,10 @@ begin
   FreeObjecten;
 
   FSelectie := Value;
+
+  pnlHandmatig.Visible := not FSelectie.EigenSelectie;
+  tbshtVoorspelling.TabVisible := FSelectie.EigenSelectie;
+  pnlVoorspelling.Visible := FSelectie.EigenSelectie;
 
   FOpstelling := TOpstelling.Create(Self);
   FOpstelling.Selectie := Selectie;
@@ -754,16 +752,6 @@ begin
   finally
     DecimalSeparator := vSeperator;
   end;
-end;
-
-
-procedure TfrmOpstelling.SetEigenOpstelling(const Value: Boolean);
-begin
-  FEigenOpstelling := Value;
-
-  pnlHandmatig.Visible := not FEigenOpstelling;
-  tbshtVoorspelling.TabVisible := FEigenOpstelling;
-  pnlVoorspelling.Visible := FEigenOpstelling;
 end;
 
 {-----------------------------------------------------------------------------

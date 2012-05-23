@@ -153,11 +153,11 @@ begin
       end;
     end;
 
-    Result := Result / 4;
-
     Result := Result + (0.011339 * Result * Result);
 
-    Result := Result +  (-0.000029 * Result * Result * Result);
+    Result := Result + (-0.000029 * Result * Result * Result);
+    
+    Result := Result / 4;
 
     Result := Result * TeamZelfvertrouwen;
 
@@ -165,6 +165,9 @@ begin
     begin
       Result := Result * 0.970577;
     end;
+    
+    //PB toegevoegd dikke duim in samenwerking HO
+    Result := Result * 0.77;
 
     Result := 1 + VerrekenTypeCoach(Result, FALSE);
   end;
@@ -222,12 +225,12 @@ begin
         end;
       end;
     end;
-  
-    Result := Result / 4;
 
     Result := Result + (0.008462 * Result * Result);
 
-    Result := Result +  (-0.000017 * Result * Result * Result);
+    Result := Result + (-0.000017 * Result * Result * Result);
+
+    Result := Result / 4;
 
     case Tactiek of
       tVleugelAanval:   Result := Result * 0.858029;
@@ -422,11 +425,11 @@ begin
       end;
     end;
 
-    Result := Result / 4;
-
     Result := Result + (0.012093 * Result * Result);
 
-    Result := Result +  (-0.000027 * Result * Result * Result);
+    Result := Result +  (-0.000027 * Result * Result * Result); 
+
+    Result := Result / 4;
 
     Result := Result * TeamZelfvertrouwen;
 
@@ -434,6 +437,9 @@ begin
     begin
       Result := Result * 0.972980;
     end;
+
+    //PB toegevoegd dikke duim in samenwerking HO
+    Result := Result * 0.77;
 
     Result := 1 + VerrekenTypeCoach(Result, FALSE);
   end;
@@ -474,11 +480,11 @@ begin
       end;
     end;
 
-    Result := Result / 4;
-
     Result := Result + (0.011591 * Result * Result);
 
-    Result := Result +  (-0.000029 * Result * Result * Result);
+    Result := Result +  (-0.000029 * Result * Result * Result);  
+
+    Result := Result / 4;
 
     case Tactiek of
       tCentrumAanval:   Result := Result * 0.853911;
@@ -524,18 +530,18 @@ begin
       end;
     end;
 
-    Result := Result / 4;
-
     Result := Result + (0.008504 * Result * Result);
 
-    Result := Result +  (-0.000027 * Result * Result * Result);
+    Result := Result +  (-0.000027 * Result * Result * Result); 
+
+    Result := Result / 4;
 
     Result := VerwerkTeamgeest(Result);
 
     case Selectie.WedstrijdPlaats of
-      wThuis: Result := Result * 1.199529;    //MMM + HO: 1.199529
+      wThuis:                 Result := Result * 1.199529;    //MMM + HO: 1.199529
       wDerbyThuis, wDerbyUit: Result := Result * 1.113699;    //MMM + HO: 1.113699
-      wUit:   Result := Result * 1;
+      wUit:                   Result := Result * 1;
     end;
 
     case Motivatie of
@@ -545,7 +551,7 @@ begin
     end;
 
     case Tactiek of
-      tAfstandsSchoten:  Result := Result * 0.950323;
+      tAfstandsSchoten: Result := Result * 0.950323;
       tCounter:         Result := Result * 0.930000;
     end;
 
@@ -698,11 +704,11 @@ begin
       end;
     end;
 
-    Result := Result / 4;
-
     Result := Result + (0.012093 * Result * Result);
 
-    Result := Result +  (-0.000027 * Result * Result * Result);
+    Result := Result +  (-0.000027 * Result * Result * Result); 
+
+    Result := Result / 4;
 
     Result := Result * TeamZelfvertrouwen;
 
@@ -710,6 +716,9 @@ begin
     begin
       Result := Result * 0.972980;
     end;
+                                    
+    //PB toegevoegd dikke duim in samenwerking HO
+    Result := Result * 0.77;
 
     Result := 1 + VerrekenTypeCoach(Result, FALSE);
   end;
@@ -750,11 +759,11 @@ begin
       end;
     end;
 
-    Result := Result / 4;
-
     Result := Result + (0.011591 * Result * Result);
 
-    Result := Result +  (-0.000029 * Result * Result * Result);
+    Result := Result +  (-0.000029 * Result * Result * Result); 
+
+    Result := Result / 4;
 
     case Tactiek of
       tCentrumAanval:   Result := Result * 0.853911;
