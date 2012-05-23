@@ -97,6 +97,8 @@ type
     procedure rgWedstrijdplaatsPropertiesChange(Sender: TObject);
     procedure pcEigenOpstellingenPageChanging(Sender: TObject;
       NewPage: TcxTabSheet; var AllowChange: Boolean);
+    procedure pcEigenOpstellingenCanClose(Sender: TObject;
+      var ACanClose: Boolean);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
@@ -104,6 +106,7 @@ type
     FFormOpstellingTegenstander: TForm;
     FFormOpstellingEigen: TForm;
     FAantalEigenOpstellingen: integer;
+    FGeenNieuwTabAanmaken: Boolean;
     procedure ToonRatingbijdrages;
     { Private declarations }
   public
@@ -171,6 +174,7 @@ var
   vCount: integer;
   vItem: TcxRadioGroupItem;
 begin
+  FGeenNieuwTabAanmaken := FALSE;
   dxmdPredictions.Open;
   cxpgctrlHTPredictor.ActivePage := cxtbTegenstander;
 
@@ -187,8 +191,10 @@ begin
 
   FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
   FSelectie_Tegen.EigenSelectie := FALSE;
-  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);   
-  FSelectie_Tegen.EigenSelectie := TRUE;
+
+  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
+  FSelectie_Eigen.EigenSelectie := TRUE;
+
   FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
 
@@ -339,20 +345,63 @@ end;
 procedure TfrmHTPredictor.pcEigenOpstellingenPageChanging(Sender: TObject; NewPage: TcxTabSheet; var AllowChange: Boolean);
 var
   vPage: TcxTabSheet;
+  vHuidigFormOpstelling,
+  vNewFormOpstelling: TfrmOpstelling;
 begin
   if (NewPage = tsNew) then
   begin
-    AllowChange := FALSE;
+    if (FGeenNieuwTabAanmaken) then
+    begin
+      FGeenNieuwTabAanmaken := FALSE;
 
-    vPage := TcxTabSheet.Create(self);
-    Inc(FAantalEigenOpstellingen);
-    vPage.Caption := Format('Opstelling %d', [FAantalEigenOpstellingen]);
-    vPage.PageControl := pcEigenOpstellingen;
-    vPage.PageIndex := NewPage.TabIndex;
+      pcEigenOpstellingen.ActivePage := cxTabSheet1;   
+      AllowChange := FALSE;
+    end
+    else
+    begin
+      AllowChange := FALSE;
 
-    FormOpstelling.ToonOpstelling(vPage, FSelectie_Eigen, dxmdPredictions);
+      if (pcEigenOpstellingen.ActivePage <> nil) then
+      begin
+        vHuidigFormOpstelling := TfrmOpstelling(pcEigenOpstellingen.ActivePage.Controls[0]);
+      end
+      else
+      begin
+        vHuidigFormOpstelling := nil;
+      end;
 
-    pcEigenOpstellingen.ActivePage := vPage;
+      vPage := TcxTabSheet.Create(self);
+      Inc(FAantalEigenOpstellingen);
+      vPage.Caption := Format('Opstelling %d', [FAantalEigenOpstellingen]);
+      vPage.PageControl := pcEigenOpstellingen;
+      vPage.PageIndex := tsNew.TabIndex;
+      tsNew.PageIndex := tsNew.TabIndex;
+
+      vNewFormOpstelling := FormOpstelling.ToonOpstelling(vPage, FSelectie_Eigen, dxmdPredictions);
+
+      if (vHuidigFormOpstelling <> nil) and
+         (vNewFormOpstelling <> nil) then
+      begin
+        vNewFormOpstelling.NeemGegevensOver(vHuidigFormOpstelling);
+      end;
+
+      pcEigenOpstellingen.ActivePage := vPage;
+    end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     23-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.pcEigenOpstellingenCanClose(Sender: TObject; var ACanClose: Boolean);
+begin
+  if pcEigenOpstellingen.ActivePageIndex = pcEigenOpstellingen.PageCount - 2 then
+  begin
+    FGeenNieuwTabAanmaken := TRUE;
   end;
 end;
 

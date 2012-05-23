@@ -111,9 +111,6 @@ type
     FBusy: boolean;
     FSelectie: TSelectie;
     FOpstelling: TOpstelling;
-    FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer;
-    FOpstellingAanvoerder: TfrmOpstellingPlayer;                     
-    FOpstellingSpelhervatter: TfrmOpstellingPlayer;
     FMID: double;
     FRV: double;
     FCV: double;
@@ -132,7 +129,10 @@ type
     function Team2: TOpstelling;
     { Private declarations }
   public
-    { Public declarations }
+    { Public declarations }  
+    FOpstellingPlayerArray: array[1..14] of TfrmOpstellingPlayer; 
+    FOpstellingAanvoerder: TfrmOpstellingPlayer;                     
+    FOpstellingSpelhervatter: TfrmOpstellingPlayer;
     property MemData: TdxMemData read FMemData write FMemData;
     property Selectie: TSelectie read FSelectie write SetSelectie;
     property Opstelling: TOpstelling read FOpstelling;
@@ -141,6 +141,7 @@ type
     procedure UpdateSpelhervatter;
 
     procedure UpdateRatings;
+    procedure NeemGegevensOver(aOpstellingForm: TfrmOpstelling);
   end;
 
 
@@ -317,10 +318,10 @@ begin
     end
     else
     begin
-      if (FOpstellingAanvoerder.cbPlayer.ItemIndex <> FOpstelling.Aanvoerder.ID) then
-      begin
-        FOpstellingAanvoerder.cbPlayer.ItemIndex := FOpstelling.Aanvoerder.ID;
-      end;
+      //if (FOpstellingAanvoerder.cbPlayer.ItemIndex <> FOpstelling.Aanvoerder.ID) then
+      //begin
+      //  FOpstellingAanvoerder.cbPlayer.ItemIndex := FOpstelling.Aanvoerder.ID;
+      //end;
     end;
   end;
 end;
@@ -342,10 +343,10 @@ begin
     end
     else
     begin
-      if FOpstellingSpelhervatter.cbPlayer.ItemIndex <> FOpstelling.Spelhervatter.ID then
-      begin
-        FOpstellingSpelhervatter.cbPlayer.ItemIndex := FOpstelling.Spelhervatter.ID;
-      end;
+      //if FOpstellingSpelhervatter.cbPlayer.ItemIndex <> FOpstelling.Spelhervatter.ID then
+      //begin
+      //  FOpstellingSpelhervatter.cbPlayer.ItemIndex := FOpstelling.Spelhervatter.ID;
+      //end;
     end;
   end;
 end;
@@ -786,6 +787,40 @@ begin
     wThuis, wDerbyThuis:  Result := TOpstelling(Selectie.Tegenstander);
     wUit, wDerbyUit:      Result := FOpstelling;
   end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     23-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmOpstelling.NeemGegevensOver(aOpstellingForm: TfrmOpstelling);
+var
+  vCount: integer;
+  vDisplayValue: Variant;
+  vErrorText: TCaption;
+  vError: Boolean;
+begin
+  for vCount := Low(aOpstellingForm.FOpstellingPlayerArray) to High(aOpstellingForm.FOpstellingPlayerArray) do
+  begin                                            
+    FOpstellingPlayerArray[vCount].cbOrder.ItemIndex := aOpstellingForm.FOpstellingPlayerArray[vCount].cbOrder.ItemIndex;
+    FOpstellingPlayerArray[vCount].cbPlayerPropertiesPopup(nil);
+    FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex := aOpstellingForm.FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex;
+
+    FOpstellingPlayerArray[vCount].ChangeOpstelling(FOpstellingPlayerArray[vCount].cbPlayer, vDisplayValue, vErrorText, vError);
+  end;
+
+  FOpstellingAanvoerder.cbPlayerPropertiesPopup(nil);
+  FOpstellingAanvoerder.cbPlayer.ItemIndex := aOpstellingForm.FOpstellingAanvoerder.cbPlayer.ItemIndex;
+  FOpstellingAanvoerder.ChangeOpstelling(FOpstellingAanvoerder.cbPlayer, vDisplayValue, vErrorText, vError);
+
+  FOpstellingSpelhervatter.cbPlayerPropertiesPopup(nil);
+  FOpstellingSpelhervatter.cbPlayer.ItemIndex := aOpstellingForm.FOpstellingSpelhervatter.cbPlayer.ItemIndex; 
+  FOpstellingSpelhervatter.ChangeOpstelling(FOpstellingSpelhervatter.cbPlayer, vDisplayValue, vErrorText, vError);
+
+  UpdateRatings;
 end;
 
 end.

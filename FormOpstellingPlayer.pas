@@ -36,7 +36,6 @@ type
     FMyHint: String;
     procedure SetPosition(const Value: TPlayerPosition);
     procedure VulCBOrder;
-    procedure ChangeOpstelling(aSender: TObject; var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
     procedure SetAanvoerder(const Value: Boolean);
     { Private declarations }
   public
@@ -44,6 +43,8 @@ type
     property Opstelling: TOpstelling read FOpstelling write FOpstelling;
     property Position: TPlayerPosition read FPosition write SetPosition;
     property Aanvoerder: Boolean read FAanvoerder write SetAanvoerder;
+    
+    procedure ChangeOpstelling(aSender: TObject; var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   end;
 
 function ToonOpstellingPlayer(aParent: TWinControl; aOpstelling: TOpstelling; aPosition: TPlayerPosition): TfrmOpstellingPlayer; overload;

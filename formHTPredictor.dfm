@@ -22,7 +22,7 @@ object frmHTPredictor: TfrmHTPredictor
     Top = 69
     Width = 1165
     Height = 607
-    ActivePage = tbResultaat
+    ActivePage = cxtbEigenTeam
     Align = alClient
     TabOrder = 0
     ClientRectBottom = 607
@@ -98,6 +98,7 @@ object frmHTPredictor: TfrmHTPredictor
           Align = alClient
           Options = [pcoAlwaysShowGoDialogButton, pcoCloseButton, pcoGoDialog, pcoGradient, pcoGradientClientArea, pcoRedrawOnResize]
           TabOrder = 0
+          OnCanClose = pcEigenOpstellingenCanClose
           OnPageChanging = pcEigenOpstellingenPageChanging
           ClientRectBottom = 296
           ClientRectRight = 1165

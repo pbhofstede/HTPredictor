@@ -31,7 +31,7 @@ object frmOpstelling: TfrmOpstelling
       Top = 0
       Width = 408
       Height = 525
-      ActivePage = tbshtVoorspelling
+      ActivePage = tbshtRatings
       Align = alClient
       TabOrder = 0
       ClientRectBottom = 525
