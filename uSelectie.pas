@@ -162,11 +162,9 @@ begin
 
   if Assigned(FNotifySelectieChanged) then
   begin
-
     FNotifySelectieChanged(nil);
   end;
 end;
-
 
 procedure TSelectie.SetEigenSelectie(const Value: Boolean);
 begin
@@ -192,12 +190,9 @@ begin
   begin
     FWedstrijdPlaats := Value;
 
-    if (EigenSelectie) then
+    if Assigned(FNotifySelectieChanged) then
     begin
-      if Assigned(FNotifySelectieChanged) then
-      begin
-        FNotifySelectieChanged(nil);
-      end;
+      FNotifySelectieChanged(nil);
     end;
   end;
 end;

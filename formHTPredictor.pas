@@ -108,6 +108,8 @@ type
     FAantalEigenOpstellingen: integer;
     FGeenNieuwTabAanmaken: Boolean;
     procedure ToonRatingbijdrages;
+    procedure NotifyEigenSelectieChanged(Sender: TObject);
+    procedure NotifyTegenSelectieChanged(Sender: TObject);
     { Private declarations }
   public
     { Public declarations }
@@ -190,10 +192,12 @@ begin
   FRatingBijdrages := TRatingBijdrages.Create;
 
   FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
-  FSelectie_Tegen.EigenSelectie := FALSE;
+  FSelectie_Tegen.EigenSelectie := FALSE;                             
+  FSelectie_Tegen.NotifySelectieChanged := NotifyTegenSelectieChanged;
 
   FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
   FSelectie_Eigen.EigenSelectie := TRUE;
+  FSelectie_Eigen.NotifySelectieChanged := NotifyEigenSelectieChanged;
 
   FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
   FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
@@ -402,6 +406,44 @@ begin
   if pcEigenOpstellingen.ActivePageIndex = pcEigenOpstellingen.PageCount - 2 then
   begin
     FGeenNieuwTabAanmaken := TRUE;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     25-05-2012
+  Doel:
+
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.NotifyEigenSelectieChanged(Sender: TObject);
+var
+  vCount: integer;
+  vFormOpstelling: TfrmOpstelling;
+begin
+  for vCount := 0 to pcEigenOpstellingen.PageCount - 2 do
+  begin
+    vFormOpstelling := TfrmOpstelling(pcEigenOpstellingen.Pages[vCount].Controls[0]);
+
+    if (vFormOpstelling <> nil) then
+    begin
+      vFormOpstelling.UpdateRatings;
+    end;
+  end;
+end;
+
+{-----------------------------------------------------------------------------
+  Author:    Pieter Bas
+  Datum:     25-05-2012
+  Doel:
+  
+  <eventuele fixes>
+-----------------------------------------------------------------------------}
+procedure TfrmHTPredictor.NotifyTegenSelectieChanged(Sender: TObject);
+begin
+  if (FFormOpstellingTegenstander <> nil) then
+  begin
+    TfrmOpstelling(FFormOpstellingTegenstander).UpdateRatings;
   end;
 end;
 

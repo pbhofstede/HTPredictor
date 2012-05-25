@@ -25,12 +25,11 @@ type
     FHandmatigCA: double;
     FHandmatigLA: double;
     FHandmatigMID: double;
-    FFormatie: String;
-    FPrevNotifySelectieChanged: TNotifyEvent;
+    FFormatie: String;  
+    procedure UpdateRatings;
     procedure SetSelectie(const Value: TSelectie);
     procedure SetAanvoerder(const Value: TPlayer);
     procedure SetSpelhervatter(const Value: TPlayer);
-    procedure UpdateRatings;
     procedure SetMotivatie(const Value: TOpstellingMotivatie);
     procedure SetTactiek(const Value: TOpstellingTactiek);
     procedure SetCoach(const Value: TOpstellingCoach);
@@ -47,7 +46,6 @@ type
     procedure SetHandmatigLV(const Value: double);
     procedure SetHandmatigMID(const Value: double);
     procedure SetHandmatigRA(const Value: double);
-    procedure NotifySelectieChanged(Sender: TObject);
   public
     property HandmatigMID: double write SetHandmatigMID;
     property HandmatigRV: double write SetHandmatigRV;
@@ -66,14 +64,13 @@ type
     property TacticLevel: double read GetTacticLevel;
     
     constructor Create(aFormOpstelling: TForm);
-    destructor Destroy; override;
 
     function GetPlayerOnPosition(aPositie: TPlayerPosition): TPlayer;
     function GetPositionOfPlayer(aPlayer: TPlayer): TPlayerPosition;
     procedure ZetPlayerIDOpPositie(aPlayerID: integer; aPositie: TPlayerPosition; aPlayerOrder: TPlayerOrder);
     function AantalPositiesBezet: integer;
     function RV: double;          
-    function CV: double;             
+    function CV: double;
     function LV: double;  
     function RA: double;
     function CA: double;
@@ -239,12 +236,6 @@ begin
 
     Result := 1 + VerrekenTypeCoach(Result, TRUE);
   end;
-end;
-
-destructor TOpstelling.Destroy;
-begin
-  inherited;
-
 end;
 
 {-----------------------------------------------------------------------------
@@ -559,24 +550,6 @@ begin
   end;
 end;
 
-{-----------------------------------------------------------------------------
-  Author:    Pieter Bas
-  Datum:     24-04-2012
-  Doel:
-  
-  <eventuele fixes>
------------------------------------------------------------------------------}
-procedure TOpstelling.NotifySelectieChanged(Sender: TObject);
-begin
-  UpdateRatings;
-
-  //event doorlussen naar andere selecties
-  if Assigned(FPrevNotifySelectieChanged) then
-  begin
-    FPrevNotifySelectieChanged(Sender);
-  end;
-end;
-
 function TOpstelling.OverCrowdingAanval: double;
 var
   vCentraalCount: integer;
@@ -849,13 +822,6 @@ end;
 procedure TOpstelling.SetSelectie(const Value: TSelectie);
 begin
   FSelectie := Value;
-
-  if Assigned(FSelectie.NotifySelectieChanged) then
-  begin
-    FPrevNotifySelectieChanged := FSelectie.NotifySelectieChanged;
-  end;
-
-  FSelectie.NotifySelectieChanged := NotifySelectieChanged;
 end;
 
 {-----------------------------------------------------------------------------

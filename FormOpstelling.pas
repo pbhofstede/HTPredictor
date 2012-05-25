@@ -149,7 +149,7 @@ function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aResultSet: 
 
 implementation
 uses
-  Math;
+  Math, uPlayer;
 
 {$R *.DFM}
 
@@ -798,16 +798,33 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmOpstelling.NeemGegevensOver(aOpstellingForm: TfrmOpstelling);
 var
-  vCount: integer;
+  vCount,
+  vPlayerCount: integer;
   vDisplayValue: Variant;
   vErrorText: TCaption;
   vError: Boolean;
+  vPlayer: TPlayer;
 begin
   for vCount := Low(aOpstellingForm.FOpstellingPlayerArray) to High(aOpstellingForm.FOpstellingPlayerArray) do
   begin                                            
     FOpstellingPlayerArray[vCount].cbOrder.ItemIndex := aOpstellingForm.FOpstellingPlayerArray[vCount].cbOrder.ItemIndex;
     FOpstellingPlayerArray[vCount].cbPlayerPropertiesPopup(nil);
-    FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex := aOpstellingForm.FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex;
+    if (aOpstellingForm.FOpstellingPlayerArray[vCount].cbPlayer.EditValue <> Null) then
+    begin
+      vPlayer := FOpstelling.Selectie.GetPlayer(aOpstellingForm.FOpstellingPlayerArray[vCount].cbPlayer.EditValue);
+
+      if (vPlayer <> nil) then
+      begin
+        for vPlayerCount := 0 to FOpstellingPlayerArray[vCount].cbPlayer.Properties.Items.Count - 1 do
+        begin
+          if (FOpstellingPlayerArray[vCount].cbPlayer.Properties.Items.Items[vPlayerCount].Value = vPlayer.ID) then
+          begin
+            FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex := vPlayerCount;
+          end;
+        end;
+      end;
+    end;
+    //FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex := aOpstellingForm.FOpstellingPlayerArray[vCount].cbPlayer.ItemIndex;
 
     FOpstellingPlayerArray[vCount].ChangeOpstelling(FOpstellingPlayerArray[vCount].cbPlayer, vDisplayValue, vErrorText, vError);
   end;
