@@ -85,6 +85,7 @@ type
     cxGrid1DBTableView1GELIJK: TcxGridDBColumn;
     cxGrid1DBTableView1GOALS_THUIS: TcxGridDBColumn;
     cxGrid1DBTableView1GOALS_UIT: TcxGridDBColumn;
+    Button1: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Ratingbijdrages1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -99,6 +100,7 @@ type
       NewPage: TcxTabSheet; var AllowChange: Boolean);
     procedure pcEigenOpstellingenCanClose(Sender: TObject;
       var ACanClose: Boolean);
+    procedure Button1Click(Sender: TObject);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
@@ -125,7 +127,7 @@ var
 implementation
 
 uses
-  FormSpelerGrid, uPlayer, FormOpstelling, FormRatingBijdrages, uHTPredictor, Math;
+  FormSpelerGrid, uPlayer, FormOpstelling, FormRatingBijdrages, uHTPredictor, Math, ESBDates;
 
 {$R *.DFM}
 
@@ -445,6 +447,21 @@ begin
   begin
     TfrmOpstelling(FFormOpstellingTegenstander).UpdateRatings;
   end;
+end;
+
+procedure TfrmHTPredictor.Button1Click(Sender: TObject);
+var
+  vAllowChange: Boolean;
+  vCount: integer;
+  vTime: TDateTime;
+begin
+  vTime := Now;
+  for vCount := 0 to 27 do
+  begin
+    pcEigenOpstellingenPageChanging(Sender, tsNew, vAllowChange);
+  end;
+
+  ShowMessage(Format('%.2f msec', [ESBDates.TimeApartInSecs(vTime, Now) * 1000]));
 end;
 
 end.

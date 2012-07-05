@@ -355,6 +355,15 @@ object frmHTPredictor: TfrmHTPredictor
         Width = 68
       end
     end
+    object Button1: TButton
+      Left = 1044
+      Top = 24
+      Width = 75
+      Height = 25
+      Caption = 'Button1'
+      TabOrder = 3
+      OnClick = Button1Click
+    end
   end
   object dxBarManager1: TdxBarManager
     Font.Charset = DEFAULT_CHARSET
