@@ -8,7 +8,7 @@ uses
   cxMaskEdit, cxDropDownEdit, cxImageComboBox, uOpstelling, StdCtrls;
 
 type
-  TfrmOpstellingPlayer = class(TForm)
+  TfrmOpstellingPlayer = class(TFrame)
     pnlPlayer: TPanel;
     cbPlayer: TcxImageComboBox;
     cbOrder: TcxImageComboBox;
@@ -27,7 +27,6 @@ type
      procedure CMMouseEnter(var Msg: TMessage); message CM_MouseEnter;
      procedure CMMouseLeave(var Msg: TMessage); message CM_MouseLeave;
     procedure tiHintTimer(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
   private
     FPosition: TPlayerPosition;
     FOpstelling: TOpstelling;
@@ -43,7 +42,8 @@ type
     property Opstelling: TOpstelling read FOpstelling write FOpstelling;
     property Position: TPlayerPosition read FPosition write SetPosition;
     property Aanvoerder: Boolean read FAanvoerder write SetAanvoerder;
-    
+                         
+    constructor Create(AOwner: TComponent); override;
     procedure ChangeOpstelling(aSender: TObject; var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
   end;
 
@@ -72,8 +72,6 @@ begin
   Result.Position := aPosition;
 
   Result.Align := alNone;
-
-  Result.Show;
 end;
 
 {-----------------------------------------------------------------------------
@@ -97,8 +95,6 @@ begin
 
   Result.cbOrder.Visible := FALSE;
   Result.cbPlayer.Top := Result.cbOrder.Top;
-
-  Result.Show;
 end;
 
 {-----------------------------------------------------------------------------
@@ -567,8 +563,10 @@ begin
   end;
 end;
 
-procedure TfrmOpstellingPlayer.FormCreate(Sender: TObject);
+constructor TfrmOpstellingPlayer.Create(AOwner: TComponent);
 begin
+  inherited;
+  
   cbPlayer.Properties.Images := frmHTPredictor.imgListHTPredictor;
 end;
 

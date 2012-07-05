@@ -7,10 +7,11 @@ uses
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxImageComboBox, cxCurrencyEdit, cxPC, OleCtrls, ComCtrls, JvComponent,
-  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml, dxmdaset;
+  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml, dxmdaset,
+  IdBaseComponent, IdTCPConnection, IdTCPClient, IdHTTP, IdComponent;
 
 type
-  TfrmOpstelling = class(TForm)
+  TfrmOpstelling = class(TFrame)
     pnlRatings: TPanel;
     pnlOpstelling: TPanel;
     cxpgctrlRatings: TcxPageControl;
@@ -91,8 +92,9 @@ type
     lblWinstDiff: TLabel;
     lblGelijkDiff: TLabel;
     lblVerliesDiff: TLabel;
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
+    IdHTTP1: TIdHTTP;
+    Button1: TButton;
+    Memo1: TMemo;
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
       var DisplayValue: Variant; var ErrorText: TCaption;
       var Error: Boolean);
@@ -106,6 +108,7 @@ type
     procedure spdbtnGetVoorspellingClick(Sender: TObject);
     procedure JvPredictionDoneStream(Sender: TObject; Stream: TStream;
       StreamSize: Integer; Url: String);
+    procedure Button1Click(Sender: TObject);
   private
     FLaatsteWinst, FLaatsteVerlies, FLaatsteGelijk: double;
     FBusy: boolean;
@@ -139,7 +142,9 @@ type
     procedure EnableDisableOpstellingPlayer;
     procedure UpdateAanvoerder;
     procedure UpdateSpelhervatter;
-
+                             
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure UpdateRatings;
     procedure NeemGegevensOver(aOpstellingForm: TfrmOpstelling);
   end;
@@ -149,7 +154,7 @@ function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aResultSet: 
 
 implementation
 uses
-  Math, uPlayer;
+  Math, uPlayer, IdMultipartFormData, uBibString;
 
 {$R *.DFM}
 
@@ -165,8 +170,6 @@ begin
   Result.MemData := aResultSet;
 
   Result.Align := alClient;
-
-  Result.Show;
 end;
                                    
 {-----------------------------------------------------------------------------
@@ -204,40 +207,6 @@ begin
   end;
 end;
 
-procedure TfrmOpstelling.FormCreate(Sender: TObject);
-var
-  vCount: integer;
-  vItem: TcxImageComboBoxItem;
-begin
-  lblGelijkPerc.Caption := '';
-  lblWinstPerc.Caption := '';
-  lblVerliesPerc.Caption := '';
-  lblUitslag.Caption := '';
-
-  for vCount := Ord(Low(TOpstellingMotivatie)) to Ord(High(TOpstellingMotivatie)) do
-  begin
-    vItem := cbMotivatie.Properties.Items.Add;
-    vItem.Value := vCount;
-    vItem.Description := uHTPredictor.OpstellingMotivatieToString(TOpstellingMotivatie(vCount));
-  end;
-
-  for vCount := Ord(Low(TOpstellingTactiek)) to Ord(High(TOpstellingTactiek)) do
-  begin
-    vItem := cbTactiek.Properties.Items.Add;
-    vItem.Value := vCount;
-    vItem.Description := uHTPredictor.OpstellingTactiekToString(TOpstellingTactiek(vCount));
-  end;
-
-
-  for vCount := Ord(Low(TOpstellingCoach)) to Ord(High(TOpstellingCoach)) do
-  begin
-    vItem := cbCoach.Properties.Items.Add;
-    vItem.Value := vCount;
-    vItem.Description := uHTPredictor.OpstellingCoachToString(TOpstellingCoach(vCount));
-  end;
-
-  cxpgctrlRatings.ActivePage := tbshtRatings;
-end;
 
 {-----------------------------------------------------------------------------
   Author:    Pieter Bas
@@ -287,18 +256,6 @@ begin
   pnlVoorspelling.Height := FOpstellingAanvoerder.Height;
   pnlVoorspelling.Width := (FOpstellingPlayerArray[6].Left + FOpstellingPlayerArray[6].Width) -
              FOpstellingPlayerArray[5].Left;
-end;
-
-{-----------------------------------------------------------------------------
-  Author:    Pieter Bas
-  Datum:     17-04-2012
-  Doel:
-  
-  <eventuele fixes>
------------------------------------------------------------------------------}
-procedure TfrmOpstelling.FormDestroy(Sender: TObject);
-begin
-  FreeObjecten;
 end;
 
 {-----------------------------------------------------------------------------
@@ -359,9 +316,10 @@ end;
   <eventuele fixes>
 -----------------------------------------------------------------------------}
 procedure TfrmOpstelling.FreeObjecten;
-var
-  vCount: integer;
+//var
+//  vCount: integer;
 begin
+{
   for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
   begin
     if (FOpstellingPlayerArray[vCount] <> nil) then
@@ -385,7 +343,7 @@ begin
     FOpstellingSpelhervatter.Release;
     FOpstellingSpelhervatter := nil;
   end;
-
+ }
   if (FOpstelling <> nil) then
   begin
     FOpstelling.Free;
@@ -838,6 +796,116 @@ begin
   FOpstellingSpelhervatter.ChangeOpstelling(FOpstellingSpelhervatter.cbPlayer, vDisplayValue, vErrorText, vError);
 
   UpdateRatings;
+end;
+
+procedure TfrmOpstelling.Button1Click(Sender: TObject);
+var
+  vData : TIdMultiPartFormDataStream;
+begin
+  try
+    vData := TIdMultiPartFormDataStream.Create;
+
+    try
+      vData.AddFormField('hmid', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.MID]), ',', '.'));
+      vData.AddFormField('hrd', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.RV]), ',', '.'));
+      vData.AddFormField('hcd', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.CV]), ',', '.'));
+      vData.AddFormField('hld', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.LV]), ',', '.'));
+      vData.AddFormField('hra', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.RA]), ',', '.'));
+      vData.AddFormField('hca', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.CA]), ',', '.'));
+      vData.AddFormField('hla', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.LA]), ',', '.'));
+
+      vData.AddFormField('home_head', Format('%d', [2]));
+      vData.AddFormField('home_quick_wing', Format('%d', [1]));
+      vData.AddFormField('home_quick_forw', Format('%d', [1]));
+      vData.AddFormField('home_unpred_wing', Format('%d', [0]));
+      vData.AddFormField('home_unpred_forw', Format('%d', [0]));
+      vData.AddFormField('hask', Format('%d', [10])); //AIM/AOW skill
+      vData.AddFormField('hcsk', Format('%d', [10])); //ca skill
+      vData.AddFormField('hidspa', Format('%d', [5]));   //SetPieces aanvallend
+      vData.AddFormField('hidspd', Format('%d', [6]));   //SetPieces verd
+      vData.AddFormField('hspec', Format('%d', [0])); //hidden
+      vData.AddFormField('hdspz', uBibString.VervangenDoorWaarde(Format('%.2f', [0.42]), ',', '.'));  //vaste waarde
+
+      vData.AddFormField('huse_ca', 'FALSE');
+      vData.AddFormField('huse_aim', 'FALSE');
+      vData.AddFormField('huse_aow', 'FALSE');
+
+      vData.AddFormField('amid', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.MID]), ',', '.'));
+      vData.AddFormField('ard', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.RV]), ',', '.'));
+      vData.AddFormField('acd', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.CV]), ',', '.'));
+      vData.AddFormField('ald', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.LV]), ',', '.'));
+      vData.AddFormField('ara', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.RA]), ',', '.'));
+      vData.AddFormField('aca', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.CA]), ',', '.'));
+      vData.AddFormField('ala', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.LA]), ',', '.'));
+
+      vData.AddFormField('away_head', Format('%d', [2]));
+      vData.AddFormField('away_quick_wing', Format('%d', [1]));
+      vData.AddFormField('away_quick_forw', Format('%d', [1]));
+      vData.AddFormField('away_unpred_wing', Format('%d', [0]));
+      vData.AddFormField('away_unpred_forw', Format('%d', [0]));
+      vData.AddFormField('aask', Format('%d', [10]));
+      vData.AddFormField('acsk', Format('%d', [10]));
+      vData.AddFormField('aidspa', Format('%d', [5]));
+      vData.AddFormField('aidspd', Format('%d', [6]));
+      vData.AddFormField('aspec', Format('%d', [0]));
+      vData.AddFormField('adspz', uBibString.VervangenDoorWaarde(Format('%.2f', [0.42]), ',', '.'));
+      
+      vData.AddFormField('huse_ca', 'FALSE');
+      vData.AddFormField('huse_aim', 'FALSE');
+      vData.AddFormField('huse_aow', 'FALSE');
+
+      Memo1.Lines.Text := IdHTTP1.Post('http://htev.org/furminator/', vData);
+    finally
+      vData.Free;
+    end;
+  except
+  //bla
+  end
+end;
+
+constructor TfrmOpstelling.Create(AOwner: TComponent);
+var
+  vCount: integer;
+  vItem: TcxImageComboBoxItem;
+begin               
+  inherited;
+
+  Name := '';
+  lblGelijkPerc.Caption := '';
+  lblWinstPerc.Caption := '';
+  lblVerliesPerc.Caption := '';
+  lblUitslag.Caption := '';
+
+  for vCount := Ord(Low(TOpstellingMotivatie)) to Ord(High(TOpstellingMotivatie)) do
+  begin
+    vItem := cbMotivatie.Properties.Items.Add;
+    vItem.Value := vCount;
+    vItem.Description := uHTPredictor.OpstellingMotivatieToString(TOpstellingMotivatie(vCount));
+  end;
+
+  for vCount := Ord(Low(TOpstellingTactiek)) to Ord(High(TOpstellingTactiek)) do
+  begin
+    vItem := cbTactiek.Properties.Items.Add;
+    vItem.Value := vCount;
+    vItem.Description := uHTPredictor.OpstellingTactiekToString(TOpstellingTactiek(vCount));
+  end;
+
+
+  for vCount := Ord(Low(TOpstellingCoach)) to Ord(High(TOpstellingCoach)) do
+  begin
+    vItem := cbCoach.Properties.Items.Add;
+    vItem.Value := vCount;
+    vItem.Description := uHTPredictor.OpstellingCoachToString(TOpstellingCoach(vCount));
+  end;
+
+  cxpgctrlRatings.ActivePage := tbshtRatings;
+end;
+
+destructor TfrmOpstelling.Destroy;
+begin
+  FreeObjecten;
+
+  inherited;
 end;
 
 end.

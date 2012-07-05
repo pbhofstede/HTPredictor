@@ -8,7 +8,7 @@ uses
 type
   TOpstelling = class
   private
-    FFormOpstelling: TForm;
+    FFrameOpstelling: TFrame;
     FSelectie: TSelectie;
     FOpstellingPlayerArray: array[1..14] of TPlayer;
     FOpstellingOrderArray: array[1..14] of TPlayerOrder;
@@ -63,7 +63,7 @@ type
     property Coach: TOpstellingCoach read FCoach write SetCoach;
     property TacticLevel: double read GetTacticLevel;
     
-    constructor Create(aFormOpstelling: TForm);
+    constructor Create(aFrameOpstelling: TFrame);
 
     function GetPlayerOnPosition(aPositie: TPlayerPosition): TPlayer;
     function GetPositionOfPlayer(aPlayer: TPlayer): TPlayerPosition;
@@ -170,9 +170,9 @@ begin
   end;
 end;
 
-constructor TOpstelling.Create(aFormOpstelling: TForm);
+constructor TOpstelling.Create(aFrameOpstelling: TFrame);
 begin
-  FFormOpstelling := aFormOpstelling;
+  FFrameOpstelling := aFrameOpstelling;
 
   FMotivatie := mNormaal;
   FTactiek := tNormaal;
@@ -752,9 +752,9 @@ begin
   if (FAanvoerder <> Value) then
   begin
     FAanvoerder := Value;
-    if (FFormOpstelling <> nil) then
+    if (FFrameOpstelling <> nil) then
     begin
-      (FFormOpstelling as TfrmOpstelling).UpdateAanvoerder;
+      (FFrameOpstelling as TfrmOpstelling).UpdateAanvoerder;
     end;
   end;
 end;
@@ -836,9 +836,9 @@ begin
   if (FSpelhervatter <> Value) then
   begin
     FSpelhervatter := Value;
-    if (FFormOpstelling <> nil) then
+    if (FFrameOpstelling <> nil) then
     begin
-      (FFormOpstelling as TfrmOpstelling).UpdateSpelhervatter;
+      (FFrameOpstelling as TfrmOpstelling).UpdateSpelhervatter;
     end;
   end;
 end;
@@ -867,9 +867,9 @@ end;
 
 procedure TOpstelling.UpdateRatings;
 begin
-  if (FFormOpstelling <> nil) then
+  if (FFrameOpstelling <> nil) then
   begin
-    TfrmOpstelling(FFormOpstelling).UpdateRatings;
+    TfrmOpstelling(FFrameOpstelling).UpdateRatings;
   end;
 end;
 
@@ -942,9 +942,9 @@ begin
     vOldPlayer.ClearBijdrages(Self);
   end;
 
-  if (FFormOpstelling <> nil) then
+  if (FFrameOpstelling <> nil) then
   begin
-    (FFormOpstelling as TfrmOpstelling).EnableDisableOpstellingPlayer;
+    (FFrameOpstelling as TfrmOpstelling).EnableDisableOpstellingPlayer;
   end;
 
   if (vPlayer <> nil) then

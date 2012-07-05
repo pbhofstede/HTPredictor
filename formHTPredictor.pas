@@ -99,12 +99,13 @@ type
       NewPage: TcxTabSheet; var AllowChange: Boolean);
     procedure pcEigenOpstellingenCanClose(Sender: TObject;
       var ACanClose: Boolean);
+    procedure FormShow(Sender: TObject);
   private
     FSelectie_Eigen: TSelectie;
     FSelectie_Tegen: TSelectie;
     FRatingBijdrages: TRatingBijdrages;
-    FFormOpstellingTegenstander: TForm;
-    FFormOpstellingEigen: TForm;
+    FFrameOpstellingTegenstander: TFrame;
+    FFrameOpstellingEigen: TFrame;
     FAantalEigenOpstellingen: integer;
     FGeenNieuwTabAanmaken: Boolean;
     procedure ToonRatingbijdrages;
@@ -188,37 +189,6 @@ begin
     vItem.Value := vCount;
   end;
   rgWedstrijdplaats.ItemIndex := 0;
-
-  FRatingBijdrages := TRatingBijdrages.Create;
-
-  FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
-  FSelectie_Tegen.EigenSelectie := FALSE;                             
-  FSelectie_Tegen.NotifySelectieChanged := NotifyTegenSelectieChanged;
-
-  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
-  FSelectie_Eigen.EigenSelectie := TRUE;
-  FSelectie_Eigen.NotifySelectieChanged := NotifyEigenSelectieChanged;
-
-  FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
-  FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
-
-  
-  FFormOpstellingTegenstander := FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, nil);
-
-  FFormOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, dxmdPredictions);
-  Inc(FAantalEigenOpstellingen);
-
-
-  FSelectie_Eigen.TegenStander := TfrmOpstelling(FFormOpstellingTegenstander).Opstelling;
-  FSelectie_Tegen.TegenStander := nil;
-
-  rgWedstrijdplaatsPropertiesChange(nil);
-
-  ceTegenstanderZelfvertrouwenPropertiesChange(nil);
-  ceTegenstanderTeamgeestPropertiesChange(nil);
-
-  ceEigenZelfvertrouwenPropertiesChange(nil);
-  ceEigenTeamgeestPropertiesChange(nil);
 end;
 
 procedure TfrmHTPredictor.Ratingbijdrages1Click(Sender: TObject);
@@ -441,10 +411,45 @@ end;
 -----------------------------------------------------------------------------}
 procedure TfrmHTPredictor.NotifyTegenSelectieChanged(Sender: TObject);
 begin
-  if (FFormOpstellingTegenstander <> nil) then
+  if (FFrameOpstellingTegenstander <> nil) then
   begin
-    TfrmOpstelling(FFormOpstellingTegenstander).UpdateRatings;
+    TfrmOpstelling(FFrameOpstellingTegenstander).UpdateRatings;
   end;
+end;
+
+procedure TfrmHTPredictor.FormShow(Sender: TObject);
+begin
+  FRatingBijdrages := TRatingBijdrages.Create;
+
+  FSelectie_Tegen := ToonSpelersGrids(pnlSpelersGrid1, cxtbTegenstander);
+  FSelectie_Tegen.EigenSelectie := FALSE;                             
+  FSelectie_Tegen.NotifySelectieChanged := NotifyTegenSelectieChanged;
+
+  FSelectie_Eigen := ToonSpelersGrids(pnlSpelersGrid2, cxtbEigenTeam);
+  FSelectie_Eigen.EigenSelectie := TRUE;
+  FSelectie_Eigen.NotifySelectieChanged := NotifyEigenSelectieChanged;
+
+  FSelectie_Eigen.RatingBijdrages := FRatingBijdrages;
+  FSelectie_Tegen.RatingBijdrages := FRatingBijdrages;
+
+  
+  FFrameOpstellingTegenstander := FormOpstelling.ToonOpstelling(pnlOpstellingTegenstander, FSelectie_Tegen, nil);
+
+  FFrameOpstellingEigen := FormOpstelling.ToonOpstelling(cxTabSheet1, FSelectie_Eigen, dxmdPredictions);
+  Inc(FAantalEigenOpstellingen);
+
+
+  FSelectie_Eigen.TegenStander := TfrmOpstelling(FFrameOpstellingTegenstander).Opstelling;
+  FSelectie_Tegen.TegenStander := nil;
+
+  rgWedstrijdplaatsPropertiesChange(nil);
+
+  ceTegenstanderZelfvertrouwenPropertiesChange(nil);
+  ceTegenstanderTeamgeestPropertiesChange(nil);
+
+  ceEigenZelfvertrouwenPropertiesChange(nil);
+  ceEigenTeamgeestPropertiesChange(nil);
+
 end;
 
 end.

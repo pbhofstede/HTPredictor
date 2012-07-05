@@ -1,11 +1,8 @@
 object frmOpstelling: TfrmOpstelling
-  Left = 296
-  Top = 304
-  BorderStyle = bsNone
-  Caption = 'frmOpstelling'
-  ClientHeight = 525
-  ClientWidth = 1168
-  Color = clBtnFace
+  Left = 0
+  Top = 0
+  Width = 1167
+  Height = 325
   Constraints.MinHeight = 180
   Constraints.MinWidth = 950
   Font.Charset = DEFAULT_CHARSET
@@ -13,16 +10,13 @@ object frmOpstelling: TfrmOpstelling
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  ParentFont = False
+  TabOrder = 0
   object pnlRatings: TPanel
-    Left = 760
+    Left = 759
     Top = 0
     Width = 408
-    Height = 525
+    Height = 325
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 0
@@ -30,11 +24,11 @@ object frmOpstelling: TfrmOpstelling
       Left = 0
       Top = 0
       Width = 408
-      Height = 525
+      Height = 325
       ActivePage = tbshtRatings
       Align = alClient
       TabOrder = 0
-      ClientRectBottom = 525
+      ClientRectBottom = 325
       ClientRectRight = 408
       ClientRectTop = 24
       object tbshtRatings: TcxTabSheet
@@ -44,7 +38,7 @@ object frmOpstelling: TfrmOpstelling
           Left = 0
           Top = 0
           Width = 408
-          Height = 501
+          Height = 301
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
@@ -334,7 +328,7 @@ object frmOpstelling: TfrmOpstelling
             Left = 351
             Top = 0
             Width = 57
-            Height = 501
+            Height = 301
             Align = alRight
             BevelOuter = bvNone
             TabOrder = 3
@@ -401,6 +395,16 @@ object frmOpstelling: TfrmOpstelling
               TabOrder = 6
               Width = 49
             end
+          end
+          object Memo1: TMemo
+            Left = 16
+            Top = 176
+            Width = 353
+            Height = 89
+            Lines.Strings = (
+              'Memo1')
+            ScrollBars = ssBoth
+            TabOrder = 4
           end
         end
       end
@@ -677,8 +681,8 @@ object frmOpstelling: TfrmOpstelling
   object pnlOpstelling: TPanel
     Left = 0
     Top = 0
-    Width = 760
-    Height = 525
+    Width = 759
+    Height = 325
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
@@ -861,6 +865,15 @@ object frmOpstelling: TfrmOpstelling
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Button1: TButton
+        Left = 4
+        Top = 32
+        Width = 75
+        Height = 25
+        Caption = 'Button1'
+        TabOrder = 0
+        OnClick = Button1Click
+      end
     end
   end
   object JvPrediction: TJvHttpUrlGrabber
@@ -876,5 +889,20 @@ object frmOpstelling: TfrmOpstelling
     IndentString = '  '
     Left = 616
     Top = 152
+  end
+  object IdHTTP1: TIdHTTP
+    MaxLineAction = maException
+    AllowCookies = True
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = 0
+    Request.ContentRangeStart = 0
+    Request.Accept = 'text/html, */*'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 504
+    Top = 188
   end
 end

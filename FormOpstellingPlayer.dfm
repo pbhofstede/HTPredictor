@@ -1,27 +1,16 @@
 object frmOpstellingPlayer: TfrmOpstellingPlayer
-  Left = 440
-  Top = 199
-  BorderIcons = []
-  BorderStyle = bsNone
-  Caption = 'frmOpstellingPlayer'
-  ClientHeight = 48
-  ClientWidth = 134
-  Color = clBtnFace
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'MS Sans Serif'
-  Font.Style = []
-  OldCreateOrder = False
+  Left = 0
+  Top = 0
+  Width = 320
+  Height = 240
+  ParentShowHint = False
   ShowHint = True
-  OnCreate = FormCreate
-  PixelsPerInch = 96
-  TextHeight = 13
+  TabOrder = 0
   object pnlPlayer: TPanel
     Left = 0
     Top = 0
-    Width = 134
-    Height = 48
+    Width = 320
+    Height = 240
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 2

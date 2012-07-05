@@ -9,7 +9,7 @@ uses
   ExtCtrls, Db, dxmdaset, uSelectie, uHTPredictor;
 
 type
-  TfrmSpelerGrid = class(TForm)
+  TfrmSpelerGrid = class(TFrame)
     Panel1: TPanel;
     cxGridSpelers: TcxGrid;
     cxGridSpelersView: TcxGridDBTableView;
@@ -52,8 +52,6 @@ type
     btnLaadFromHO: TdxBarButton;
     dxBarSubItem1: TdxBarSubItem;
     btnLoadFree: TdxBarButton;
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure mdSpelersAfterPost(DataSet: TDataSet);
     procedure dsSpelersStateChange(Sender: TObject);
     procedure btnOpslaanClick(Sender: TObject);
@@ -69,6 +67,8 @@ type
     { Private declarations }
   public
     { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure MapPlayerFields(aFileType: TPlayerFileType);
     property Selectie: TSelectie read FSelectie write FSelectie;
     property TabSheet: TcxTabSheet read FTabSheet write SetTabSheet;
@@ -158,30 +158,6 @@ begin
 end;
 
 {-----------------------------------------------------------------------------
-  Procedure: FormCreate
-  Author:    Harry
-  Date:      13-apr-2012
-  Arguments: Sender: TObject
-  Result:    None
------------------------------------------------------------------------------}
-procedure TfrmSpelerGrid.FormCreate(Sender: TObject);
-begin
-  FSelectie := TSelectie.Create;
-end;
-
-{-----------------------------------------------------------------------------
-  Procedure: FormDestroy
-  Author:    Harry
-  Date:      13-apr-2012
-  Arguments: Sender: TObject
-  Result:    None
------------------------------------------------------------------------------}
-procedure TfrmSpelerGrid.FormDestroy(Sender: TObject);
-begin
-  FSelectie.Free;
-end;
-
-{-----------------------------------------------------------------------------
   Procedure: SetTabSheet
   Author:    Harry
   Date:      13-apr-2012
@@ -258,6 +234,21 @@ end;
 procedure TfrmSpelerGrid.btnLaadFromHOClick(Sender: TObject);
 begin
   LoadPlayers(pfHOCsv);
+end;
+
+constructor TfrmSpelerGrid.Create(AOwner: TComponent);
+begin
+  inherited;
+
+  Name := '';
+  FSelectie := TSelectie.Create;
+end;
+
+destructor TfrmSpelerGrid.Destroy;
+begin
+  FSelectie.Free;
+  
+  inherited;
 end;
 
 end.

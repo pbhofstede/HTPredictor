@@ -1,36 +1,28 @@
 object frmSpelerGrid: TfrmSpelerGrid
-  Left = 463
-  Top = 264
-  ActiveControl = cxGridSpelers
-  BorderStyle = bsNone
-  Caption = 'frmSpelerGrid'
-  ClientHeight = 525
-  ClientWidth = 1072
-  Color = clBtnFace
+  Left = 0
+  Top = 0
+  Width = 657
+  Height = 438
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  KeyPreview = True
-  OldCreateOrder = False
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
-  PixelsPerInch = 96
-  TextHeight = 13
+  ParentFont = False
+  TabOrder = 0
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1072
-    Height = 525
+    Width = 657
+    Height = 438
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 0
     object cxGridSpelers: TcxGrid
       Left = 1
       Top = 25
-      Width = 1070
-      Height = 499
+      Width = 655
+      Height = 412
       Align = alClient
       TabOrder = 0
       object cxGridSpelersView: TcxGridDBTableView
@@ -173,7 +165,7 @@ object frmSpelerGrid: TfrmSpelerGrid
     object dxBarDockControl1: TdxBarDockControl
       Left = 1
       Top = 1
-      Width = 1070
+      Width = 655
       Height = 24
       Align = dalTop
       BarManager = dxBarManager1
