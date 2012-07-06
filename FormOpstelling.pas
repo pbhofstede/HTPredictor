@@ -401,7 +401,7 @@ begin
   FRA := vRA;
   FCA := vCA;
   FLA := vLA;
-end;
+end;                          
 
 procedure TfrmOpstelling.cbMotivatiePropertiesValidate(Sender: TObject;
   var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
@@ -801,6 +801,7 @@ end;
 procedure TfrmOpstelling.Button1Click(Sender: TObject);
 var
   vData : TIdMultiPartFormDataStream;
+  vText: String;
 begin
   try
     vData := TIdMultiPartFormDataStream.Create;
@@ -826,9 +827,32 @@ begin
       vData.AddFormField('hspec', Format('%d', [0])); //hidden
       vData.AddFormField('hdspz', uBibString.VervangenDoorWaarde(Format('%.2f', [0.42]), ',', '.'));  //vaste waarde
 
-      vData.AddFormField('huse_ca', 'FALSE');
-      vData.AddFormField('huse_aim', 'FALSE');
-      vData.AddFormField('huse_aow', 'FALSE');
+      case Team1.Tactiek of
+        tCounter:
+        begin
+          vData.AddFormField('huse_ca', 'TRUE');
+          vData.AddFormField('huse_aim', 'FALSE');
+          vData.AddFormField('huse_aow', 'FALSE');
+        end;
+        tCentrumAanval:
+        begin
+          vData.AddFormField('huse_ca', 'FALSE');
+          vData.AddFormField('huse_aim', 'TRUE');
+          vData.AddFormField('huse_aow', 'FALSE');
+        end;
+        tVleugelAanval:
+        begin
+          vData.AddFormField('huse_ca', 'FALSE');
+          vData.AddFormField('huse_aim', 'FALSE');
+          vData.AddFormField('huse_aow', 'TRUE');
+        end;
+        else
+        begin
+          vData.AddFormField('huse_ca', 'FALSE');
+          vData.AddFormField('huse_aim', 'FALSE');
+          vData.AddFormField('huse_aow', 'FALSE');
+        end;
+      end;
 
       vData.AddFormField('amid', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.MID]), ',', '.'));
       vData.AddFormField('ard', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.RV]), ',', '.'));
@@ -849,12 +873,47 @@ begin
       vData.AddFormField('aidspd', Format('%d', [6]));
       vData.AddFormField('aspec', Format('%d', [0]));
       vData.AddFormField('adspz', uBibString.VervangenDoorWaarde(Format('%.2f', [0.42]), ',', '.'));
-      
-      vData.AddFormField('huse_ca', 'FALSE');
-      vData.AddFormField('huse_aim', 'FALSE');
-      vData.AddFormField('huse_aow', 'FALSE');
 
-      Memo1.Lines.Text := IdHTTP1.Post('http://htev.org/furminator/', vData);
+      case Team2.Tactiek of
+        tCounter:
+        begin
+          vData.AddFormField('ause_ca', 'TRUE');
+          vData.AddFormField('ause_aim', 'FALSE');
+          vData.AddFormField('ause_aow', 'FALSE');
+        end;
+        tCentrumAanval:
+        begin
+          vData.AddFormField('ause_ca', 'FALSE');
+          vData.AddFormField('ause_aim', 'TRUE');
+          vData.AddFormField('ause_aow', 'FALSE');
+        end;
+        tVleugelAanval:
+        begin
+          vData.AddFormField('ause_ca', 'FALSE');
+          vData.AddFormField('ause_aim', 'FALSE');
+          vData.AddFormField('ause_aow', 'TRUE');
+        end;
+        else
+        begin
+          vData.AddFormField('ause_ca', 'FALSE');
+          vData.AddFormField('ause_aim', 'FALSE');
+          vData.AddFormField('ause_aow', 'FALSE');
+        end;
+      end;
+
+      vText := IdHTTP1.Post('http://htev.org/furminator/', vData);
+
+      vText := Copy(vText, Pos('furminator-results', vText), Length(vText));
+      vText := Copy(vText, Pos('<tr class=', vText), Length(vText));
+
+      vText := Copy(vText, 1, Pos('</tbody>', vText));
+
+      Memo1.Lines.Text := vText;
+
+      {TODO:  - resultaten in de result-tabel zetten en netjes displayen
+              - berekenen van tactieken met HTEV gebeurt vanuit de 'normaal-situatie'. De tool hoeft dan zelf niet de ratings te downgraden
+      }
+
     finally
       vData.Free;
     end;
