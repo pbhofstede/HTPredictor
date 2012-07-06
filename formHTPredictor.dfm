@@ -1,6 +1,6 @@
 object frmHTPredictor: TfrmHTPredictor
-  Left = 360
-  Top = 125
+  Left = 368
+  Top = 71
   Width = 1181
   Height = 734
   Caption = 'HT Predictor'

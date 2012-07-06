@@ -1,16 +1,16 @@
 object frmOpstellingPlayer: TfrmOpstellingPlayer
   Left = 0
   Top = 0
-  Width = 320
-  Height = 240
+  Width = 137
+  Height = 50
   ParentShowHint = False
   ShowHint = True
   TabOrder = 0
   object pnlPlayer: TPanel
     Left = 0
     Top = 0
-    Width = 320
-    Height = 240
+    Width = 137
+    Height = 50
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 2
