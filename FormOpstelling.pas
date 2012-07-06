@@ -814,11 +814,11 @@ begin
       vData.AddFormField('hca', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.CA]), ',', '.'));
       vData.AddFormField('hla', uBibString.VervangenDoorWaarde(Format('%.2f', [Team1.LA]), ',', '.'));
 
-      vData.AddFormField('home_head', Format('%d', [2]));
-      vData.AddFormField('home_quick_wing', Format('%d', [1]));
-      vData.AddFormField('home_quick_forw', Format('%d', [1]));
-      vData.AddFormField('home_unpred_wing', Format('%d', [0]));
-      vData.AddFormField('home_unpred_forw', Format('%d', [0]));
+      vData.AddFormField('home_head', Format('%d', [Team1.AantalKoppers]));
+      vData.AddFormField('home_quick_wing', Format('%d', [Team1.AantalQWingers]));
+      vData.AddFormField('home_quick_forw', Format('%d', [Team1.AantalQForwards]));
+      vData.AddFormField('home_unpred_wing', Format('%d', [Team1.AantalUWingers]));
+      vData.AddFormField('home_unpred_forw', Format('%d', [Team1.AantalUForwards]));
       vData.AddFormField('hask', Format('%d', [10])); //AIM/AOW skill
       vData.AddFormField('hcsk', Format('%d', [10])); //ca skill
       vData.AddFormField('hidspa', Format('%d', [5]));   //SetPieces aanvallend
@@ -838,11 +838,11 @@ begin
       vData.AddFormField('aca', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.CA]), ',', '.'));
       vData.AddFormField('ala', uBibString.VervangenDoorWaarde(Format('%.2f', [Team2.LA]), ',', '.'));
 
-      vData.AddFormField('away_head', Format('%d', [2]));
-      vData.AddFormField('away_quick_wing', Format('%d', [1]));
-      vData.AddFormField('away_quick_forw', Format('%d', [1]));
-      vData.AddFormField('away_unpred_wing', Format('%d', [0]));
-      vData.AddFormField('away_unpred_forw', Format('%d', [0]));
+      vData.AddFormField('away_head', Format('%d', [Team2.AantalKoppers]));
+      vData.AddFormField('away_quick_wing', Format('%d', [Team2.AantalQWingers]));
+      vData.AddFormField('away_quick_forw', Format('%d', [Team2.AantalQForwards]));
+      vData.AddFormField('away_unpred_wing', Format('%d', [Team2.AantalUWingers]));
+      vData.AddFormField('away_unpred_forw', Format('%d', [Team2.AantalUForwards]));
       vData.AddFormField('aask', Format('%d', [10]));
       vData.AddFormField('acsk', Format('%d', [10]));
       vData.AddFormField('aidspa', Format('%d', [5]));

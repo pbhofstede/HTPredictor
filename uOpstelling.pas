@@ -77,6 +77,12 @@ type
     function LA: double;    
     function MID: double;
     function TeamZelfvertrouwen: double;
+
+    function AantalKoppers: integer;
+    function AantalQWingers: integer;
+    function AantalQForwards: integer;
+    function AantalUwingers: integer;
+    function AantalUForwards: integer;
   end;
 
 
@@ -93,6 +99,27 @@ uses
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+function TOpstelling.AantalKoppers: integer;
+var
+  vCount: integer;
+begin
+  Result := 0;
+  
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      if (not (vCount in [Ord(pOnbekend), Ord(pKP)])) then
+      begin
+        if (FOpstellingPlayerArray[vCount].Spec = 'H') then
+        begin
+          Inc(Result);
+        end;
+      end;
+    end;
+  end;
+end;
+
 function TOpstelling.AantalPositiesBezet: integer;
 var
   vCount: integer;
@@ -115,6 +142,90 @@ end;
   
   <eventuele fixes>
 -----------------------------------------------------------------------------}
+function TOpstelling.AantalQForwards: integer;
+var
+  vCount: integer;
+begin
+  Result := 0;
+  
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        if (FOpstellingPlayerArray[vCount].Spec = 'Q') then
+        begin
+          Inc(Result);
+        end;
+      end;
+    end;
+  end;
+end;
+
+function TOpstelling.AantalQWingers: integer;
+var
+  vCount: integer;
+begin
+  Result := 0;
+  
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      if (vCount in [Ord(pRW), Ord(pLW)]) then
+      begin
+        if (FOpstellingPlayerArray[vCount].Spec = 'Q') then
+        begin
+          Inc(Result);
+        end;
+      end;
+    end;
+  end;
+end;
+
+function TOpstelling.AantalUForwards: integer;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      if (vCount in [Ord(pRCA), Ord(pCA), Ord(pLCA)]) then
+      begin
+        if (FOpstellingPlayerArray[vCount].Spec = 'U') then
+        begin
+          Inc(Result);
+        end;
+      end;
+    end;
+  end;
+end;
+
+function TOpstelling.AantalUwingers: integer;
+var
+  vCount: integer;
+begin
+  Result := 0;
+
+  for vCount := Low(FOpstellingPlayerArray) to High(FOpstellingPlayerArray) do
+  begin
+    if FOpstellingPlayerArray[vCount] <> nil then
+    begin
+      if (vCount in [Ord(pRW), Ord(pLW)]) then
+      begin
+        if (FOpstellingPlayerArray[vCount].Spec = 'U') then
+        begin
+          Inc(Result);
+        end;
+      end;
+    end;
+  end;
+end;
+
 function TOpstelling.CA: double;
 var
   vCount: integer;
