@@ -7,8 +7,7 @@ uses
   ExtCtrls, uSelectie, uOpstelling, FormOpstellingPlayer, StdCtrls,
   cxControls, cxContainer, cxEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit,
   cxImageComboBox, cxCurrencyEdit, cxPC, OleCtrls, ComCtrls, JvComponent,
-  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml, dxmdaset,
-  IdBaseComponent, IdTCPConnection, IdTCPClient, IdHTTP, IdComponent;
+  JvUrlListGrabber, JvUrlGrabbers, Buttons, JvSimpleXml, dxmdaset;
 
 type
   TfrmOpstelling = class(TFrame)
@@ -92,7 +91,6 @@ type
     lblWinstDiff: TLabel;
     lblGelijkDiff: TLabel;
     lblVerliesDiff: TLabel;
-    IdHTTP1: TIdHTTP;
     Button1: TButton;
     Memo1: TMemo;
     procedure cbMotivatiePropertiesValidate(Sender: TObject;
@@ -154,7 +152,7 @@ function ToonOpstelling(aParent: TWinControl; aSelectie: TSelectie; aResultSet: 
 
 implementation
 uses
-  Math, uPlayer, IdMultipartFormData, uBibString;
+  Math, uPlayer, IdMultipartFormData, uBibString, IdHTTP;
 
 {$R *.DFM}
 
@@ -802,6 +800,7 @@ procedure TfrmOpstelling.Button1Click(Sender: TObject);
 var
   vData : TIdMultiPartFormDataStream;
   vText: String;
+  vIdHTTP: TIdHTTP;
 begin
   try
     vData := TIdMultiPartFormDataStream.Create;
@@ -901,7 +900,17 @@ begin
         end;
       end;
 
-      vText := IdHTTP1.Post('http://htev.org/furminator/', vData);
+      vIdHTTP := TIdHTTP.Create(Self);
+      try
+        vIdHTTP.AllowCookies := True;
+        vIdHTTP.HandleRedirects := True;
+        vIdHTTP.HTTPOptions := [hoForceEncodeParams];
+
+
+        vText := vIdHTTP.Post('http://htev.org/furminator/', vData);
+      finally
+        vIdHTTP.Free;
+      end;
 
       vText := Copy(vText, Pos('furminator-results', vText), Length(vText));
       vText := Copy(vText, Pos('<tr class=', vText), Length(vText));
